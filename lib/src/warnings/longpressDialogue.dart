@@ -1,0 +1,68 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:njadia/src/common/services/firebase_messaging.dart';
+import 'package:njadia/src/utils/CustomButton.dart';
+import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
+
+import '../features/group_chat/presentation/controller/create_group_service.dart';
+
+class CustomLongPress extends StatelessWidget {
+  CustomLongPress(
+      {super.key,
+      required this.groupId,
+      required this.messageId,
+      this.recepientName,
+      this.senderTapped,
+      this.message});
+  final String groupId;
+  final String messageId;
+  final String? recepientName;
+  final String? message;
+  final ValueChanged<Map>? senderTapped;
+
+  static const options = ["Reply", "Copy", "Forword", "Pin", "Delete"];
+  static const icons = [
+    Icons.reply,
+    Icons.copy,
+    Icons.forward,
+    Icons.push_pin,
+    Icons.delete
+  ];
+
+  final repleyController = Get.put(ReplyMessageController());
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(alignment: Alignment.center, children: [
+      for (int i = 0; i < options.length; i++)
+        GestureDetector(
+          onTap: () {
+            switch (options[i]) {
+              case "Delete":
+                DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+                    .deleteChat(groupId, messageId);
+                
+                Get.back();
+               
+                break;
+
+              case "Reply":
+                print("THE REPLY POPUP WAS CLICKED");
+                repleyController.setReplyMessage(
+                    replymessage: message, replysender: recepientName);
+
+                Get.back();
+                break;
+            }
+          },
+          child: ListTile(
+            leading: Icon(icons[i]),
+            title: Text(options[i]),
+          ),
+        )
+    ]);
+  }
+}

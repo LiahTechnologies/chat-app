@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/constants/style/appAsset.dart';
-import 'package:njadia/src/constants/style/appfont.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../authentication/data/databaseService.dart';
+import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
 class GroupHomePage extends StatefulWidget {
@@ -32,6 +32,7 @@ class _GroupHomePageState extends State<GroupHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Container(
           padding: EdgeInsets.only(top: 5.h),
           child: Row(

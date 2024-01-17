@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../../constants/style/color.dart';
+import '../../../../common/constants/style/color.dart';
 import '../../../../routing/approutes.dart';
-import '../../../authentication/data/databaseService.dart';
+import '../../../../common/services/firebase_messaging.dart';
 import '../widgets/groupTile.dart';
 
 class AllGroups extends StatefulWidget {
@@ -17,9 +18,9 @@ class AllGroups extends StatefulWidget {
 }
 
 class _AllGroupsState extends State<AllGroups> {
-
-   final TextEditingController searchController = TextEditingController();
-
+  final TextEditingController searchController = TextEditingController();
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     getUserData();
@@ -29,29 +30,19 @@ class _AllGroupsState extends State<AllGroups> {
   String userName = '';
   String userEmail = '';
   Stream? group;
+   Stream<QuerySnapshot>? lastChat;
 
   getUserData() async {
-    await HelperFunction.getUserName().then((value) {
-      setState(() {
-        userName = value;
-      });
-    });
-    await HelperFunction.getUserEmail().then((value) {
-      setState(() {
-        userEmail = value;
-      });
-    });
+   
     await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserGroup()
         .then((snapshot) {
       setState(() {
+        print(" THE GROUP HAVE BEEN FETECHED");
         group = snapshot;
+        print("group lenght is ${snapshot}");
       });
     });
-
-    print(
-        "THIS IS THE LIST OF GROUPS  ${FirebaseAuth.instance.currentUser!.uid}");
-    print(" THE NUMBE OF GROUPS IS  ${await group!.length}");
   }
 
   String getId(String res) {
@@ -61,38 +52,54 @@ class _AllGroupsState extends State<AllGroups> {
   String getName(String res) {
     return res.substring(res.indexOf("_") + 1);
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          automaticallyImplyLeading: false,
-          title: Text("Njangi Groups"),
-          centerTitle: true,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Njangi Groups",
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-      body: Container(
-        width: double.infinity,
-        child: grouplist(),
+        centerTitle: true,
       ),
-
-       floatingActionButton: FloatingActionButton(
-          onPressed: () => Get.toNamed(AppRoutes.CREATE_GROUP_TEMPLATE),
-          child: const Icon(
-            Icons.add,
-            color: AppColor.whiteColor,
+      body: RefreshIndicator(
+        key: refreshIndicatorKey,
+        onRefresh: () async {
+          await getUserData();
+        },
+        child: Container(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [grouplist()],
+            ),
           ),
-          backgroundColor: AppColor.greenColor,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(AppRoutes.CREATE_GROUP_TEMPLATE),
+        child: const Icon(
+          Icons.add,
+          color: AppColor.whiteColor,
+        ),
+        backgroundColor: AppColor.greenColor,
+      ),
     );
   }
 
-
-    grouplist() {
+  grouplist() {
     return StreamBuilder(
         stream: group,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data['groups'] != null) {
+             
               if (snapshot.data['groups'].length != 0) {
                 return ListView.builder(
                     shrinkWrap: true,
@@ -113,6 +120,7 @@ class _AllGroupsState extends State<AllGroups> {
               }
             } else {
               return Text("");
+
               // return noGroupWidget();
             }
           } else {

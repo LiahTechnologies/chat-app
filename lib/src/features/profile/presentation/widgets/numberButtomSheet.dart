@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
+import 'package:njadia/src/warnings/warning.dart';
 
 class ChangeMobileNumber extends StatelessWidget {
-  const ChangeMobileNumber({super.key});
-
+  ChangeMobileNumber({super.key});
+  final TextEditingController numberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,6 +35,8 @@ class ChangeMobileNumber extends StatelessWidget {
                 )),
             width: 300.w,
             child: TextField(
+              controller: numberController,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   hintText: "Enter number", border: InputBorder.none),
             ),
@@ -44,7 +47,16 @@ class ChangeMobileNumber extends StatelessWidget {
         ),
         CustomButton(
           onPress: () {
-            Get.back();
+            if (numberController.text.isNotEmpty)
+              Get.back();
+            else
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomWarning(
+                      text: "Field Can not be empty",
+                    );
+                  });
           },
           text: "Done",
           icon: null,

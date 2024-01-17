@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/constants/style/appfont.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
 class CustomInput extends StatelessWidget {
@@ -42,7 +42,7 @@ class CustomInput extends StatelessWidget {
                   controller(value);
                 },
                 decoration:
-                    InputDecoration(border: InputBorder.none, hintText: hint)),
+                    InputDecoration( hintText: hint)),
           ),
         ],
       ),

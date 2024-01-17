@@ -1,21 +1,22 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/all-groups.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/direct%20message/direct-message.dart';
+import 'package:njadia/src/features/direct%20message/presentation/view/direct-message.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/search_groups..dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/group_home_page.dart';
+import 'package:njadia/src/features/payment/presentation/view/group_home_page.dart';
 import 'package:njadia/src/features/profile/presentation/views/profile.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/constants/style/appAsset.dart';
-import 'package:njadia/src/constants/style/appfont.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../authentication/data/databaseService.dart';
+import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController searchController = TextEditingController();
-
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   @override
   void initState() {
     getUserData();
@@ -82,7 +83,29 @@ class _HomePageState extends State<HomePage> {
         
         body: Screens[currentScreen],
        
-        bottomNavigationBar: BottomAppBar(
+        bottomNavigationBar: CurvedNavigationBar(
+          height:50.h,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          // backgroundColor: AppColor.transparent,
+          color: Theme.of(context).colorScheme.secondary,
+           key: _bottomNavigationKey,
+          items: [
+          Icon(Icons.home,size: 18,),
+           Icon(Icons.group,size: 18,),
+            Icon(Icons.search,size: 18,),
+             Icon(Icons.person,size: 18,),
+        ],
+        onTap: (value){
+          setState(() {
+              currentScreen = value;
+          });
+        },
+        
+        )
+
+
+        
+        /*BottomAppBar(
             child: Container(
           height: 50.h,
           color: AppColor.greenColor,
@@ -123,7 +146,9 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.person,color: currentScreen==3?AppColor.whiteColor:AppColor.blackColor,))
             ],
           ),
-        )),
+        )),*/
+
+
       ),
     );
   }

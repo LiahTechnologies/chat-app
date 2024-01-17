@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/constants/style/appfont.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/warnings/custombackarrow.dart';
 
 class SelectGroupMember extends StatelessWidget {
   const SelectGroupMember({super.key});
@@ -11,6 +12,7 @@ class SelectGroupMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -22,15 +24,7 @@ class SelectGroupMember extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Text(
-                        "Close",
-                        style: AppFonts.defaultFonts3,
-                      ),
-                    ),
+                   CustomBackArrow(),
                     SizedBox(
                       width: 70.w,
                     ),
@@ -38,11 +32,11 @@ class SelectGroupMember extends StatelessWidget {
                       children: [
                         Text(
                           "Send  Money",
-                          style: AppFonts.heading3,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                         Text(
                           "Ekondo Njangi",
-                          style: AppFonts.defaultFonts,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                       ],
                     )
@@ -53,10 +47,10 @@ class SelectGroupMember extends StatelessWidget {
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Chukwi Obi",
-                        hintStyle: TextStyle(color: AppColor.greenColor),
+                        hintStyle: Theme.of(context).textTheme.displaySmall,
                         suffixIcon: Icon(
                           Icons.cancel_outlined,
-                          color: AppColor.greenColor,
+                          color: Theme.of(context).iconTheme.color,
                         )),
                   ),
                 ),
@@ -65,10 +59,10 @@ class SelectGroupMember extends StatelessWidget {
                   padding: EdgeInsets.only(left: 10.w),
                   height: 50.h,
                   width: double.infinity,
-                  color: AppColor.greenColor,
+                  color: Theme.of(context).cardTheme.color,
                   child: Text(
                     "Members",
-                    style: AppFonts.defaultWhite,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
                 Expanded(
@@ -83,7 +77,7 @@ class SelectGroupMember extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [Text("Gael Indira"), Divider()],
+                                children: [Text("Gael Indira",style: Theme.of(context).textTheme.displaySmall,), Divider()],
                               ),
                             ),
                           );

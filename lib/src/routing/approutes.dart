@@ -2,15 +2,16 @@ import 'package:get/get.dart';
 
 import 'package:njadia/src/features/add%20_people/presentation/view/add_people.dart';
 import 'package:njadia/src/features/authentication/screens/login/view/login.dart';
+import 'package:njadia/src/features/group_chat/presentation/view/chatpage.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/create_group.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/direct%20message/direct-message.dart';
+import 'package:njadia/src/features/direct%20message/presentation/view/direct-message.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/group_category.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/search_groups..dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/group_home_page.dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/menu_page.dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/select_group_member.dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/send_money.dart';
-import 'package:njadia/src/features/group_home_page/presentation/view/send_money_details.dart';
+import 'package:njadia/src/features/payment/presentation/view/group_home_page.dart';
+import 'package:njadia/src/features/payment/presentation/view/menu_page.dart';
+import 'package:njadia/src/features/payment/presentation/view/select_group_member.dart';
+import 'package:njadia/src/features/payment/presentation/view/send_money.dart';
+import 'package:njadia/src/features/payment/presentation/view/send_money_details.dart';
 import 'package:njadia/src/features/onboarding/onboardingScreen.dart';
 import 'package:njadia/main.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
@@ -43,6 +44,9 @@ class AppRoutes {
   static const String PROFILE = '/profile';
   static const String SEARCH = '/search';
   static const String DIRECT_MESSAGE = '/directMessages';
+  static const String CHATPAGE = '/chatPage';
+
+  
 
   String intialScreen() => SPLASHSCREEN;
 }
@@ -63,9 +67,15 @@ class AppPages {
         name: AppRoutes.CREATE_GROUP_TEMPLATE,
         page: () => const GroupTemplateOption()),
     GetPage(name: AppRoutes.JOINGROUP, page: () => JoinGroup()),
-    GetPage(name: AppRoutes.ADDCONTACT, page: () => AddContacts()),
-    GetPage(name: AppRoutes.GROUP_CATEGORYg, page: () => GroupCategory()),
-    GetPage(name: AppRoutes.CREATE_GROUP, page: () => CreateGroup()),
+    GetPage(name: AppRoutes.ADDCONTACT, page: () =>const AddContacts()),
+    GetPage(name: AppRoutes.GROUP_CATEGORYg, page: () =>const  GroupCategory(),
+    transition: Transition.rightToLeft,
+    transitionDuration: const Duration(milliseconds: 300)
+    ),
+    GetPage(name: AppRoutes.CREATE_GROUP, page: () => const CreateGroup(),
+     transition: Transition.downToUp,
+    transitionDuration: const Duration(milliseconds: 300)
+    ),
     GetPage(name: AppRoutes.ADD_USERS_LINK, page: () => AddUserLink()),
     GetPage(name: AppRoutes.GROUP_MENU_PAGE, page: () => const GroupMenuPage()),
     GetPage(name: AppRoutes.GROUP_HOME_PAGE, page: () => const GroupHomePage()),
@@ -79,5 +89,6 @@ class AppPages {
     GetPage(name: AppRoutes.PROFILE, page: () => Profile()),
     GetPage(name: AppRoutes.SEARCH, page: () => SearchGroups()),
      GetPage(name: AppRoutes.DIRECT_MESSAGE, page: () => DirectMessage()),
+    //  GetPage(name: AppRoutes.CHATPAGE, page: () => ChatPage()),
   ];
 }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-Future<File> openCamera(method) async {
+Future<File> openCamera({method}) async {
   // File imageFile;
   final ImagePicker picker = ImagePicker();
   var source;

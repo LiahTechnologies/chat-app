@@ -15,6 +15,7 @@ class CustomCardItems extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(),
       child: Card(
+        color: Theme.of(context).colorScheme.primary,
           child: SizedBox(
         height: 60.h,
         child: ListTile(

@@ -6,9 +6,10 @@ class HelperFunction {
    * Keys
    */
 
-  static String userLogingKey = 'LOGGINKEY';
-  static String userNameKey = 'USERNAMEKEY';
-  static String userEmailKey = 'USEREMAILKEY';
+  static String _userLogingKey = 'LOGGINKEY';
+  static String _userNameKey = 'USERNAMEKEY';
+  static String _userEmailKey = 'USEREMAILKEY';
+  static String _userIDKey = 'UID';
   static String theme = "isDarkMode";
 
   /**
@@ -29,28 +30,40 @@ class HelperFunction {
 
   static Future<bool> saveUserLoggInState(bool isLoggedIn) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.setBool(userLogingKey, isLoggedIn);
+    return await sharedPreference.setBool(_userLogingKey, isLoggedIn);
   }
 
   static Future<bool> saveUserName(String userName) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.setString(userNameKey, userName);
+    return await sharedPreference.setString(_userNameKey, userName);
   }
 
   static Future<bool> saveUserEmail(String userEmail) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.setString(userEmailKey, userEmail);
+    return await sharedPreference.setString(_userEmailKey, userEmail);
+  }
+
+
+  static Future<bool> saveUserID(String id) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_userIDKey, id);
   }
 
   // getting data
   static Future<String> getUserEmail() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(userEmailKey)!;
+    return await sharedPreference.getString(_userEmailKey)!;
   }
 
   static Future<String> getUserName() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(userEmailKey)!;
+    return await sharedPreference.getString(_userEmailKey)!;
+  }
+
+
+  static Future<String> getUserID() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.getString(_userIDKey)!;
   }
   /**
    * Getting data from shared preferences
@@ -59,7 +72,7 @@ class HelperFunction {
   static Future<bool> getUserLoggedInData() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
 
-    return sharedPreference.getBool(userLogingKey)!;
+    return sharedPreference.getBool(_userLogingKey)!;
   }
 }
 

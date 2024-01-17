@@ -1,18 +1,22 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:njadia/src/features/authentication/data/model/userModel.dart';
 import 'package:njadia/src/features/authentication/screens/signup/views/signup.dart';
 
 import '../../../common/helper_function.dart';
-import 'databaseService.dart';
+import '../../../common/services/firebase_messaging.dart';
 
 /// ---README(Docs[6]) --Bindings
 
 class AuthenticationRepository {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("users");
   // SignController signUpController = Get.put(SignController());
 // login
 
@@ -27,7 +31,21 @@ class AuthenticationRepository {
               email: email, password: password))
           .user!;
       if (user != null) {
-        // firebaseFirestore.collection("Users").
+
+        // await userCollection
+        //     .where("email", isEqualTo: email).
+
+        //     .then((value) {
+        //   final userData = value.docs.first.data();
+        //   userData!.;
+        //   // UserEntity.fromjson(jsonDecode());
+        // });
+
+         await HelperFunction.saveUserID(user.uid);
+          await HelperFunction.saveUserID(user.displayName!);
+        await HelperFunction.saveUserLoggInState(true);
+        await HelperFunction.saveUserEmail(email);
+        await HelperFunction.saveUserLoggInState(true);
         return true;
       }
     } catch (e) {}
@@ -95,28 +113,30 @@ class AuthenticationRepository {
       required String phoneNumber,
       dateOBirth}) async {
     try {
-      print("IN THE PROCESS OF SIGNUP A USER");
+      
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user!;
 
-      print("THE CURRENT USER IS  $user");
-
-      /// --- This  is checking if a user has been created
-
       if (user.uid != null) {
+        user.updateDisplayName(firstName+" "+ lastName);
         await DatabaseServices(uid: user.uid).updateUserData(
             firstName: firstName,
             email: email,
             lastName: lastName,
             phoneNumber: phoneNumber,
             dateOfBirth: dateOBirth);
+            
+        HelperFunction.saveUserID(user.uid);
+        await HelperFunction.saveUserEmail(email);
+        await HelperFunction.saveUserLoggInState(true);
+        await HelperFunction.saveUserName(firstName);
 
         return true;
       } else
         return false;
     } on FirebaseAuthException catch (e) {
-      print("THE AUTHENTICATION ERROR IS ${e.message}");
+      
 
       return false;
     }

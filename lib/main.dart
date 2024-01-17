@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:njadia/src/constants/style/appAsset.dart';
+import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/features/authentication/screens/authentication.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
@@ -12,12 +12,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'src/utils/theme/themeController.dart';
 
 /// ------- For Docs and Updates Check ------
 /// ------------------README.md--------------
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,7 +31,7 @@ Future main() async {
 class MyApp extends StatelessWidget {
    MyApp({super.key});
 
-  final themeController = Get.put(());
+  final themeController = Get.put(ThemeController());
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -38,8 +40,9 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return GetMaterialApp(
+            // home: ChatScreen(),
             // themeMode: themeController.theme,
-            theme: AppTheme.darkTheme,
+            theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
 
           
@@ -88,6 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: Stack(
           children: <Widget>[

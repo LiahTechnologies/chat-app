@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/constants/style/appfont.dart';
-import 'package:njadia/src/constants/style/color.dart';
+import 'package:njadia/src/common/constants/style/appfont.dart';
+import 'package:njadia/src/common/constants/style/color.dart';
 
 class JoinGroup extends StatelessWidget {
   JoinGroup({super.key});
@@ -12,6 +12,7 @@ class JoinGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
       child: Container(
         padding: EdgeInsets.only(left: 15.w, right: 15.w),
@@ -70,7 +71,7 @@ class JoinGroup extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Example of",
+                "Example",
                 style: AppFonts.heading2,
               ),
             ),
