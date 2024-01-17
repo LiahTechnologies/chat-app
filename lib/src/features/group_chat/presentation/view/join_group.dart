@@ -70,7 +70,7 @@ class JoinGroup extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Example",
+                "Example of",
                 style: AppFonts.heading2,
               ),
             ),
