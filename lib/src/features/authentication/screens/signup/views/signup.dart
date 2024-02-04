@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 // import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
+// import 'package:njadia/src/common/services/face_detection.dart';
 import 'package:njadia/src/common/services/firebase_messaging.dart';
 
 import 'package:njadia/src/utils/CustomButton.dart';
@@ -32,6 +33,9 @@ import '../../../../../utils/customButtomWithCustomICons.dart';
 import '../../../controllers/authentication_service.dart';
 import '../controller/signController.dart';
 import '../widgets/otp.dart';
+import 'dart:io';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Signup extends StatefulWidget {
   Signup({
@@ -78,6 +82,7 @@ class _SignupState extends State<Signup> {
 
   bool isSelfie = false;
   bool isDocument = false;
+  bool isFaceDetected = false;
 
 // SELECT GENDER
   String selectedGender = "None";
@@ -93,6 +98,50 @@ class _SignupState extends State<Signup> {
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  late FaceDetector _faceDetector;
+  List<Face> _faces = [];
+  ImagePicker _imagePicker = ImagePicker();
+
+  Future<void> _initialize() async {
+    _faceDetector = GoogleMlKit.vision.faceDetector(
+      FaceDetectorOptions(
+        enableContours: true,
+        enableLandmarks: true,
+      ),
+    );
+  }
+
+  Future<void> _detectFaces({required File image}) async {
+    // final XFile? pickedFile =
+    //     await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image.path.isNotEmpty) {
+      final inputImage = InputImage.fromFilePath(image.path);
+      // final inputImage = InputImage.fromFilePath(pickedFile.path);
+      try {
+        final List<Face> faces = await _faceDetector.processImage(inputImage);
+
+        if (faces.length == 1)
+          setState(() {
+            _faces = faces;
+            isFaceDetected = true;
+          });
+      } catch (e) {
+        setState(() {
+          isFaceDetected = false;
+        });
+        print("Error detecting faces: $e");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _faceDetector.close();
+    super.dispose();
   }
 
   @override
@@ -1314,7 +1363,7 @@ class _SignupState extends State<Signup> {
       type == "selfie" ? isSelfie = true : isDocument = true;
     });
 
-    // if (type == "selfie") getFaceDetection(cameraImage);
+    // if (type == "selfie") face_detection_Function(inputImage:cameraImage.path);
   }
 
 /*
@@ -1349,7 +1398,7 @@ class _SignupState extends State<Signup> {
       // _isloading = true;
     });
 
-   await DatabaseServices().checkIfUserExist(email).then((value) {
+    await DatabaseServices().checkIfUserExist(email).then((value) {
       setState(() {
         isUserExist = value;
       });
