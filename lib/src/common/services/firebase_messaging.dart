@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 import '../helper_function.dart';
 import '../../features/direct message/domain/entities/message.dart';
@@ -23,6 +24,9 @@ class DatabaseServices {
     required String phoneNumber,
     required String dateOfBirth,
   }) {
+    
+    print("CREATING USERS DOCUMENT DETAILS");
+
     final userResponse = userCollection.doc(uid).set({
       'firstName': firstName,
       'lastName': lastName,
@@ -33,7 +37,7 @@ class DatabaseServices {
       'chats': [],
       'uid': uid
     });
-
+    print("THIS IS THE RESPONSE FROM CREATING A USER ${userResponse}");
     return userResponse;
   }
 

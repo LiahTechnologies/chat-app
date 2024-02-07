@@ -128,9 +128,9 @@ class AuthenticationRepository {
             dateOfBirth: dateOBirth);
             
         HelperFunction.saveUserID(user.uid);
+        await HelperFunction.saveUserName(firstName+" "+ lastName);
         await HelperFunction.saveUserEmail(email);
         await HelperFunction.saveUserLoggInState(true);
-        await HelperFunction.saveUserName(firstName);
 
         return true;
       } else

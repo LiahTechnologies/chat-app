@@ -22,7 +22,7 @@ class CreateGroupService extends GetxController {
       required String groupLimit}) async {
     print("CREATE GROUP SERVICES CLASSS");
     return await authDatabase.createGroup(
-        "Betrand", userId, groupName, groupLevi, groupLimit);
+        FirebaseAuth.instance.currentUser!.displayName!, userId, groupName, groupLevi, groupLimit);
   }
 
   Future<bool> checkIFGroupExist(String groupName) async {

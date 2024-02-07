@@ -144,8 +144,8 @@ class _DirectMessageState extends State<DirectMessage> {
         stream: chat,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data['chats'] != null) {
-
+            if (snapshot.data != null) {
+              
               if (snapshot.data['chats'].length != 0) {
 
                 // getChattLastMessage(chatId:snapshot.data['chats'][Index]);

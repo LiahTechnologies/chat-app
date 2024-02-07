@@ -29,7 +29,7 @@ class ImageRequirementWidget extends StatelessWidget {
                 : Container(
                     margin: EdgeInsets.only(right: 5.w),
                     child: Icon(Icons.warning_amber_rounded)),
-            Text(text,style:AppFonts.defaultBlack400),
+            Text(text,style:Theme.of(context).textTheme.displayMedium),
           ]),
     );
   }

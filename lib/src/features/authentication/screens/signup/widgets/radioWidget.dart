@@ -34,7 +34,7 @@ class _RadioWidgetState extends State<RadioWidget> {
               onChanged: (value) {
                 widget.onTap(value);
               }),
-          Text(widget.text, style: AppFonts.defaultGreen400),
+          Text(widget.text, style: Theme.of(context).textTheme.displayMedium),
         ],
       ),
     );

@@ -30,17 +30,16 @@ class _AllGroupsState extends State<AllGroups> {
   String userName = '';
   String userEmail = '';
   Stream? group;
-   Stream<QuerySnapshot>? lastChat;
+  Stream<QuerySnapshot>? lastChat;
 
   getUserData() async {
-   
     await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserGroup()
         .then((snapshot) {
       setState(() {
-        print(" THE GROUP HAVE BEEN FETECHED");
+        // print(" THE GROUP HAVE BEEN FETECHED");
         group = snapshot;
-        print("group lenght is ${snapshot}");
+        // print("group lenght is ${snapshot}");
       });
     });
   }
@@ -52,8 +51,6 @@ class _AllGroupsState extends State<AllGroups> {
   String getName(String res) {
     return res.substring(res.indexOf("_") + 1);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +74,11 @@ class _AllGroupsState extends State<AllGroups> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
-              children: [grouplist()],
+              children: [
+                
+                // grouplist()
+                
+                ],
             ),
           ),
         ),
@@ -98,9 +99,10 @@ class _AllGroupsState extends State<AllGroups> {
         stream: group,
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data['groups'] != null) {
-             
+             if (snapshot.data['groups'] != null) {
               if (snapshot.data['groups'].length != 0) {
+                print(
+                    "THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data['groups'].length,
@@ -123,6 +125,7 @@ class _AllGroupsState extends State<AllGroups> {
 
               // return noGroupWidget();
             }
+
           } else {
             return Container(
                 height: 560.h,

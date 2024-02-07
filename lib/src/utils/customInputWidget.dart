@@ -14,6 +14,7 @@ class CustomInputWidget extends StatelessWidget {
       this.marginTop = 0,
       this.borderRadius = 0,
       this.text = "",
+      this.hint="",
       required this.onChange});
   final double width;
   final double height;
@@ -24,6 +25,7 @@ class CustomInputWidget extends StatelessWidget {
   final double marginRight;
   final double marginLeft;
   final String text;
+  final String hint;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,11 +47,14 @@ class CustomInputWidget extends StatelessWidget {
               width: width.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(borderRadius),
-                  border: Border.all(color: Theme.of(context).inputDecorationTheme.iconColor!)),
+                  border: Border.all(
+                      color:
+                          Theme.of(context).inputDecorationTheme.iconColor!)),
               child: TextField(
                 style: Theme.of(context).textTheme.displaySmall,
                 onChanged: (v) => onChange(v),
-                decoration: const InputDecoration(border: InputBorder.none),
+                decoration:
+                    InputDecoration(border: InputBorder.none, hintText: hint),
               )),
         ],
       ),

@@ -404,7 +404,6 @@ class _SignupState extends State<Signup> {
              * VERIFY OTP CODE
              */
 
-            /*
             Container(
               margin: EdgeInsets.only(
                   top: 12.h, left: 12.w, right: 12.w, bottom: 7.h),
@@ -413,7 +412,119 @@ class _SignupState extends State<Signup> {
                 children: [
                   Text(
                     "Account Creation",
-                    style: AppFonts.heading1,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
+                    child: const Row(
+                      children: [
+                        CustomDots(index: 1, position: 2),
+                        CustomDots(index: 2, position: 2),
+                        CustomDots(index: 3, position: 2),
+                        CustomDots(index: 3, position: 2),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    child: RichText(
+                        text: TextSpan(children: [
+                      TextSpan(
+                          text:
+                              "Enter your phone number. This number must be your mobile money number.",
+                          style: Theme.of(context).textTheme.displayMedium),
+                      TextSpan(
+                        text: "\n\nA verification code will be ",
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      TextSpan(
+                          text: " sent to your phone.",
+                          style: Theme.of(context).textTheme.displayMedium),
+                    ])),
+                  ),
+                  CustomInputWidget(
+                    onChange: () {},
+                    borderRadius: 12,
+                    hint: "Enter your phone number 6733445566",
+                  ),
+                  /*
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton.icon(
+                          onPressed: () {
+                            // authService.registerWithPhoneNumber(
+                            // "+237", context);
+                          },
+                          icon: const Icon(
+                            Icons.replay_outlined,
+                            color: Color(0xff1FAF67),
+                            size: 16,
+                          ),
+                          label: Text(
+                            "Resend code",
+                            style: Theme.of(context).textTheme.displayMedium!.copyWith(fontStyle: FontStyle.italic,color: AppColor.greenColor),
+                          )),
+                      TextButton.icon(
+                          onPressed: () {
+                            controller.previousPage(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut);
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Color(0xff1FAF67),
+                            size: 16,
+                          ),
+                          label: Text(
+                            "change phone number",
+                            style: Theme.of(context).textTheme.displayMedium!.copyWith(fontStyle: FontStyle.italic,color: AppColor.greenColor),
+                          ))
+                    ],
+                  ),
+
+                  */
+                  Padding(
+                    padding: EdgeInsets.only(right: 18.0, top: 20.0.h),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: CustomButton(
+                        onPress: () {
+                          print("THE FINAL VERIFICATION CODE IS $finalUserOTP");
+                          // authService
+                          // .verifyOTP(
+                          // context: context,
+                          // verificationId: finalUserOTP.trim())
+                          // .whenComplete(() {
+
+                          // });
+
+                          controller.nextPage(
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut);
+                        },
+                        text: "Continue",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            /**
+             * VERIFY OTP CODE
+             */
+
+            Container(
+              margin: EdgeInsets.only(
+                  top: 12.h, left: 12.w, right: 12.w, bottom: 7.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Account Creation",
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
@@ -433,21 +544,21 @@ class _SignupState extends State<Signup> {
                         text: TextSpan(children: [
                       TextSpan(
                           text: "Enter the  4 digit  ",
-                          style: AppFonts.defaultFonts2),
+                          style: Theme.of(context).textTheme.displayMedium),
                       TextSpan(
                         text: "verification code",
-                        style: AppFonts.heading3,
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                       TextSpan(
                           text: " sent to your phone.",
-                          style: AppFonts.defaultFonts2),
+                          style: Theme.of(context).textTheme.displayMedium),
                     ])),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 30.0.h, bottom: 8.h),
+                    padding: EdgeInsets.only(top: 6.0.h, bottom: 18.h),
                     child: Text(
                       "Verification code",
-                      style: AppFonts.heading3,
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ),
                   Row(
@@ -485,22 +596,6 @@ class _SignupState extends State<Signup> {
                           });
                         },
                       ),
-                      OTPInput(
-                        index: 5,
-                        userOTP: (value) {
-                          setState(() {
-                            finalUserOTP = finalUserOTP + "" + value;
-                          });
-                        },
-                      ),
-                      OTPInput(
-                        index: 6,
-                        userOTP: (value) {
-                          setState(() {
-                            finalUserOTP = finalUserOTP + "" + value;
-                          });
-                        },
-                      ),
                     ],
                   ),
                   Row(
@@ -514,10 +609,16 @@ class _SignupState extends State<Signup> {
                           icon: const Icon(
                             Icons.replay_outlined,
                             color: Color(0xff1FAF67),
+                            size: 16,
                           ),
                           label: Text(
                             "Resend code",
-                            style: AppFonts.textItalic,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    color: AppColor.greenColor),
                           )),
                       TextButton.icon(
                           onPressed: () {
@@ -528,10 +629,16 @@ class _SignupState extends State<Signup> {
                           icon: const Icon(
                             Icons.edit,
                             color: Color(0xff1FAF67),
+                            size: 16,
                           ),
                           label: Text(
                             "change phone number",
-                            style: AppFonts.textItalic,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    color: AppColor.greenColor),
                           ))
                     ],
                   ),
@@ -561,8 +668,6 @@ class _SignupState extends State<Signup> {
                 ],
               ),
             ),
-
-              */
 
             /**
              * THIS IS THE THIRD PART
@@ -639,6 +744,7 @@ class _SignupState extends State<Signup> {
                       onChange: (v) {
                         lastName.text = v;
                       }),
+
                   Container(
                     width: 350.w,
                     child: Row(
@@ -659,13 +765,19 @@ class _SignupState extends State<Signup> {
                               });
                             },
                             decoration: const InputDecoration(
-                                border: InputBorder.none,
+                                // border: InputBorder.none,
                                 prefixIcon: Icon(Icons.calendar_month)),
                           ),
                         ),
                       ],
                     ),
                   ),
+
+                  /**
+                   * PHONE NUMBER WITH COUNTRY CODE
+                   */
+
+                  /*
                   SizedBox(
                     height: 10.h,
                   ),
@@ -736,6 +848,8 @@ class _SignupState extends State<Signup> {
                       ),
                     ],
                   ),
+
+                  */
                   Row(
                     children: [
                       Checkbox(
@@ -860,7 +974,7 @@ class _SignupState extends State<Signup> {
                     height: 20.h,
                   ),
                   CustomButtonWithCustomIcons(
-                    onPress: () => {controller.jumpToPage(6)},
+                    onPress: () => {controller.jumpToPage(7)},
                     text: "Add a photo ID",
                     height: 50.h,
                     width: 350.w,
@@ -892,7 +1006,8 @@ class _SignupState extends State<Signup> {
                             ? true
                             : false,
                         onPress: () {
-                          controller.jumpToPage(8);
+                          // if(isSelfie == true && isDocument == true)
+                          controller.jumpToPage(9);
                         },
                         text: "Continue",
                         height: 50.h,
@@ -911,8 +1026,18 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 12,
+                        ),
+                        onPressed: () => controller.previousPage(
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeInOut),
+                      )
+                      /*
+                    Container(
                         margin: EdgeInsets.only(left: 10.w, top: 5.h),
                         width: 90.w,
                         height: 50.h,
@@ -924,7 +1049,9 @@ class _SignupState extends State<Signup> {
                                 duration: Duration(seconds: 1),
                                 curve: Curves.easeInOut),
                             child: Text("Back", style: AppFonts.buttonColor))),
-                  ),
+
+                            */
+                      ),
                   Image.asset("assets/images/img_frame.png"),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -958,9 +1085,11 @@ class _SignupState extends State<Signup> {
                       child: MaterialButton(
                         onPressed: () => {
                           openCamera("Camera", "selfie"),
-                          controller.nextPage(
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.easeInOut)
+                          Future.delayed(Duration(seconds: 2), () {
+                            controller.nextPage(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut);
+                          })
                         },
                         child: Text("Open the camera",
                             style: AppFonts.buttonColor),
@@ -979,8 +1108,17 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 12,
+                        ),
+                        onPressed: () => controller.jumpToPage(4),
+                      )
+
+                      /*
+                    Container(
                         margin: EdgeInsets.only(left: 10.w, top: 5.h),
                         width: 90.w,
                         height: 50.h,
@@ -988,9 +1126,8 @@ class _SignupState extends State<Signup> {
                             color: AppColor.greenColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: MaterialButton(
-                            onPressed: () => controller.previousPage(
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.easeInOut),
+                            onPressed: () => controller.jumpToPage(2),
+                                
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1000,23 +1137,44 @@ class _SignupState extends State<Signup> {
                                 ),
                                 Text("Back", style: AppFonts.buttonColor),
                               ],
-                            ))),
-                  ),
+                            ))),*/
+                      ),
                   Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      width: 300.w,
-                      height: 300.h,
+                      margin: EdgeInsets.only(
+                          left: 10.w, right: 10.w, top: 10.h, bottom: 90.h),
+                      height: 250.h,
+                      width: 420.w,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12)),
-                      child: selectedCameraImage != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.file(
-                                selectedCameraImage!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : Text("")),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: selectedCameraImage != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  // selectedCameraImageDocs!,
+                                  selectedCameraImage!,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Text(""),
+                      )),
+
+                  // Container(
+                  //     padding: EdgeInsets.symmetric(vertical: 10.h),
+                  //     width: 300.w,
+                  //     height: 300.h,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(12)),
+                  //     child: selectedCameraImage != null
+                  //         ? ClipRRect(
+                  //             borderRadius: BorderRadius.circular(12),
+                  //             child: Image.file(
+                  //               selectedCameraImage!,
+                  //               fit: BoxFit.cover,
+                  //             ),
+                  //           )
+                  //         : Text("")),
                   Container(
                       margin: EdgeInsets.only(left: 30.w, top: 10.h),
                       child: const Column(
@@ -1076,8 +1234,16 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 12,
+                        ),
+                        onPressed: () => controller.jumpToPage(4),
+                      )
+                      /*
+                    Container(
                         margin: EdgeInsets.only(left: 10.w, top: 5.h),
                         width: 90.w,
                         height: 50.h,
@@ -1087,11 +1253,14 @@ class _SignupState extends State<Signup> {
                         child: MaterialButton(
                             onPressed: () => controller.jumpToPage(3),
                             child: Text("Back", style: AppFonts.buttonColor))),
-                  ),
+
+                            */
+                      ),
                   Container(
                     margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                     height: 280.h,
                     child: Card(
+                      color: Colors.white.withOpacity(0.7),
                       child: Padding(
                         padding: EdgeInsets.all(18.0.w),
                         child: Column(
@@ -1099,13 +1268,13 @@ class _SignupState extends State<Signup> {
                             children: [
                               Text(
                                 "Please upload a valid ID",
-                                style: AppFonts.heading3,
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     bottom: 8.0, top: 10.0),
                                 child: Text("Issuing country",
-                                    style: AppFonts.heading4),
+                                    style: Theme.of(context).textTheme.displayMedium),
                               ),
                               Container(
                                   height: 40.h,
@@ -1115,12 +1284,12 @@ class _SignupState extends State<Signup> {
                                       border: Border.all(
                                           color: AppColor.greenColor)),
                                   child: Text("Cameroon",
-                                      style: AppFonts.defaultBlack400)),
+                                      style: Theme.of(context).textTheme.displayMedium)),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     bottom: 8.0, top: 10.0),
                                 child: Text("Document type:",
-                                    style: AppFonts.heading4),
+                                    style: Theme.of(context).textTheme.displayMedium),
                               ),
                               RadioWidget(
                                 text: "ID Card",
@@ -1175,7 +1344,7 @@ class _SignupState extends State<Signup> {
                         padding: EdgeInsets.only(
                             left: 30.0.w, top: 30.h, bottom: 10.h),
                         child: Text("Retake photo",
-                            style: AppFonts.defaultBlackUnderLine700),
+                            style: Theme.of(context).textTheme.displayMedium),
                       )),
                   Align(
                     alignment: Alignment.bottomLeft,
@@ -1189,9 +1358,11 @@ class _SignupState extends State<Signup> {
                       child: MaterialButton(
                         onPressed: () => {
                           openCamera("Camera", "id"),
-                          controller.nextPage(
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.easeInOut)
+                          Future.delayed(Duration(seconds: 2), () {
+                            controller.nextPage(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut);
+                          }),
                         },
                         child: Text("Open Camera", style: AppFonts.buttonColor),
                       ),
@@ -1209,8 +1380,16 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 12,
+                        ),
+                        onPressed: () => controller.jumpToPage(4),
+                      )
+                      /*  
+                    Container(
                         margin: EdgeInsets.only(left: 10.w, top: 5.h),
                         width: 90.w,
                         height: 50.h,
@@ -1218,11 +1397,12 @@ class _SignupState extends State<Signup> {
                             color: AppColor.greenColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: MaterialButton(
-                            onPressed: () => controller.previousPage(
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.easeInOut),
+                            onPressed: () => controller.jumpToPage(2),
                             child: Text("Back", style: AppFonts.buttonColor))),
-                  ),
+
+
+                      */
+                      ),
                   Container(
                       margin: EdgeInsets.only(
                           left: 10.w, right: 10.w, top: 10.h, bottom: 90.h),

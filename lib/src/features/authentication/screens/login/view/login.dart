@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                                 .signinWithEmailAndPassword(
                                     email: email.removeAllWhitespace, password: password.removeAllWhitespace)
                                 .then((value) {
-                              if (value == true)
+                              if (value != true)
                                 Get.offNamed(AppRoutes.HOMEpAGE);
                             })
                           else

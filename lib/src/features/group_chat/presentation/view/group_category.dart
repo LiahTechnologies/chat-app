@@ -18,10 +18,11 @@ class GroupCategory extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           leading: CustomBackArrow(),
-          // title: Text(
-          //             "Tell us more about your Njangi Group In order to help you",
-          //             textAlign: TextAlign.start,
-          //             style: Theme.of(context).textTheme.displayMedium),
+          centerTitle: true,
+          title: Text(
+                      "Select group categories",
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.titleMedium),
         ),
         body: SafeArea(
           

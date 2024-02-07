@@ -17,13 +17,15 @@ class OTPInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: index == 1 ? Radius.circular(15) : Radius.circular(0),
-              bottomLeft: index == 1 ? Radius.circular(15) : Radius.circular(0),
-              topRight: index == 6 ? Radius.circular(15) : Radius.circular(0),
-              bottomRight:
-                  index == 6 ? Radius.circular(15) : Radius.circular(0)),
-          // borderRadius: BorderRadius.circular(30),
+          // borderRadius: BorderRadius.only(
+          //     topLeft: index == 1 ? Radius.circular(15) : Radius.circular(0),
+          //     bottomLeft: index == 1 ? Radius.circular(15) : Radius.circular(0),
+          //     topRight: index == 6 ? Radius.circular(15) : Radius.circular(0),
+          //     bottomRight:
+          //         index == 6 ? Radius.circular(15) : Radius.circular(0)
+          //         ),
+
+          borderRadius: BorderRadius.circular(30),
           border: Border.all(color: Colors.grey)),
       margin: EdgeInsets.only(right: 0.02.w),
       height: 50.h,

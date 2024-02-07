@@ -167,11 +167,13 @@ class _CreateGroupState extends State<CreateGroup> {
                 ),
                 Center(
                   child: CustomButton(
-                    onPress: ()  async{
-                      if (groupAmount.isNotEmpty ||
+                    onPress: () async {
+                      if (groupName.isNotEmpty ||
                           groupAmount.isNotEmpty ||
                           groupLimit.isNotEmpty)
-                        await contorller.checkIFGroupExist(groupName).then((value) {
+                        await contorller
+                            .checkIFGroupExist(groupName)
+                            .then((value) {
                           value
                               ? contorller
                                   .createNewNjangiGroup(
@@ -187,16 +189,16 @@ class _CreateGroupState extends State<CreateGroup> {
                                       text: "Group Already Exist",
                                     );
                                   });
+                          groupAmount = groupName = groupLimit = "";
                         });
-                    else
-                    showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CustomWarning(
-                                      text: "Fields can not be empty",
-                                    );
-                                  });
-
+                      else
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustomWarning(
+                                text: "Fields can not be empty",
+                              );
+                            });
                     },
                     text: "CreatE Njangi",
                     icon: null,
