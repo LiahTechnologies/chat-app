@@ -256,7 +256,7 @@ class _ProfileState extends State<Profile> {
           style: Theme.of(context)
               .textTheme
               .displayLarge!
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+              .copyWith(fontWeight: FontWeight.w400, fontSize: 15),
         ),
         Text(
           "$text",
@@ -267,8 +267,7 @@ class _ProfileState extends State<Profile> {
   }
 
   customKeyValue({text, value}) {
-    return Container(
-      width: 380.w,
+    return Container(  
       height: 50.h,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
       child: Card(

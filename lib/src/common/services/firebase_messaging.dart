@@ -25,7 +25,8 @@ class DatabaseServices {
     required String dateOfBirth,
   }) {
     
-    print("CREATING USERS DOCUMENT DETAILS");
+    // print("CREATING USERS DOCUMENT DETAILS");
+
 
     final userResponse = userCollection.doc(uid).set({
       'firstName': firstName,
@@ -37,7 +38,9 @@ class DatabaseServices {
       'chats': [],
       'uid': uid
     });
-    print("THIS IS THE RESPONSE FROM CREATING A USER ${userResponse}");
+
+    // print("THIS IS THE RESPONSE FROM CREATING A USER ${userResponse}");
+    
     return userResponse;
   }
 

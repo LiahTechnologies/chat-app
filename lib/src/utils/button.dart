@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../common/constants/style/appfont.dart';
 import '../common/constants/style/color.dart';
 
-class CustomButton extends StatelessWidget {
-  const CustomButton(
+class AppButton extends StatelessWidget {
+  const AppButton(
       {super.key,
       required this.onPress,
       required this.text,
@@ -14,11 +14,11 @@ class CustomButton extends StatelessWidget {
       this.height = 0,
       this.width = 0,
       this.isActive = true,
-      this.borderRadius = 12,
+      this.borderRadius = 25,
       this.textColor = true,
       this.iconColor = AppColor.whiteColor,
-      this.containerColor = AppColor.greenColor,
-      this.borderColor = AppColor.greenColor
+      this.containerColor = AppColor.transparent,
+      this.borderColor = AppColor.whiteColor
       
       });
   final VoidCallback onPress;
@@ -53,15 +53,15 @@ class CustomButton extends StatelessWidget {
               style:Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor? Theme.of(context).textTheme.displayLarge!.color:AppColor.whiteColor,  )
             ),
           ),
-          if (icon != null)
-            Padding(
-              padding: EdgeInsets.only(left: 18.0),
-              child: Icon(
-                icon,
-                color: Theme.of(context).iconTheme.color,
-                size: 14,
-              ),
-            )
+          // if (icon != null)
+          //   Padding(
+          //     padding: EdgeInsets.only(left: 18.0),
+          //     child: Icon(
+          //       icon,
+          //       color: Theme.of(context).iconTheme.color,
+          //       size: 14,
+          //     ),
+          //   )
         ]),
       ),
     );

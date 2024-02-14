@@ -11,31 +11,15 @@ import 'package:get/get.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 // import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:njadia/src/common/services/backend.dart';
+// import 'package:njadia/src/common/services/backend.dart';
 // import 'package:njadia/src/common/services/face_detection.dart';
-import 'package:njadia/src/common/services/firebase_messaging.dart';
+// import 'package:njadia/src/common/services/firebase_messaging.dart';
 
-import 'package:njadia/src/utils/CustomButton.dart';
 
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/features/authentication/screens/signup/widgets/imageRequirement.dart';
-import 'package:njadia/src/features/authentication/screens/signup/widgets/radioWidget.dart';
-import 'package:njadia/src/features/authentication/screens/signup/widgets/signupInputDetails.dart';
-import 'package:country_picker/country_picker.dart';
-import 'package:njadia/src/utils/customInputWidget.dart';
-import 'package:njadia/src/utils/datePicker.dart';
-import 'package:njadia/src/warnings/warning.dart';
-import '../../../../../common/helper_function.dart';
-import '../../../../../common/constants/style/appAsset.dart';
-import '../../../../../utils/CustomDots.dart';
-import '../../../../../utils/customButtomWithCustomICons.dart';
-import '../../../controllers/authentication_service.dart';
 import '../controller/signController.dart';
 import '../widgets/otp.dart';
 import 'dart:io';
-import 'package:google_ml_kit/google_ml_kit.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Signup extends StatefulWidget {
@@ -102,17 +86,17 @@ class _SignupState extends State<Signup> {
     _initialize();
   }
 
-  late FaceDetector _faceDetector;
-  List<Face> _faces = [];
+  // late FaceDetector _faceDetector;
+  // List<Face> _faces = [];
   ImagePicker _imagePicker = ImagePicker();
 
   Future<void> _initialize() async {
-    _faceDetector = GoogleMlKit.vision.faceDetector(
-      FaceDetectorOptions(
-        enableContours: true,
-        enableLandmarks: true,
-      ),
-    );
+    // _faceDetector = GoogleMlKit.vision.faceDetector(
+    //   FaceDetectorOptions(
+    //     enableContours: true,
+    //     enableLandmarks: true,
+    //   ),
+    // );
   }
 
   Future<void> _detectFaces({required File image}) async {
