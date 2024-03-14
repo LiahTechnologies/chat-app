@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../../common/services/firebase_messaging.dart';
+// import '../../../../common/services/firebase_messaging.dart';
 import '../../../direct message/presentation/view/chat.dart';
 import '../view/chatpage.dart';
 
@@ -29,7 +28,7 @@ class GroupTile extends StatefulWidget {
 }
 
 class _GroupTileState extends State<GroupTile> {
-  Stream<QuerySnapshot>? lastChat;
+  // Stream<QuerySnapshot>? lastChat;
 
   @override
   void initState() {
@@ -38,15 +37,15 @@ class _GroupTileState extends State<GroupTile> {
   }
 
   void getChatandAdmin() {
-    DatabaseServices().getChats(widget.groupid!).then((val) {
-      setState(() {
-        lastChat = val;
-      });
-    });
+    // DatabaseServices().getChats(widget.groupid!).then((val) {
+    //   setState(() {
+    //     // lastChat = val;
+    //   });
+    // });
 
-    getLastMessage();
+    // getLastMessage();
   }
-
+/*
   Widget getLastMessage() {
     return StreamBuilder(
         stream: lastChat,
@@ -70,6 +69,8 @@ class _GroupTileState extends State<GroupTile> {
               : Text("");
         });
   }
+
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +98,7 @@ class _GroupTileState extends State<GroupTile> {
           width: 500.w,
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           // padding: const EdgeInsets.only(bottom: 16),
-
+/*
           child: ListTile(
               leading: CircleAvatar(
                 radius: 20,
@@ -125,7 +126,9 @@ class _GroupTileState extends State<GroupTile> {
                   "22",
                   style: TextStyle(color: AppColor.whiteColor),
                 )),
-              ))),
+              ))*/
+              
+              ),
     );
   }
 }

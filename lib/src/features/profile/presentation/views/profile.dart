@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:njadia/src/common/helper_function.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/features/authentication/data/auth_repository.dart';
+// import 'package:njadia/src/features/authentication/data/auth_repository.dart';
 import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
 import 'package:njadia/src/utils/theme/themeController.dart';
@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
 
   final Controller = Get.put(ThemeController());
 
-  final databaseController = AuthenticationRepository();
+  // final databaseController = AuthenticationRepository();
   String userEmail = "";
   String userName = "";
   @override
@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> {
           IconButton(
               onPressed: () async {
                 Get.toNamed(AppRoutes.SIGNUP);
-                databaseController.login();
+                // databaseController.login();
 
                 showSnackMessage(context, Colors.green, "LogOut successful");
               },

@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../../common/helper_function.dart';
 import '../../../../common/constants/style/color.dart';
 import '../../../../routing/approutes.dart';
-import '../../../../common/services/firebase_messaging.dart';
+// import '../../../../common/services/firebase_messaging.dart';
 import '../widgets/groupTile.dart';
 
 class AllGroups extends StatefulWidget {
@@ -23,26 +22,26 @@ class _AllGroupsState extends State<AllGroups> {
       GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
-    getUserData();
+    // getUserData();
     super.initState();
   }
 
   String userName = '';
   String userEmail = '';
   Stream? group;
-  Stream<QuerySnapshot>? lastChat;
+  // Stream<QuerySnapshot>? lastChat;
 
-  getUserData() async {
-    await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserGroup()
-        .then((snapshot) {
-      setState(() {
-        // print(" THE GROUP HAVE BEEN FETECHED");
-        group = snapshot;
-        // print("group lenght is ${snapshot}");
-      });
-    });
-  }
+  // getUserData() async {
+  //   await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+  //       .getUserGroup()
+  //       .then((snapshot) {
+  //     setState(() {
+  //       // print(" THE GROUP HAVE BEEN FETECHED");
+  //       group = snapshot;
+  //       // print("group lenght is ${snapshot}");
+  //     });
+  //   });
+  // }
 
   String getId(String res) {
     return res.substring(9, res.indexOf('_'));
@@ -68,7 +67,7 @@ class _AllGroupsState extends State<AllGroups> {
       body: RefreshIndicator(
         key: refreshIndicatorKey,
         onRefresh: () async {
-          await getUserData();
+          // await getUserData();
         },
         child: Container(
           width: double.infinity,

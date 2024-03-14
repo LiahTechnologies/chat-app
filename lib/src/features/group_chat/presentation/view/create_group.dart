@@ -1,9 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:njadia/src/features/authentication/controllers/authentication_service.dart';
+// import 'package:njadia/src/features/authentication/controllers/authentication_service.dart';
 import 'package:njadia/src/features/group_chat/presentation/controller/create_group_service.dart';
 import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/customInput.dart';
@@ -17,7 +16,7 @@ import '../../../../common/helper_function.dart';
 import '../../../../utils/CustomButton.dart';
 import '../../../../common/constants/style/appfont.dart';
 import '../../../../common/constants/style/color.dart';
-import '../../../../common/services/firebase_messaging.dart';
+// import '../../../../common/services/firebase_messaging.dart';
 import '../widgets/groupTile.dart';
 
 class CreateGroup extends StatefulWidget {
@@ -168,6 +167,9 @@ class _CreateGroupState extends State<CreateGroup> {
                 Center(
                   child: CustomButton(
                     onPress: () async {
+
+                    /*
+
                       if (groupName.isNotEmpty ||
                           groupAmount.isNotEmpty ||
                           groupLimit.isNotEmpty)
@@ -199,6 +201,9 @@ class _CreateGroupState extends State<CreateGroup> {
                                 text: "Fields can not be empty",
                               );
                             });
+
+
+                           */ 
                     },
                     text: "CreatE Njangi",
                     icon: null,

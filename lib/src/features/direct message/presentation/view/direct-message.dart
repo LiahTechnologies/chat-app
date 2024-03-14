@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:njadia/src/common/constants/style/color.dart';
 
 import '../../../../common/helper_function.dart';
 import '../../../../routing/approutes.dart';
-import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 import '../widget/chatTile.dart';
 
@@ -32,8 +30,8 @@ class _DirectMessageState extends State<DirectMessage> {
   String userId = '';
   String recipientName = "";
   Stream? chat;
-  Stream<QuerySnapshot>? lastChat;
-
+  // Stream<QuerySnapshot>? lastChat;
+// 
   getUserData() async {
     // await HelperFunction.getUserName().then((value) {
     //   setState(() {
@@ -46,13 +44,13 @@ class _DirectMessageState extends State<DirectMessage> {
       });
     });
 
-    await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserChats()
-        .then((snapshot) {
-      setState(() {
-        chat = snapshot;
-      });
-    });
+    // await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+    //     .getUserChats()
+    //     .then((snapshot) {
+    //   setState(() {
+    //     chat = snapshot;
+    //   });
+    // });
 
     // getChatandAdmin();
   }
@@ -66,11 +64,11 @@ class _DirectMessageState extends State<DirectMessage> {
   }
 
   void getChattLastMessage({chatId}) {    
-    DatabaseServices(uid: userId).getChatMessages(chatId).then((val) {
-      setState(() {
-        lastChat = val;
-      });
-    });
+    // DatabaseServices(uid: userId).getChatMessages(chatId).then((val) {
+    //   setState(() {
+    //     // lastChat = val;
+    //   });
+    // });
   }
 
 // await chatCollection.doc(chatId).update({
@@ -105,7 +103,9 @@ class _DirectMessageState extends State<DirectMessage> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
-              children: [grouplist()],
+              children: [
+                // grouplist()
+                ],
             ),
           ),
         ),
@@ -114,10 +114,10 @@ class _DirectMessageState extends State<DirectMessage> {
   }
 
 // get the last message
-
+/*
   Widget getLastMessage() {
     return StreamBuilder(
-        stream: lastChat,
+        // stream: lastChat,
         builder: (context, snapshot) {
           return snapshot.hasData && snapshot.data!.docs.length > 0
               ? Expanded(
@@ -137,6 +137,9 @@ class _DirectMessageState extends State<DirectMessage> {
               : Text("");
         });
   }
+
+
+
 
 // List of chats
   grouplist() {
@@ -184,4 +187,5 @@ class _DirectMessageState extends State<DirectMessage> {
           }
         });
   }
+  */
 }

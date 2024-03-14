@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/common/services/firebase_messaging.dart';
+// import 'package:njadia/src/common/services/firebase_messaging.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/groupTile.dart';
 import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
@@ -35,17 +34,17 @@ class _SearchGroupsState extends State<SearchGroups> {
       });
     });
 
-    user = FirebaseAuth.instance.currentUser;
+    // user = FirebaseAuth.instance.currentUser;
   }
 
   String userName = "";
-  User? user;
+  // User? user;
   bool isJoined = false;
-  final databaseServices = DatabaseServices();
+  // final databaseServices = DatabaseServices();
 
   final TextEditingController groupName = TextEditingController();
 
-  QuerySnapshot? searchGroups;
+  // QuerySnapshot? searchGroups;
   bool isLoading = false;
   bool hasUserSearched = false;
   @override
@@ -91,6 +90,7 @@ class _SearchGroupsState extends State<SearchGroups> {
                   icon: Icon(Icons.search,
                       color: Theme.of(context).iconTheme.color),
                   onPressed: () {
+/*
                     if (groupName.text.isNotEmpty)
                       initiatSearchAction();
                     else
@@ -101,6 +101,8 @@ class _SearchGroupsState extends State<SearchGroups> {
                               text: "Enter Group Name",
                             );
                           });
+
+                          */
                     // setState(() {
                     //   databaseServices.searchbyName(groupName.text);
                     // });
@@ -124,13 +126,14 @@ class _SearchGroupsState extends State<SearchGroups> {
                 ),
               )
               : Container(
-                  child: groupList(),
+                  // child: groupList(),
                 )
         ],
       ),
     );
   }
 
+/*
   initiatSearchAction() async {
     if (groupName.text.isNotEmpty) {
       setState(() {
@@ -251,4 +254,6 @@ class _SearchGroupsState extends State<SearchGroups> {
       ),
     );
   }
+
+  */
 }

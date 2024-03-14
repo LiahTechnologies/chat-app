@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:njadia/src/common/services/backend.dart';
 // import 'package:njadia/src/common/services/face_detection.dart';
-import 'package:njadia/src/common/services/firebase_messaging.dart';
+import 'package:njadia/src/common/urls.dart';
 
 import 'package:njadia/src/utils/CustomButton.dart';
 
@@ -31,7 +31,6 @@ import '../../../../../common/helper_function.dart';
 import '../../../../../common/constants/style/appAsset.dart';
 import '../../../../../utils/CustomDots.dart';
 import '../../../../../utils/customButtomWithCustomICons.dart';
-import '../../../controllers/authentication_service.dart';
 import '../controller/signController.dart';
 import '../widgets/otp.dart';
 import 'dart:io';
@@ -94,7 +93,7 @@ class _SignupState extends State<Signup> {
 
   // CameraController? cameraController;
 
-  late final AuthController = Get.put(AuthenticationServices());
+  // late final AuthController = Get.put(AuthenticationServices());
 
   @override
   void initState() {
@@ -346,7 +345,7 @@ class _SignupState extends State<Signup> {
                     child: Align(
                       alignment: Alignment.topRight,
                       child: CustomButton(
-                        onPress: () {
+                        onPress: () async {
                           print("THE FINAL VERIFICATION CODE IS $finalUserOTP");
                           // authService
                           // .verifyOTP(
@@ -355,6 +354,9 @@ class _SignupState extends State<Signup> {
                           // .whenComplete(() {
 
                           // });
+
+                          await BackendApi.generateOTP(
+                              numbers: phoneNumber.text);
 
                           controller.nextPage(
                               duration: const Duration(seconds: 1),
@@ -452,6 +454,22 @@ class _SignupState extends State<Signup> {
                           });
                         },
                       ),
+                      OTPInput(
+                        index: 5,
+                        userOTP: (value) {
+                          setState(() {
+                            finalUserOTP = finalUserOTP + "" + value;
+                          });
+                        },
+                      ),
+                      OTPInput(
+                        index: 6,
+                        userOTP: (value) {
+                          setState(() {
+                            finalUserOTP = finalUserOTP + "" + value;
+                          });
+                        },
+                      ),
                     ],
                   ),
                   Row(
@@ -503,7 +521,7 @@ class _SignupState extends State<Signup> {
                     child: Align(
                       alignment: Alignment.topRight,
                       child: CustomButton(
-                        onPress: () {
+                        onPress: () async {
                           print("THE FINAL VERIFICATION CODE IS $finalUserOTP");
                           // authService
                           // .verifyOTP(
@@ -512,6 +530,9 @@ class _SignupState extends State<Signup> {
                           // .whenComplete(() {
 
                           // });
+                          final status = await BackendApi.verifyOTP(
+                              number: phoneNumber.text, Code: finalUserOTP);
+                          print("THE RESPONSE VERIFY STAT $status");
 
                           controller.nextPage(
                               duration: const Duration(seconds: 1),
@@ -1191,8 +1212,7 @@ class _SignupState extends State<Signup> {
                           onPress: () => {
                                 BackendApi.registration(
                                         firstName: firstName.text,
-                                            
-                                        lastName:    lastName.text,
+                                        lastName: lastName.text,
                                         email: email,
                                         password: password,
                                         phone_number: phoneNumber.text,
@@ -1251,7 +1271,6 @@ class _SignupState extends State<Signup> {
 
     File cameraImage = File(image!.path);
 
-
     setState(() {
       type == "selfie"
           ? selectedCameraImage = cameraImage
@@ -1263,46 +1282,44 @@ class _SignupState extends State<Signup> {
     if (type == "selfie") _detectFaces(image: cameraImage);
   }
 
+  // Future<bool> register() async {
+  //   bool isUserExist = false;
+  //   setState(() {
+  //     // _isloading = true;
+  //   });
 
-  Future<bool> register() async {
-    bool isUserExist = false;
-    setState(() {
-      // _isloading = true;
-    });
+  //   await DatabaseServices().checkIfUserExist(email).then((value) {
+  //     setState(() {
+  //       isUserExist = value;
+  //     });
+  //   });
 
-    await DatabaseServices().checkIfUserExist(email).then((value) {
-      setState(() {
-        isUserExist = value;
-      });
-    });
+  //   if (isUserExist) {
+  //     final isSignup = await AuthController.registerWithEmailAndPassword(
+  //       firstName: firstName.text,
+  //       lastName: lastName.text,
+  //       email: email,
+  //       phoneNumber: phoneNumber.text,
+  //       dateOfBirth: dateOfBirth.text,
+  //       password: password.removeAllWhitespace,
+  //     );
 
-    if (isUserExist) {
-      final isSignup = await AuthController.registerWithEmailAndPassword(
-        firstName: firstName.text,
-        lastName: lastName.text,
-        email: email,
-        phoneNumber: phoneNumber.text,
-        dateOfBirth: dateOfBirth.text,
-        password: password.removeAllWhitespace,
-      );
+  //     if (isSignup!) {
+  //       showSnackMessage(context, Colors.green, "signup successful");
 
-      if (isSignup!) {
-        
-        showSnackMessage(context, Colors.green, "signup successful");
-
-        return true;
-      } else {
-        showSnackMessage(context, Colors.red, "signup error");
-        setState(() {
-          // _isloading = false;
-        });
-        return false;
-      }
-      return true;
-    } else {
-      showSnackMessage(context, Colors.red, "User already exist");
-      Get.toNamed(AppRoutes.LOGIN);
-      return false;
-    }
-  }
+  //       return true;
+  //     } else {
+  //       showSnackMessage(context, Colors.red, "signup error");
+  //       setState(() {
+  //         // _isloading = false;
+  //       });
+  //       return false;
+  //     }
+  //     return true;
+  //   } else {
+  //     showSnackMessage(context, Colors.red, "User already exist");
+  //     Get.toNamed(AppRoutes.LOGIN);
+  //     return false;
+  //   }
+  // }
 }

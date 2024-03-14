@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,7 +11,6 @@ import 'package:njadia/src/warnings/custombackarrow.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/messageTitle.dart';
 import '../../domain/entities/message.dart';
 import '../widget/direct_message_tile.dart';
@@ -39,9 +37,9 @@ class DirectMessageChat extends StatefulWidget {
 }
 
 class _DirectMessageChatState extends State<DirectMessageChat> {
-  Stream<QuerySnapshot>? chat;
+  // Stream<QuerySnapshot>? chat;
   String admin = '';
-  User? user;
+  // User? user;
   String chatId = '';
   @override
   void initState() {
@@ -52,26 +50,26 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
   }
 
   createChat() async{
-   await DatabaseServices()
-        .createChat(
-            sendersId: FirebaseAuth.instance.currentUser!.uid,
-            recipientId: widget.senderId)
-        .then((value) {
-      setState(() {
-        chatId = value;
-      });
-    });
+  //  await DatabaseServices()
+  //       .createChat(
+  //           sendersId: FirebaseAuth.instance.currentUser!.uid,
+  //           recipientId: widget.senderId)
+  //       .then((value) {
+  //     setState(() {
+  //       chatId = value;
+  //     });
+  //   });
   }
 
   void getChatandAdmin() {
-    DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getChatMessages(widget.chatId)
-        .then((val) {
-      setState(() {
-        chat = val;
-        print("THIS IS THE LIST OF CHATS $chat");
-      });
-    });
+    // DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+    //     .getChatMessages(widget.chatId)
+    //     .then((val) {
+    //   setState(() {
+    //     chat = val;
+    //     print("THIS IS THE LIST OF CHATS $chat");
+    //   });
+    // });
 
     // DatabaseServices().getGroupAdmin(widget.groupId).then((value) {
     //   setState(() {
@@ -143,7 +141,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
           ],
         ),
         body: Column(children: [
-          chatMessages(),
+          // chatMessages(),
           Text(""),
           Container(
             alignment: Alignment.bottomCenter,
@@ -226,6 +224,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
     );
   }
 
+/*
   chatMessages() {
     return StreamBuilder(
         stream: chat,
@@ -237,12 +236,8 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        // return Text(snapshot.data!.docs[index]['message']);
-                        // setState(() {
-                        //   widget.userName =
-                        //       snapshot.data!.docs[index]['replySender'];
-                        // });
-                        return SwipeTo(
+                      
+                        eturn SwipeTo(
                           onRightSwipe: (v) {
                             replyController.setReplyMessage(
                                 replymessage: snapshot.data!.docs[index]
@@ -269,34 +264,25 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
               : Container();
         });
   }
+  */
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
-      final chatMessageMap = {
-        "message": messageController.text,
-        "messageId": sha1RandomString(),
-        "senderId": FirebaseAuth.instance.currentUser!.uid,
-        "sender": FirebaseAuth.instance.currentUser!.displayName!,
-        "replyMessage": replyController.replyMessage.value,
-        "replySender": widget.senderName,
-        "recepientId": widget.senderId,
-        "time": DateFormat('kk:mm:a').format(DateTime.now()).toString(),
-      };
+      // final chatMessageMap = {
+      //   "message": messageController.text,
+      //   "messageId": sha1RandomString(),
+      //   "senderId": FirebaseAuth.instance.currentUser!.uid,
+      //   "sender": FirebaseAuth.instance.currentUser!.displayName!,
+      //   "replyMessage": replyController.replyMessage.value,
+      //   "replySender": widget.senderName,
+      //   "recepientId": widget.senderId,
+      //   "time": DateFormat('kk:mm:a').format(DateTime.now()).toString(),
+      // };
 
-      //  ChatMessage(
-      //     message: messageController.text,
-      //     messageId: sha1RandomString(),
-      //     recepientId: widget.senderId,
-      //     replyMessage: replyController.replyMessage.value,
-      //     replySender: widget.senderName!,
-      //     sendId: FirebaseAuth.instance.currentUser!.uid,
-      //     sender: FirebaseAuth.instance.currentUser!.displayName!,
-      //     time: DateFormat('kk:mm:a').format(DateTime.now()).toString());
+      
 
-      // print("JTHE RECIPIENT ID IS ${widget.senderId}");
-
-      DatabaseServices()
-          .sendChatMessage(chatMessages: chatMessageMap, chatId: chatId);
+      // DatabaseServices()
+      //     .sendChatMessage(chatMessages: chatMessageMap, chatId: chatId);
 
       messageController.clear();
 

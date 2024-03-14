@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:njadia/src/common/services/backend.dart';
-import 'package:njadia/src/features/authentication/controllers/authentication_service.dart';
 import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/warnings/warning.dart';
 
@@ -15,7 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   String email = '';
   String password = '';
-  final controller = AuthenticationServices();
+  // final controller = AuthenticationServices();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

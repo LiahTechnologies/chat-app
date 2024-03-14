@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:njadia/src/common/services/firebase_messaging.dart';
+// import 'package:njadia/src/common/services/firebase_messaging.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/appfont.dart';
@@ -42,8 +41,8 @@ class CustomLongPress extends StatelessWidget {
           onTap: () {
             switch (options[i]) {
               case "Delete":
-                DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-                    .deleteChat(groupId, messageId);
+                // DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+                //     .deleteChat(groupId, messageId);
                 
                 Get.back();
                

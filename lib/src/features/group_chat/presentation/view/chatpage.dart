@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,7 @@ import 'package:swipe_to/swipe_to.dart';
 
 import '../../../../common/helper_function.dart';
 import '../../../../common/randomId.dart';
-import '../../../../common/services/firebase_messaging.dart';
+// import '../../../../common/services/firebase_messaging.dart';
 import '../controller/create_group_service.dart';
 import '../widgets/messageTitle.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +29,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  Stream<QuerySnapshot>? chat;
+  // Stream<QuerySnapshot>? chat;
   String admin = '';
 
   @override
@@ -45,17 +44,17 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void getChatandAdmin() {
-    DatabaseServices().getChats(widget.groupId).then((val) {
-      setState(() {
-        chat = val;
-      });
-    });
+    // DatabaseServices().getChats(widget.groupId).then((val) {
+    //   setState(() {
+    //     // chat = val;
+    //   });
+    // });
 
-    DatabaseServices().getGroupAdmin(widget.groupId).then((value) {
-      setState(() {
-        admin = value;
-      });
-    });
+    // DatabaseServices().getGroupAdmin(widget.groupId).then((value) {
+    //   setState(() {
+    //     admin = value;
+    //   });
+    // });
   }
 
   final TextEditingController messageController = TextEditingController();
@@ -105,7 +104,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          chatMessages(),
+          // chatMessages(),
           Stack(
             children: [
               Positioned(child: _buildMessageComposer()),
@@ -120,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
 
   sendButton() {
     return GestureDetector(
-      onTap: sendMessage,
+      // onTap: sendMessage,
       child: Container(
           alignment: Alignment.bottomRight,
           width: 50,
@@ -132,10 +131,11 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+/*
 
   chatMessages() {
     return StreamBuilder(
-        stream: chat,
+        // stream: chat,
         builder: (context, snapshot) {
           return snapshot.hasData
               ? Expanded(
@@ -183,9 +183,10 @@ class _ChatPageState extends State<ChatPage> {
               : Container();
         });
   }
+  */
 
 
-
+/*
 // Send message
   sendMessage() {
     if (messageController.text.isNotEmpty) {
@@ -212,7 +213,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-
+*/
 
 
   Widget _buildMessageComposer() {

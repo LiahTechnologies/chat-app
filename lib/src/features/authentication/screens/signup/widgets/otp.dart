@@ -16,6 +16,7 @@ class OTPInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       decoration: BoxDecoration(
           // borderRadius: BorderRadius.only(
           //     topLeft: index == 1 ? Radius.circular(15) : Radius.circular(0),
@@ -27,19 +28,19 @@ class OTPInput extends StatelessWidget {
 
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: Colors.grey)),
-      margin: EdgeInsets.only(right: 0.02.w),
-      height: 50.h,
-      width: 53.8.w,
+      margin: EdgeInsets.only(right: 0.02.w,left: 5),
+      height: 40.h,
+      width: 43.8.w,
       child: SizedBox(
         width: 6.w,
-        height: 90.h,
+        height: 50.h,
         child: TextField(
           // maxLength: 1,
           autofocus: true,
           autofillHints: List.empty(),
           onChanged: (value) => OTPOnchange(value, index, context),
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 30, color: Color(0xff1FAF67)),
+          style: const TextStyle(fontSize: 20, color: Color(0xff1FAF67)),
           inputFormatters: [
             LengthLimitingTextInputFormatter(1),
             FilteringTextInputFormatter.digitsOnly

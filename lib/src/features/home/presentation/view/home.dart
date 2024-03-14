@@ -1,5 +1,4 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,7 @@ import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
 
 import '../../../../common/helper_function.dart';
-import '../../../../common/services/firebase_messaging.dart';
+// import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,17 +49,15 @@ class _HomePageState extends State<HomePage> {
         userEmail = value;
       });
     });
-    await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserGroup()
-        .then((snapshot) {
-      setState(() {
-        group = snapshot;
-      });
-    });
+    // await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+    //     .getUserGroup()
+    //     .then((snapshot) {
+    //   setState(() {
+    //     group = snapshot;
+    //   });
+    // });
 
-    print(
-        "THIS IS THE LIST OF GROUPS  ${FirebaseAuth.instance.currentUser!.uid}");
-    print(" THE NUMBE OF GROUPS IS  ${await group!.length}");
+   
   }
 
   String getId(String res) {

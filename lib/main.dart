@@ -8,10 +8,8 @@ import 'package:njadia/src/features/authentication/screens/authentication.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
 import 'src/routing/approutes.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+// import 'firebase_options.dart';
 import 'src/utils/theme/themeController.dart';
 
 /// ------- For Docs and Updates Check ------
@@ -20,9 +18,9 @@ import 'src/utils/theme/themeController.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
 // await FaceCamera.initialize();
   runApp( MyApp());
