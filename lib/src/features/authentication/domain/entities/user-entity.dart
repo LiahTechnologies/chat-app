@@ -13,26 +13,24 @@ class UserEntity extends Equatable {
   final File docs;
 
   UserEntity(
-      {
-     required this.firstName,
-     required this.lastName,
-     required this.email,
-     required this.password,
-     required this.dob,
-     required this.tel,
-     required this.selfie,
-     required this.docs});
-     
-       @override
-       // TODO: implement props
-       List<Object?> get props => [
-        firstName,
-        lastName,
-        email,
-        password,
-        dob,
-        tel,
-        selfie,
-        docs
-       ];
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.password,
+      required this.dob,
+      required this.tel,
+      required this.selfie,
+      required this.docs});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [firstName, lastName, email, password, dob, tel, selfie, docs];
+}
+
+class Login {
+  final String token;
+  Login({required this.token});
+
+  
 }

@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-// import 'package:njadia/src/common/services/firebase_messaging.dart';
-import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
 
 import '../features/group_chat/presentation/controller/create_group_service.dart';
+import '../utils/naviagtion.dart';
 
 class CustomLongPress extends StatelessWidget {
   CustomLongPress(
@@ -32,7 +26,7 @@ class CustomLongPress extends StatelessWidget {
     Icons.delete
   ];
 
-  final repleyController = Get.put(ReplyMessageController());
+  // final repleyController = Get.put(ReplyMessageController());
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(alignment: Alignment.center, children: [
@@ -44,16 +38,16 @@ class CustomLongPress extends StatelessWidget {
                 // DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
                 //     .deleteChat(groupId, messageId);
                 
-                Get.back();
+                BackScreen(context: context);
                
                 break;
 
               case "Reply":
                 print("THE REPLY POPUP WAS CLICKED");
-                repleyController.setReplyMessage(
-                    replymessage: message, replysender: recepientName);
+                // repleyController.setReplyMessage(
+                //     replymessage: message, replysender: recepientName);
 
-                Get.back();
+                BackScreen(context: context);
                 break;
             }
           },

@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
-
-import '../../../../common/helper_function.dart';
-// import '../../../../common/services/firebase_messaging.dart';
-import '../../../direct message/presentation/view/chat.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 import '../view/chatpage.dart';
 
 class GroupTile extends StatefulWidget {
@@ -45,59 +40,25 @@ class _GroupTileState extends State<GroupTile> {
 
     // getLastMessage();
   }
-/*
-  Widget getLastMessage() {
-    return StreamBuilder(
-        stream: lastChat,
-        builder: (context, snapshot) {
-          return snapshot.hasData && snapshot.data!.docs.length > 0
-              ? Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        print(
-                            "The last message and sender is ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['sender']}  ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['message']}");
-
-                        return Text(
-                          "${snapshot.data!.docs[snapshot.data!.docs.length - 1]['sender']}  ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['message']}",
-                          style: Theme.of(context).textTheme.displaySmall,
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      }),
-                )
-              : Text("");
-        });
-  }
-
-  */
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(
-          ChatPage(
+        NextScreen(
+          context: context,
+          page: ChatPage(
               groupId: widget.groupid!,
               groupName: widget.groupName,
               userName: widget.groupName),
-          transition: Transition.zoom,
         );
-        // : Get.to(
-        //     DirectMessageChat(
-        //       groupId: widget.groupid!,
-        //       senderName: widget.userName!,
-        //       senderId: widget.recepientId!,
-        //       profileImg: '',
-        //     ),
-        //     transition: Transition.zoom,
-        //   );
+       
       },
       child: Container(
-          height: 50.h,
-          width: 500.w,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          // padding: const EdgeInsets.only(bottom: 16),
+        height: 50.h,
+        width: 500.w,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        // padding: const EdgeInsets.only(bottom: 16),
 /*
           child: ListTile(
               leading: CircleAvatar(
@@ -127,8 +88,7 @@ class _GroupTileState extends State<GroupTile> {
                   style: TextStyle(color: AppColor.whiteColor),
                 )),
               ))*/
-              
-              ),
+      ),
     );
   }
 }

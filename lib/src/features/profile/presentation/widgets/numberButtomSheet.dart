@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/warning.dart';
 
 class ChangeMobileNumber extends StatelessWidget {
@@ -48,7 +48,7 @@ class ChangeMobileNumber extends StatelessWidget {
         CustomButton(
           onPress: () {
             if (numberController.text.isNotEmpty)
-              Get.back();
+              BackScreen(context: context);
             else
               showDialog(
                   context: context,

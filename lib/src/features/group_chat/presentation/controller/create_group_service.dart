@@ -1,11 +1,9 @@
-import 'package:get/get.dart';
 
 /// ----[CREATE GROUP]
 
-import 'package:njadia/src/features/group_chat/domain/send_reply_message.dart';
-import 'package:njadia/src/routing/approutes.dart';
 
-class CreateGroupService extends GetxController {
+
+class CreateGroupService{
   /// ---Variables
   // final authDatabase =
   //     DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid);
@@ -33,15 +31,15 @@ class CreateGroupService extends GetxController {
   }*/
 }
 
-class ReplyMessageController extends GetxController {
+class ReplyMessageController{
   // var reply = ReplyMessage(message: "", sender: "").obs;
-  var replySender = "".obs;
-  var replyMessage = "".obs;
-  var showReplyDialog = false.obs;
+  var replySender = "";
+  var replyMessage = "";
+  var showReplyDialog = false;
 
   setReplyMessage({replysender, replymessage}) {
-    replySender.value = replysender;
-    replyMessage.value = replymessage;
-    showReplyDialog.value = true;
+    replySender = replysender;
+    replyMessage = replymessage;
+    showReplyDialog = true;
   }
 }

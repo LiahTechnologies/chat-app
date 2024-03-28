@@ -1,18 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:swipe_to/swipe_to.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/helper_function.dart';
-import '../../../../common/randomId.dart';
-// import '../../../../common/services/firebase_messaging.dart';
-import '../controller/create_group_service.dart';
-import '../widgets/messageTitle.dart';
-import 'package:intl/intl.dart';
+import '../../../payment/presentation/view/select_group_member.dart';
 
 class ChatPage extends StatefulWidget {
   final String groupId;
@@ -43,22 +35,10 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
-  void getChatandAdmin() {
-    // DatabaseServices().getChats(widget.groupId).then((val) {
-    //   setState(() {
-    //     // chat = val;
-    //   });
-    // });
-
-    // DatabaseServices().getGroupAdmin(widget.groupId).then((value) {
-    //   setState(() {
-    //     admin = value;
-    //   });
-    // });
-  }
+  void getChatandAdmin() {}
 
   final TextEditingController messageController = TextEditingController();
-  final repleyController = Get.put(ReplyMessageController());
+  // final repleyController = Get.put(ReplyMessageController());
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +52,7 @@ class _ChatPageState extends State<ChatPage> {
             size: 11,
             color: Theme.of(context).iconTheme.color,
           ),
-          onPressed: () => Get.back(),
+          onPressed: () => BackScreen(context: context),
         ),
         centerTitle: true,
         elevation: 0,
@@ -85,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
               onSelected: (value) {
                 switch (value) {
                   case "send money":
-                    Get.toNamed(AppRoutes.SELECT_GROUP_MEMBER_PAGE);
+                    NextScreen(context: context, page: SelectGroupMember());
                 }
               },
               icon: Icon(
@@ -116,7 +96,6 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-
   sendButton() {
     return GestureDetector(
       // onTap: sendMessage,
@@ -127,93 +106,10 @@ class _ChatPageState extends State<ChatPage> {
           decoration: BoxDecoration(
               color: AppColor.purpleColor,
               borderRadius: BorderRadius.circular(30)),
-          child: Center(child: Icon(Icons.send, color: Colors.white))),
+          child: const Center(child: Icon(Icons.send, color: Colors.white))),
     );
   }
 
-/*
-
-  chatMessages() {
-    return StreamBuilder(
-        // stream: chat,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Expanded(
-                  child: ListView.builder(
-                      key: PageStorageKey<String>('groupchat'),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data?.docs.length,
-                      itemBuilder: (context, index) {
-
-                        return SwipeTo(
-                          onRightSwipe: (v) {
-                            repleyController.setReplyMessage(
-                                replymessage: snapshot.data!.docs[index]
-                                    ['message'],
-                                replysender: snapshot.data!.docs[index]
-                                    ['sender']);
-
-                          },
-
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 18.0),
-                            child: MessageTile(
-                              messageId: snapshot.data!.docs[index]['messageId'] ,
-                              message: snapshot.data!.docs[index]['message'],  
-                              isCurrentUser: FirebaseAuth.instance.currentUser!.uid ==
-                                  snapshot.data!.docs[index]['senderId'],
-                              replyMessage: snapshot.data!.docs[index]
-                                  ['replyMessage'],
-                              replySender: snapshot.data!.docs[index]
-                                  ['replySender'],
-                              groupId: widget.groupId,
-                              senderNumber: snapshot.data!.docs[index]
-                                  ['senderNumber'],
-                              time: snapshot.data!.docs[index]['time'],
-                              senderId: snapshot.data!.docs[index]['senderId'],
-                              sender:snapshot.data!.docs[index]['sender'] ,
-                            ),
-                          ),
-                        );
-
-                        // return Text("$index  this is the position of the text");
-                      }),
-                )
-              : Container();
-        });
-  }
-  */
-
-
-/*
-// Send message
-  sendMessage() {
-    if (messageController.text.isNotEmpty) {
-      Map<String, dynamic> chatMessageMap = {
-        "message": messageController.text.trim(),
-        "messageId":sha1RandomString(),
-        "sender": FirebaseAuth.instance.currentUser!.displayName,
-        "time": DateFormat('kk:mm:a').format(DateTime.now()).toString(),
-        "isReply": repleyController.showReplyDialog.value,
-        "replyMessage": repleyController.replyMessage.value,
-        "replySender": repleyController.replySender.value,
-        "senderNumber": FirebaseAuth.instance.currentUser!.phoneNumber,
-        "senderId": FirebaseAuth.instance.currentUser!.uid
-      };
-
-      DatabaseServices()
-          .sendMessage(groupId: widget.groupId, chatMessages: chatMessageMap);
-      setState(() {
-        messageController.clear();
-      });
-      setState(() {
-        repleyController.showReplyDialog.value = false;
-      });
-    }
-  }
-
-*/
 
 
   Widget _buildMessageComposer() {
@@ -221,13 +117,14 @@ class _ChatPageState extends State<ChatPage> {
         alignment: Alignment.bottomLeft,
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-            child: Obx(() {
-              return Expanded(
+            child: Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // if (showSwipeDialog)
-                    if (repleyController.showReplyDialog.value)
+
+
+                    // if (showReplyDialog)
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 9.w),
                           height: 80.h,
@@ -268,7 +165,8 @@ class _ChatPageState extends State<ChatPage> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 9.0),
                                             child: Text(
-                                              "${repleyController.replySender.value}",
+                                              "",
+                                              // "${repleyController.replySender.value}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displaySmall,
@@ -277,7 +175,8 @@ class _ChatPageState extends State<ChatPage> {
                                           SizedBox(
                                             width: 200.w,
                                             child: Text(
-                                              "${repleyController.replyMessage.value}",
+                                              "",
+                                              // "${repleyController.replyMessage.value}",
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                               style: Theme.of(context)
@@ -302,22 +201,26 @@ class _ChatPageState extends State<ChatPage> {
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: 5.w,
-                          vertical:
-                              repleyController.showReplyDialog.value ? 0 : 5.h),
+                          // vertical:
+                          //     repleyController.showReplyDialog.value ? 0 : 5.h
+                          ),
                       // height: 50.h,
                       width: 280.w,
                       decoration: BoxDecoration(
                           color: Theme.of(context).cardTheme.color,
-                          borderRadius: BorderRadius.only(
-                            topLeft: repleyController.showReplyDialog.value
-                                ? Radius.zero
-                                : Radius.circular(20),
-                            topRight: repleyController.showReplyDialog.value
-                                ? Radius.zero
-                                : Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          )),
+                          // borderRadius: BorderRadius.only(
+
+                          //   topLeft: repleyController.showReplyDialog.value
+                          //       ? Radius.zero
+                          //       : Radius.circular(20),
+                          //   topRight: repleyController.showReplyDialog.value
+                          //       ? Radius.zero
+                          //       : Radius.circular(20),
+
+                          //   bottomLeft: Radius.circular(20),
+                          //   bottomRight: Radius.circular(20),
+                          // )
+                          ),
                       child: Row(
                         children: [
                           Expanded(
@@ -352,13 +255,13 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ],
                 ),
-              );
-            })));
+              )
+            ));
   }
 
   clearReplyMessageText() {
-    repleyController.showReplyDialog.value = false;
-    repleyController.replyMessage.value = "";
-    repleyController.replySender.value = "";
+    // repleyController.showReplyDialog.value = false;
+    // repleyController.replyMessage.value = "";
+    // repleyController.replySender.value = "";
   }
 }

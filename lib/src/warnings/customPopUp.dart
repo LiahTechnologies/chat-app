@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/appfont.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
+
+import '../utils/naviagtion.dart';
 
 class CustomNotification extends StatelessWidget {
   const CustomNotification({super.key, this.firstButton="Return"});
@@ -35,7 +36,7 @@ class CustomNotification extends StatelessWidget {
             height: 50,
             icon: null,
             onPress: () {
-              Get.back();
+              BackScreen(context: context);
             },
             text: firstButton),
       if (showHiddenButton)
@@ -47,7 +48,7 @@ class CustomNotification extends StatelessWidget {
             height: 50,
             icon: null,
             onPress: () {
-              Get.back();
+              BackScreen(context: context);
             },
             text: "Return"),
 
@@ -60,7 +61,7 @@ class CustomNotification extends StatelessWidget {
           height: 50,
           icon: null,
           onPress: () {
-            Get.back();
+            BackScreen(context: context);
           },
           text: "Return")
       ],)

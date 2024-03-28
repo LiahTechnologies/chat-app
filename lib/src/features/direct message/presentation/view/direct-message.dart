@@ -1,12 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+
 
 import '../../../../common/helper_function.dart';
-import '../../../../routing/approutes.dart';
-import '../../../group_chat/presentation/widgets/groupTile.dart';
+
 import '../widget/chatTile.dart';
 
 class DirectMessage extends StatefulWidget {
@@ -55,9 +53,9 @@ class _DirectMessageState extends State<DirectMessage> {
     // getChatandAdmin();
   }
 
-  // String getId(String res) {
-  //   return res.substring(9, res.indexOf('_'));
-  // }
+  String getId(String res) {
+    return res.substring(9, res.indexOf('_'));
+  }
 
   String getName(String res) {
     return res.substring(res.indexOf("_") + 1);
@@ -81,6 +79,8 @@ class _DirectMessageState extends State<DirectMessage> {
   //   "recepientId": chatMessages["recepientId"],
   //   'time': chatMessages["time"],
   // });
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +104,7 @@ class _DirectMessageState extends State<DirectMessage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // grouplist()
+                grouplist()
                 ],
             ),
           ),
@@ -137,11 +137,11 @@ class _DirectMessageState extends State<DirectMessage> {
               : Text("");
         });
   }
+*/
 
 
 
 
-// List of chats
   grouplist() {
     return StreamBuilder(
         stream: chat,
@@ -163,7 +163,7 @@ class _DirectMessageState extends State<DirectMessage> {
                           "THE LSIST OF CHAT USERS ARE: ${snapshot.data['chats'][index]}");
                       return ChatTile(
                         groupId:snapshot.data['chats'][index] ,
-                        lastMessage: getLastMessage(),
+                        lastMessage: Text("getLastMessage()") ,
                         userName:
                             "${snapshot.data['firstName'] + " " + snapshot.data['lastName']}",
                         recepientId: snapshot.data['chats'][index],
@@ -187,5 +187,5 @@ class _DirectMessageState extends State<DirectMessage> {
           }
         });
   }
-  */
+  
 }

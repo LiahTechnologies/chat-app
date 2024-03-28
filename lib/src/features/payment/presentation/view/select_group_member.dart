@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
+
+import 'send_money.dart';
 
 class SelectGroupMember extends StatelessWidget {
   const SelectGroupMember({super.key});
@@ -12,7 +11,7 @@ class SelectGroupMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -24,7 +23,7 @@ class SelectGroupMember extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                   CustomBackArrow(),
+                    CustomBackArrow(),
                     SizedBox(
                       width: 70.w,
                     ),
@@ -71,13 +70,21 @@ class SelectGroupMember extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              Get.toNamed(AppRoutes.SEND_MONEY_PAGE);
+                              NextScreen(context: context, page:const SendMoney());
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [Text("Gael Indira",style: Theme.of(context).textTheme.displaySmall,), Divider()],
+                                children: [
+                                  Text(
+                                    "Gael Indira",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  ),
+                                  Divider()
+                                ],
                               ),
                             ),
                           );

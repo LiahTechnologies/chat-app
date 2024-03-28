@@ -1,18 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/all-groups.dart';
 import 'package:njadia/src/features/direct%20message/presentation/view/direct-message.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/search_groups..dart';
-import 'package:njadia/src/features/payment/presentation/view/group_home_page.dart';
 import 'package:njadia/src/features/profile/presentation/views/profile.dart';
-import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
+
 
 import '../../../../common/helper_function.dart';
 // import '../../../../common/services/firebase_messaging.dart';
@@ -171,11 +164,11 @@ class _HomePageState extends State<HomePage> {
                               getId(snapshot.data['groups'][reverseIndex]));
                     });
               } else {
-                return Text("");
-                // return noGroupWidget();
+                return Text("No Group Created");
+                
               }
             } else {
-              return Text("");
+              return Text("No Group Created");
               // return noGroupWidget();
             }
           } else {

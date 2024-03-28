@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
-import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
+
 import 'package:njadia/src/warnings/coming%20_soon.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
+
+import 'create_group.dart';
 
 class GroupCategory extends StatelessWidget {
   const GroupCategory({super.key});
@@ -19,13 +19,11 @@ class GroupCategory extends StatelessWidget {
         appBar: AppBar(
           leading: CustomBackArrow(),
           centerTitle: true,
-          title: Text(
-                      "Select group categories",
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.titleMedium),
+          title: Text("Select group categories",
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.titleMedium),
         ),
         body: SafeArea(
-          
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Column(
@@ -46,8 +44,7 @@ class GroupCategory extends StatelessWidget {
                 // ),
                 Padding(
                   padding: EdgeInsets.only(left: 6.0.w),
-                  child: 
-                  Text(
+                  child: Text(
                       "Tell us more about your Njangi Group In order to help you",
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.displayMedium),
@@ -77,13 +74,13 @@ class GroupCategory extends StatelessWidget {
                     image: AppImages.TWO_PEOPLE_ICON,
                     text: "For me and my age",
                     onTap: () {
-                      Get.toNamed(AppRoutes.CREATE_GROUP);
+                      NextScreen(context: context, page: CreateGroup());
                     }),
                 CustomCardItems(
                     image: AppImages.TWO_PEOPLE_ICON,
                     text: "For me and my school mates",
                     onTap: () {
-                       showDialog(
+                      showDialog(
                           context: context,
                           builder: (context) {
                             return ComiingSoon();
@@ -103,7 +100,7 @@ class GroupCategory extends StatelessWidget {
                     image: AppImages.TWO_PEOPLE_ICON,
                     text: "For me and my work colleagues",
                     onTap: () {
-                       showDialog(
+                      showDialog(
                           context: context,
                           builder: (context) {
                             return ComiingSoon();

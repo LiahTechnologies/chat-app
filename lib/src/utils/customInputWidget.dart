@@ -51,7 +51,8 @@ class CustomInputWidget extends StatelessWidget {
                       color:
                           Theme.of(context).inputDecorationTheme.iconColor!)),
               child: TextField(
-                style: Theme.of(context).textTheme.displaySmall,
+                cursorColor: AppColor.greenColor,
+                style: Theme.of(context).textTheme.displayMedium,
                 onChanged: (v) => onChange(v),
                 decoration:
                     InputDecoration(border: InputBorder.none, hintText: hint),

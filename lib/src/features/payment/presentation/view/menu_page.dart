@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
-import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/utils/customGetxButtomSheet.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/appfont.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
+
+import 'select_group_member.dart';
 
 class GroupMenuPage extends StatelessWidget {
   const GroupMenuPage({super.key});
@@ -29,7 +30,7 @@ class GroupMenuPage extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () {
-                            customGetxBottomsheet(menuClicked());
+                            customGetxBottomsheet(menuClicked(),context);
                           },
                           icon: Icon(
                             Icons.menu_outlined,
@@ -51,7 +52,7 @@ class GroupMenuPage extends StatelessWidget {
                           )),
                       IconButton(
                           onPressed: () {
-                            customGetxBottomsheet(personClicked());
+                            customGetxBottomsheet(personClicked(),context);
                           },
                           icon: Icon(
                             Icons.person_outline,
@@ -103,7 +104,7 @@ class GroupMenuPage extends StatelessWidget {
                   image: AppImages.TWO_PEOPLE_ICON,
                   text: "set up your njangi group",
                   onTap: () {
-                    Get.toNamed(AppRoutes.SELECT_GROUP_MEMBER_PAGE);
+                    NextScreen(context: context, page: SelectGroupMember());
                   }),
               Container(
                 child: Row(
@@ -147,27 +148,22 @@ class GroupMenuPage extends StatelessWidget {
           TextSpan(text: "you have completed", style: AppFonts.defaultFonts),
           TextSpan(text: " 0 of 3 steps", style: AppFonts.defaultFontsBold3)
         ])),
-
         CustomCardItems(
             image: AppImages.GROUP_DEFAULT_ICON,
             text: "Invit your members",
             onTap: () {}),
-            
         CustomCardItems(
             image: AppImages.UPLOAD_GROUP_ICON,
             text: "Upload a Group icon",
             onTap: () {}),
-
         CustomCardItems(
             image: AppImages.ENVELOP_INVITE_ICON,
             text: "Send your first message",
             onTap: () {}),
-
         Text(
           "skip these step",
           style: AppFonts.defaultFonts,
         )
-
       ]),
     );
   }

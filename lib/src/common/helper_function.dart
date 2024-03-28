@@ -11,10 +11,17 @@ class HelperFunction {
   static String _userEmailKey = 'USEREMAILKEY';
   static String _userIDKey = 'UID';
   static String theme = "isDarkMode";
+   static String Token = "_NjadiaToken";
 
   /**
    * saving to share preferences
    */
+
+  static Future<bool> writeTokne(value) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+   return await sharedPreference.setString(Token, value);
+  }
+
 
   static Future<bool> writeTheme(value) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
@@ -50,6 +57,14 @@ class HelperFunction {
   }
 
   // getting data
+
+  static Future<String> getUserToken() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.getString(Token)!;
+  }
+
+
+
   static Future<String> getUserEmail() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return await sharedPreference.getString(_userEmailKey)!;

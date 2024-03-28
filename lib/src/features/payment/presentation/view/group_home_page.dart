@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/appfont.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/helper_function.dart';
-// import '../../../../common/services/firebase_messaging.dart';
-import '../../../group_chat/presentation/widgets/groupTile.dart';
+import '../../../add _people/presentation/view/add_people.dart';
+import '../../../group_chat/presentation/view/group_template_option.dart';
+import 'menu_page.dart';
 
 class GroupHomePage extends StatefulWidget {
   const GroupHomePage({super.key});
@@ -21,11 +20,6 @@ class GroupHomePage extends StatefulWidget {
 
 class _GroupHomePageState extends State<GroupHomePage> {
   final TextEditingController searchController = TextEditingController();
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +45,10 @@ class _GroupHomePageState extends State<GroupHomePage> {
                         child: Column(
                           children: [
                             Image.asset(AppImages.DM_ICON),
-                           
                             IconButton(
-                                onPressed: () => Get.toNamed(
-                                    AppRoutes.CREATE_GROUP_TEMPLATE),
+                                onPressed: () => NextScreen(
+                                    context: context,
+                                    page: const GroupTemplateOption()),
                                 icon: const Icon(
                                   Icons.add,
                                   color: AppColor.greenColor,
@@ -106,14 +100,19 @@ class _GroupHomePageState extends State<GroupHomePage> {
                         CustomButton(
                           onPress: () {
                             // Get.toNamed(AppRoutes.addContacts);
-                            Get.bottomSheet(AddContacts(),
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15),
-                                )),
-                                enableDrag: true,
-                                isScrollControlled: true);
+
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => AddContacts(),
+                            );
+                            // Get.bottomSheet(
+                            //     shape: const RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.only(
+                            //       topLeft: Radius.circular(15),
+                            //       topRight: Radius.circular(15),
+                            //     )),
+                            //     enableDrag: true,
+                            //     isScrollControlled: true);
                           },
                           text: "Get Start",
                           width: 180.w,
@@ -138,7 +137,8 @@ class _GroupHomePageState extends State<GroupHomePage> {
                         child: IconButton(
                           icon: Icon(Icons.menu_outlined),
                           onPressed: () {
-                            Get.toNamed(AppRoutes.GROUP_MENU_PAGE);
+                            NextScreen(
+                                context: context, page: const GroupMenuPage());
                           },
                         ),
                       ),
@@ -160,7 +160,7 @@ class _GroupHomePageState extends State<GroupHomePage> {
               ),
               InkWell(
                   onTap: () {
-                    Get.toNamed(AppRoutes.ADD_USERS_LINK);
+                    NextScreen(context: context, page: AddUserLink());
                   },
                   child: Image.asset(AppImages.TWO_PEOPLE_ICON)),
               Stack(
@@ -192,60 +192,4 @@ class _GroupHomePageState extends State<GroupHomePage> {
       ),
     );
   }
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 }

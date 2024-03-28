@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/customeNotification.dart';
 
 import '../../../../common/constants/style/appfont.dart';
@@ -23,7 +23,7 @@ class AddUserLink extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: TextButton(
                       onPressed: () {
-                        Get.back();
+                        BackScreen(context: context);
                       },
                       child: Text(
                         "Skip",
@@ -70,7 +70,13 @@ class AddUserLink extends StatelessWidget {
                 ),
                 CustomButton(
                   onPress: () {
-                    Get.dialog(CustomNotification());
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return CustomNotification();
+                        });
+
+                    
                   },
                   text: "Share Link",
                   icon: null,

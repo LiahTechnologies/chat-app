@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
+
 import 'package:njadia/src/warnings/custombackarrow.dart';
+
+import 'send_money_details.dart';
 
 class SendMoney extends StatelessWidget {
   const SendMoney(
@@ -22,36 +22,44 @@ class SendMoney extends StatelessWidget {
         leading: CustomBackArrow(),
         centerTitle: true,
         title: Column(
-                    children: [
-                      Text(
-                        "Send  Money",
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      Text(
-                        "Ekondo Njangi",
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                    ],
-                  ),
+          children: [
+            Text(
+              "Send  Money",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            Text(
+              "Ekondo Njangi",
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Container(
             child: Column(
           children: [
-           
-           
             Text.rich(TextSpan(children: [
-              TextSpan(text: "Send the sum of ", style: Theme.of(context).textTheme.displaySmall,),
               TextSpan(
-                  text: "$amount",
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w800),)
+                text: "Send the sum of ",
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              TextSpan(
+                text: "$amount",
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium!
+                    .copyWith(fontWeight: FontWeight.w800),
+              )
             ])),
             Text.rich(TextSpan(children: [
-              TextSpan(text: "To ",style: Theme.of(context).textTheme.displayMedium,),
               TextSpan(
-                  text: "$name",
-               style: Theme.of(context).textTheme.displaySmall,
-                 )
+                text: "To ",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              TextSpan(
+                text: "$name",
+                style: Theme.of(context).textTheme.displaySmall,
+              )
             ])),
             SizedBox(
               height: 5.h,
@@ -72,11 +80,7 @@ class SendMoney extends StatelessWidget {
             ),
             InkWell(
                 onTap: () {
-                  Get.toNamed(AppRoutes.SEND_MONEY_DETAIL_PAGE);
-
-                 
-                 
-                 
+                  NextScreen(context: context, page: SendMoneyDetail());
                 },
                 child: Image.asset(AppImages.MTP)),
             SizedBox(
@@ -88,13 +92,4 @@ class SendMoney extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-
-
-
-
 }

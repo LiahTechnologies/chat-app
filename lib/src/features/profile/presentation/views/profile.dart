@@ -1,20 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/common/helper_function.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
-// import 'package:njadia/src/features/authentication/data/auth_repository.dart';
-import 'package:njadia/src/routing/approutes.dart';
+import 'package:njadia/src/features/authentication/presentation/pages/signup.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
-import 'package:njadia/src/utils/theme/themeController.dart';
-import 'package:njadia/src/utils/theme/themes.dart';
+import 'package:njadia/src/utils/theme/theme_bloc.dart';
+import 'package:njadia/src/utils/theme/theme_event.dart';
 import 'package:njadia/src/warnings/customDialog.dart';
-import 'package:njadia/src/warnings/custombackarrow.dart';
-
-import '../../../../warnings/customeNotification.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -26,9 +23,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   late File newProfileImage;
 
-  final Controller = Get.put(ThemeController());
-
-  // final databaseController = AuthenticationRepository();
   String userEmail = "";
   String userName = "";
   @override
@@ -47,8 +41,6 @@ class _ProfileState extends State<Profile> {
       print(" THE CURRENT USER NAME IS : $userName");
     });
     super.initState();
-
-    
   }
 
   @override
@@ -64,35 +56,48 @@ class _ProfileState extends State<Profile> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         actions: [
-          !Get.isDarkMode
-              ? IconButton(
-                  icon: Icon(
-                    Icons.sunny,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  onPressed: () {
-                    Get.isDarkMode
-                        ? Get.changeTheme(AppTheme.darkTheme)
-                        : Get.changeTheme(AppTheme.lightTheme);
-                    Controller.changeTheme(true);
-                    // Get.changeThemeMode(
-                    //     Get.isDarkMode ? AppTheme.darkTheme : ThemeMode.light);
-                  },
-                )
-              : IconButton(
-                  onPressed: () {
-                    Get.isDarkMode
-                        ? Get.changeTheme(AppTheme.darkTheme)
-                        : Get.changeTheme(AppTheme.lightTheme);
-                    Controller.changeTheme(false);
-                  },
-                  icon: Icon(
-                    Icons.dark_mode,
-                    color: Theme.of(context).iconTheme.color,
-                  )),
+          // Switch(value: context.read<ThemeBloc>().state==ThemeMode.dark, onChanged: (value){
+          //   context
+          //                 .read()<ThemeBloc>()
+          //                 .add(OnThemeChange(value));
+
+          // }),
+          !(context.read<ThemeBloc>().state == ThemeMode.dark)
+              ? BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {
+                  return IconButton(
+                    icon: Icon(
+                      Icons.sunny,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    onPressed: () {
+
+                    
+                      context.read<ThemeBloc>().add(OnThemeChange(
+                          (state == ThemeMode.light)));
+
+                      
+
+                     
+                    },
+                  );
+                })
+              : BlocBuilder<ThemeBloc,ThemeMode>(
+                builder: (context,state) {
+                  return IconButton(
+                      onPressed: () {
+                      context.read<ThemeBloc>().add(OnThemeChange(
+                          (state == ThemeMode.light)));
+
+                      },
+                      icon: Icon(
+                        Icons.dark_mode,
+                        color: Theme.of(context).iconTheme.color,
+                      ));
+                }
+              ),
           IconButton(
               onPressed: () async {
-                Get.toNamed(AppRoutes.SIGNUP);
+                NextScreen(context: context, page: SignUp());
                 // databaseController.login();
 
                 showSnackMessage(context, Colors.green, "LogOut successful");
@@ -267,7 +272,7 @@ class _ProfileState extends State<Profile> {
   }
 
   customKeyValue({text, value}) {
-    return Container(  
+    return Container(
       height: 50.h,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
       child: Card(

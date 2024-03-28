@@ -2,12 +2,8 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
-import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+
 
 class SeeChatProfile extends StatelessWidget {
   const SeeChatProfile({super.key, required this.profileImag, required this.chat, required this.videoCall});

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:dartz/dartz.dart';
+
+import 'package:njadia/src/common/errors/exceptions.dart';
 import 'package:njadia/src/common/errors/failures.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
@@ -8,28 +9,29 @@ import 'package:http/http.dart' as http;
 
 import '../../../../common/urls.dart';
 
-abstract class UserDataSource {
-  Future<Either<ServerFailure, bool>> createUser(UserEntity user);
-  Future<Either<ServerFailure, bool>> loginUser(
-      {required email, required password});
+abstract class UserRemoteDataSource {
+  Future<bool> createUser(UserEntity user);
+  Future<LoginResponse> loginUser({required email, required password});
+  Future<bool> generateOTP({required String number});
+  Future<bool> verifyOTP({required String number,required String OTPCode});
 }
 
-class UserDataSourceImpl extends UserDataSource {
+class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   final http.Client client;
 
-  UserDataSourceImpl({required this.client});
+  UserRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<Either<ServerFailure, bool>> createUser(UserEntity user)async {
-         var length = await user.selfie.length;
+  Future<bool> createUser(UserEntity user) async {
+    var length = await user.selfie.length;
 
-      
     var request = http.MultipartRequest(
       "POST",
       Uri.parse(AppUrls.signup_file),
     );
 
-    var multipartFile = await http.MultipartFile.fromPath("selfie", user.selfie.path);
+    var multipartFile =
+        await http.MultipartFile.fromPath("selfie", user.selfie.path);
     var multipartFileDocs =
         await http.MultipartFile.fromPath("docs", user.docs.path);
 
@@ -54,34 +56,60 @@ class UserDataSourceImpl extends UserDataSource {
         "docs": result['docs']
       };
 
-      
-
       final response = await http.post(Uri.parse(AppUrls.signup_details),
           body: json.encode(data),
           headers: {"Content-Type": "Application/json"});
       if (response.statusCode == 200)
-         return  Right(true);
+        return true;
       else
-        return Right(false);
+        return false;
     } else
-      return Left(ServerFailure("User was not created"));
+      throw ServerFailure("User was not created");
   }
 
-
-
-
   @override
-  Future<Either<ServerFailure, bool>> loginUser(
-      {required email, required password}) async{
-   
-        final response = await client.post(Uri.parse(AppUrls.login),
+  Future<LoginResponse> loginUser({required email, required password}) async {
+    print(
+        "THE INFORMATION IS REACHING THE DATASOURCE LEVEL OF THE APPLICATION");
+    final response = await client.post(Uri.parse(AppUrls.login),
         body: json.encode({"email": email, "password": password}),
         headers: {"Content-Type": "Application/json"});
 
-    if (response.statusCode == 200) 
-      return Right(true);
-   else 
-      return Left(ServerFailure("Server error"));
-    
+    if (response.statusCode == 200) {
+      print("LOGGED IN SUCCESSFULLY");
+
+      return LoginResponse.fromjson(json.decode(response.body));
+    } else {
+      print("WAS NOT ABLE TO LOGGED IN SUCCESSFULLY");
+      throw ServerExceptions();
+    }
   }
+  
+  @override
+  Future<bool> generateOTP({required String number}) async{
+    final response = await http.post(Uri.parse(AppUrls.OTP),
+        body: json.encode({"number": number}),
+        headers: {"content-Type": "Application/json"});
+    if (response.statusCode == 200) {
+      print("OTP CODE IS WORKING");
+      return true;
+    } else {
+      print("OTP VERIFICATION CODE NOT GENERATED");
+      return false;
+    }
+  }
+  
+  @override
+  Future<bool> verifyOTP({required String number, required String OTPCode}) async{
+    final response = await http.post(Uri.parse(AppUrls.OTP_VERIFICATION),
+        body: json.encode({"number": number, "code": OTPCode}),
+        headers: {"Content-Type": "Application/json"});
+
+    if (response.statusCode == 200)
+      return true;
+    else
+      return false;
+  }
+
+  
 }

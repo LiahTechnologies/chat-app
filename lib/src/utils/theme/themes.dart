@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
 
+
+// enum  AppTheme{
+
+// };
 class AppTheme {
   static final lightTheme = ThemeData(
 
@@ -47,7 +51,7 @@ class AppTheme {
 
     brightness:Brightness.dark,
     colorScheme:  ColorScheme.dark(
-      background: AppColor.blackColor,
+      background: Color.fromARGB(248, 28, 29, 28),
       primary:    AppColor.primaryColor,
       secondary: AppColor.secondary,
       tertiary: AppColor.purpleColor
@@ -61,7 +65,7 @@ class AppTheme {
       titleLarge: GoogleFonts.dmSans(fontSize: 20,color: AppColor.whiteColor),
       titleMedium: GoogleFonts.dmSans(fontSize: 18,color: AppColor.greenColor),
       labelSmall: GoogleFonts.dmSans(fontSize: 11,color: AppColor.purpleColor),
-      labelMedium: GoogleFonts.dmSans(fontSize: 11,color: AppColor.whiteColor),
+      labelMedium: GoogleFonts.dmSans(fontSize: 11,color: AppColor.greenColor),
 
     ),
     appBarTheme:const AppBarTheme(

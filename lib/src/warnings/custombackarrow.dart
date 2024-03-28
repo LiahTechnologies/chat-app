@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 
 class CustomBackArrow extends StatelessWidget {
   const CustomBackArrow({super.key});
@@ -14,7 +14,7 @@ class CustomBackArrow extends StatelessWidget {
             size: 11,
             color: Theme.of(context).iconTheme.color,
           ),
-          onPressed: () => Get.back(),
+          onPressed: () => BackScreen(context: context),
         );
   }
 }

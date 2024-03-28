@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+
 
 class CustomWarning extends StatelessWidget {
   const CustomWarning({super.key, this.text="Friend request sent"});

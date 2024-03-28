@@ -1,10 +1,8 @@
-import 'package:get/get.dart';
 
 /// ----[CREATE GROUP]
 
-import 'package:njadia/src/routing/approutes.dart';
 
-class DirectMessageController extends GetxController {
+class DirectMessageController {
   /// ---Variables
   // final authDatabase = DatabaseServices(uid:FirebaseAuth.instance.currentUser!.uid );
   // final userId = FirebaseAuth.instance.currentUser!.uid;
@@ -26,15 +24,15 @@ class DirectMessageController extends GetxController {
 
 
 
-class DirectReplyMessageController extends GetxController {
+class DirectReplyMessageController {
   // var reply = ReplyMessage(message: "", sender: "").obs;
-  var replySender = "".obs;
-  var replyMessage = "".obs;
-  var showReplyDialog = false.obs;
+  var replySender = "";
+  var replyMessage = "";
+  var showReplyDialog = false;
 
   setReplyMessage({replysender, replymessage}) {
-    replySender.value = replysender;
-    replyMessage.value = replymessage;
-    showReplyDialog .value= true;
+    replySender = replysender;
+    replyMessage = replymessage;
+    showReplyDialog = true;
   }
 }

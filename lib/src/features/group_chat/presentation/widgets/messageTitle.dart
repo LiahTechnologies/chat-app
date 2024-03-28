@@ -1,15 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
-import 'package:njadia/src/features/direct%20message/presentation/view/chat.dart';
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/warnings/longpressDialogue.dart';
+
 
 import 'chatbubble.dart';
-import 'see-chat-profile.dart';
 
 class MessageTile extends StatefulWidget {
   MessageTile(

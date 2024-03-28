@@ -1,13 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/helper_function.dart';
 import '../../../../common/constants/style/color.dart';
-import '../../../../routing/approutes.dart';
-// import '../../../../common/services/firebase_messaging.dart';
 import '../widgets/groupTile.dart';
+import 'group_template_option.dart';
 
 class AllGroups extends StatefulWidget {
   const AllGroups({super.key});
@@ -29,6 +27,7 @@ class _AllGroupsState extends State<AllGroups> {
   String userName = '';
   String userEmail = '';
   Stream? group;
+
   // Stream<QuerySnapshot>? lastChat;
 
   // getUserData() async {
@@ -73,17 +72,19 @@ class _AllGroupsState extends State<AllGroups> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 
-                // grouplist()
-                
+                grouplist() 
                 ],
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(AppRoutes.CREATE_GROUP_TEMPLATE),
+        onPressed: () => NextScreen(context: context, page: GroupTemplateOption()),
+        
         child: const Icon(
           Icons.add,
           color: AppColor.whiteColor,
@@ -100,8 +101,7 @@ class _AllGroupsState extends State<AllGroups> {
           if (snapshot.hasData) {
              if (snapshot.data['groups'] != null) {
               if (snapshot.data['groups'].length != 0) {
-                print(
-                    "THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
+                print("THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data['groups'].length,
@@ -116,11 +116,11 @@ class _AllGroupsState extends State<AllGroups> {
                               getId(snapshot.data['groups'][reverseIndex]));
                     });
               } else {
-                return Text("");
+                return Text("No Group Created");
                 // return noGroupWidget();
               }
             } else {
-              return Text("");
+              return Text("No Group Created");
 
               // return noGroupWidget();
             }

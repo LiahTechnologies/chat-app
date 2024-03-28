@@ -51,6 +51,12 @@ class UserModel extends UserEntity {
         "selfie": selfie,
         "docs": docs
       };
+}
 
+class LoginResponse  extends Login{
+  final String token;
+  LoginResponse({required this.token}) : super(token: token);
 
+  factory LoginResponse.fromjson(Map<String, dynamic> json) =>
+      LoginResponse(token: json["token"]);
 }

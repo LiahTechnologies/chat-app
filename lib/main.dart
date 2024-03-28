@@ -1,35 +1,30 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/features/authentication/screens/authentication.dart';
+import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:njadia/src/features/authentication/presentation/pages/authentication.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
+import 'package:njadia/src/utils/theme/theme_bloc.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
-import 'src/routing/approutes.dart';
-import 'package:country_picker/country_picker.dart';
-// import 'firebase_options.dart';
-import 'src/utils/theme/themeController.dart';
+import 'src/features/authentication/dependencies_injection.dart';
 
 /// ------- For Docs and Updates Check ------
 /// ------------------README.md--------------
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
 
-// await FaceCamera.initialize();
-  runApp( MyApp());
+  setUpLocator();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
+  MyApp({super.key});
 
-  final themeController = Get.put(ThemeController());
+  // final themeController = Get.put(ThemeController());
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -37,34 +32,43 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return GetMaterialApp(
-            // home: ChatScreen(),
-            // themeMode: themeController.theme,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-
-          
-
-            supportedLocales: [
-              const Locale('en'),
-              const Locale('el'),
-              const Locale.fromSubtags(
-                  languageCode: 'zh',
-                  scriptCode: 'Hans'), // Generic Simplified Chinese 'zh_Hans'
-              const Locale.fromSubtags(
-                  languageCode: 'zh',
-                  scriptCode: 'Hant'), // Generic traditional Chinese 'zh_Hant'
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => locator<AuthBloc>()),
+              BlocProvider(create: (_) => locator<ThemeBloc>())
             ],
-            localizationsDelegates: [
-              CountryLocalizations.delegate,
-              // GlobalMaterialLocalizations.delegate,
-              // GlobalWidgetsLocalizations.delegate,
-              // GlobalCupertinoLocalizations.delegate,
-            ],
-            debugShowCheckedModeBanner: false,
-            getPages: AppPages.appPagas,
-            initialRoute: AppRoutes.SPLASHSCREEN,
-            //
+            child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {
+              return MaterialApp(
+                // home: ChatScreen(),
+                themeMode: state,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+
+                supportedLocales: [
+                  const Locale('en'),
+                  const Locale('el'),
+                  const Locale.fromSubtags(
+                      languageCode: 'zh',
+                      scriptCode:
+                          'Hans'), // Generic Simplified Chinese 'zh_Hans'
+                  const Locale.fromSubtags(
+                      languageCode: 'zh',
+                      scriptCode:
+                          'Hant'), // Generic traditional Chinese 'zh_Hant'
+                ],
+                localizationsDelegates: [
+                  // CountryLocalizations.delegate,
+                  // GlobalMaterialLocalizations.delegate,
+                  // GlobalWidgetsLocalizations.delegate,
+                  // GlobalCupertinoLocalizations.delegate,
+                ],
+                debugShowCheckedModeBanner: false,
+                home: SplashScreen(),
+                // getPages: AppPages.appPagas,
+                // initialRoute: AppRoutes.SPLASHSCREEN,
+                //
+              );
+            }),
           );
         });
   }
@@ -77,13 +81,31 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController animationController = AnimationController(
+    vsync: this,
+    duration: Duration(seconds: 1),
+  )..repeat(reverse: false);
+
+  late final Animation<double> animation =
+      CurvedAnimation(parent: animationController, curve: Curves.linear);
+
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 7), () {
-      Get.offAll(Authenentication());
+    Future.delayed(const Duration(seconds: 1), () {
+      
+      SplashScreenNavigator(page: Authenentication(), context: context);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,7 +122,9 @@ class _SplashScreenState extends State<SplashScreen> {
             Positioned(
                 bottom: 20,
                 left: 140.w,
-                child: SvgPicture.asset("assets/images/loading.svg"))
+                child: RotationTransition(
+                    turns: animation,
+                    child: SvgPicture.asset("assets/images/loading.svg")))
           ],
         ),
       ),

@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-customGetxBottomsheet(Widget child,
+import 'package:flutter/material.dart';
+
+customGetxBottomsheet(Widget child, BuildContext context,
     {bool? enbaleDrag = false, bool? isDismissable = true}) {
-  return Get.bottomSheet(
-      Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: child,
-      ),
-      enableDrag: enbaleDrag!,
-      isDismissible: isDismissable!);
+  return showModalBottomSheet(
+    context: context,
+    builder: (context) => Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: child,
+    ),
+  );
 }

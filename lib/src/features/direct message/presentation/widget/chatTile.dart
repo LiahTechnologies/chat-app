@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/helper_function.dart';
 import '../../../direct message/presentation/view/chat.dart';
-import '../../../group_chat/presentation/view/chatpage.dart';
 
 class ChatTile extends StatefulWidget {
   final String? userName;
@@ -34,14 +32,14 @@ class _ChatTileState extends State<ChatTile> {
       onTap: () {
         print("REACHING THIS LEVEL ${widget.groupId}");
         print("REACHING THIS LEVEL ${widget.groupId}");
-        Get.to(
-          DirectMessageChat(
+        NextScreen(
+          context: context,
+          page: DirectMessageChat(
             chatId: widget.groupId!,
             senderName: widget.userName!,
             senderId: widget.recepientId!,
             profileImg: '',
           ),
-          transition: Transition.zoom,
         );
       },
       child: Container(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/features/payment/presentation/widgets/customPaymentInput.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
@@ -177,11 +176,12 @@ class SendMoneyDetail extends StatelessWidget {
                       });
                 else
                   !isLoading
-                      ? Get.bottomSheet(
-                          showCustomeButtonSheet(
-                              image: AppImages.PROCESSING_ICON),
-                          enableDrag: true)
-                      : Get.bottomSheet(
+                      ?showModalBottomSheet(context: context, builder: (context)=> showCustomeButtonSheet(
+                              image: AppImages.PROCESSING_ICON),)
+                      
+                      
+                      
+                      : showModalBottomSheet(context:context,builder:(context)=>
                           showCustomeButtonSheet(
                               image: AppImages.DONE__ICON,
                               text: "Done",

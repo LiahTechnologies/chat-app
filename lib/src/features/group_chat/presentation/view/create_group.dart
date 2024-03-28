@@ -1,23 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-// import 'package:njadia/src/features/authentication/controllers/authentication_service.dart';
+
 import 'package:njadia/src/features/group_chat/presentation/controller/create_group_service.dart';
-import 'package:njadia/src/routing/approutes.dart';
 import 'package:njadia/src/utils/customInput.dart';
 import 'package:njadia/src/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
-import 'package:njadia/src/warnings/customeNotification.dart';
-import 'package:njadia/src/warnings/warning.dart';
 
-import '../../../../common/helper_function.dart';
 import '../../../../utils/CustomButton.dart';
-import '../../../../common/constants/style/appfont.dart';
-import '../../../../common/constants/style/color.dart';
-// import '../../../../common/services/firebase_messaging.dart';
-import '../widgets/groupTile.dart';
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});

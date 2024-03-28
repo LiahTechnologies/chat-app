@@ -1,14 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:njadia/src/common/constants/style/color.dart';
-// import 'package:njadia/src/common/services/firebase_messaging.dart';
-import 'package:njadia/src/features/group_chat/presentation/widgets/groupTile.dart';
-import 'package:njadia/src/routing/approutes.dart';
-import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/warnings/custombackarrow.dart';
-import 'package:njadia/src/warnings/warning.dart';
+
 
 import '../../../../common/helper_function.dart';
 

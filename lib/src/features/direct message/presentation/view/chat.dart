@@ -1,19 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:njadia/src/common/randomId.dart';
 
 import 'package:njadia/src/common/constants/style/color.dart';
 import 'package:njadia/src/features/direct%20message/presentation/controller/direct_message_controller.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
-import 'package:swipe_to/swipe_to.dart';
 
-import '../../../../common/helper_function.dart';
-import '../../../group_chat/presentation/widgets/messageTitle.dart';
-import '../../domain/entities/message.dart';
-import '../widget/direct_message_tile.dart';
 
 class DirectMessageChat extends StatefulWidget {
   final String profileImg;
@@ -101,7 +93,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                 backgroundImage: AssetImage(widget.profileImg),
               ),
               Text(
-                widget.senderName!.capitalizeFirst.toString(),
+                widget.senderName!.toUpperCase().toString(),
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.displaySmall,
               ),
@@ -153,60 +145,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
             ),
           )
 
-          // Container(
-
-          //     alignment: Alignment.bottomCenter,
-          //     width: 300.w,
-          //     child: Container(
-          //         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-          //         child: Row(
-          //           children: [
-          //             Container(
-          //               padding: EdgeInsets.symmetric(
-          //                   horizontal: 5.w, vertical: 5.h),
-          //               // height: 50.h,
-
-          //               decoration: BoxDecoration(
-          //                   color: Theme.of(context).cardTheme.color,
-          //                   borderRadius: BorderRadius.circular(20)),
-          //               child: Row(
-          //                 children: [
-          //                   Expanded(
-          //                     child: TextFormField(
-          //                         minLines: 1,
-          //                         maxLines: 6,
-          //                         controller: messageController,
-          //                         style:
-          //                             Theme.of(context).textTheme.displayLarge,
-          //                         decoration: InputDecoration(
-          //                           alignLabelWithHint: true,
-          //                           contentPadding: const EdgeInsets.symmetric(
-          //                               horizontal: 5),
-          //                           hintText: "Send a Message",
-          //                           hintStyle: Theme.of(context)
-          //                               .textTheme
-          //                               .displayMedium,
-          //                           border: InputBorder.none,
-
-          //                           // suffixIcon: IconButton(icon:const  Icon(Icons.link,),onPressed: (){},)
-          //                         )),
-          //                   ),
-          //                   RotatedBox(
-          //                       quarterTurns: 2,
-          //                       child: IconButton(
-          //                         icon: const Icon(
-          //                           Icons.attachment_outlined,
-          //                           size: 25,
-          //                         ),
-          //                         onPressed: () {},
-          //                       ))
-          //                 ],
-          //               ),
-          //             ),
-          //             const SizedBox(width: 12),
-
-          //           ],
-          //         )))
+          
         ]));
   }
 
@@ -224,66 +163,10 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
     );
   }
 
-/*
-  chatMessages() {
-    return StreamBuilder(
-        stream: chat,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Expanded(
-                  child: ListView.builder(
-                      key: PageStorageKey<String>('directchat'),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                      
-                        eturn SwipeTo(
-                          onRightSwipe: (v) {
-                            replyController.setReplyMessage(
-                                replymessage: snapshot.data!.docs[index]
-                                    ['message'],
-                                replysender: snapshot.data!.docs[index]
-                                    ['sender']);
-                          },
-                          child: DirectMessageTile(
-                            message: snapshot.data!.docs[index]['message'],
-                            sendbyMe: FirebaseAuth.instance.currentUser!.uid ==
-                                snapshot.data!.docs[index]['senderId'],
-                            repliedMessage: snapshot.data!.docs[index]
-                                ['replyMessage']??"",
-                            replySender: snapshot.data!.docs[index]
-                                ['replySender'],
-                            time: snapshot.data!.docs[index]['time'],
-                            messageId: snapshot.data!.docs[index]['messageId'],
-                            senderId: snapshot.data!.docs[index]['senderId'],
-                            sender: snapshot.data!.docs[index]['sender'],
-                          ),
-                        );
-                      }),
-                )
-              : Container();
-        });
-  }
-  */
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
-      // final chatMessageMap = {
-      //   "message": messageController.text,
-      //   "messageId": sha1RandomString(),
-      //   "senderId": FirebaseAuth.instance.currentUser!.uid,
-      //   "sender": FirebaseAuth.instance.currentUser!.displayName!,
-      //   "replyMessage": replyController.replyMessage.value,
-      //   "replySender": widget.senderName,
-      //   "recepientId": widget.senderId,
-      //   "time": DateFormat('kk:mm:a').format(DateTime.now()).toString(),
-      // };
-
-      
-
-      // DatabaseServices()
-      //     .sendChatMessage(chatMessages: chatMessageMap, chatId: chatId);
-
+    
       messageController.clear();
 
       setState(() {
@@ -297,13 +180,12 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
         alignment: Alignment.bottomLeft,
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-            child: Obx(() {
-              return Expanded(
+            child: Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // if (showSwipeDialog)
-                    if (replyController.showReplyDialog.value)
+                    if (replyController.showReplyDialog)
                       Container(
                           padding: EdgeInsets.symmetric(horizontal: 9.w),
                           height: 80.h,
@@ -344,7 +226,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 9.0),
                                             child: Text(
-                                              "${replyController.replySender.value}",
+                                              "${replyController.replySender}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displaySmall,
@@ -353,7 +235,7 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                                           SizedBox(
                                             width: 200.w,
                                             child: Text(
-                                              "${replyController.replyMessage.value}",
+                                              "${replyController.replyMessage}",
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                               style: Theme.of(context)
@@ -379,16 +261,16 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 5.w,
                           vertical:
-                              replyController.showReplyDialog.value ? 0 : 5.h),
+                              replyController.showReplyDialog ? 0 : 5.h),
                       // height: 50.h,
                       width: 280.w,
                       decoration: BoxDecoration(
                           color: Theme.of(context).cardTheme.color,
                           borderRadius: BorderRadius.only(
-                            topLeft: replyController.showReplyDialog.value
+                            topLeft: replyController.showReplyDialog
                                 ? Radius.zero
                                 : Radius.circular(20),
-                            topRight: replyController.showReplyDialog.value
+                            topRight: replyController.showReplyDialog
                                 ? Radius.zero
                                 : Radius.circular(20),
                             bottomLeft: Radius.circular(20),
@@ -428,13 +310,13 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
                     ),
                   ],
                 ),
-              );
-            })));
+              )
+            ));
   }
 
   clearReplyMessageText() {
-    replyController.showReplyDialog.value = false;
-    replyController.replyMessage.value = "";
-    replyController.replySender.value = "";
+    replyController.showReplyDialog = false;
+    replyController.replyMessage = "";
+    replyController.replySender = "";
   }
 }
