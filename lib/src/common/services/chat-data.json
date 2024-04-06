@@ -1,0 +1,76 @@
+{
+
+    "user":[
+
+        {
+            "id":1,
+            "firstName":"JohnDoe",
+            "lastName":"Hakeem",
+            "email":"hakeem@gmail.com",
+            "dob":"12/04/2024",
+            "tel":"672973390",
+            "selfie":"http://d13kl132lj23132jlj23.jpeg",
+            "docs":"https://23jo3uioewlksdkjsdsjo.jpeg",
+            "groups":["flutter_1"],
+            "chats":["hobn_jude_001"]
+        },
+        {
+            "id":2,
+            "firstName":"Jude",
+            "lastName":"Hakeem",
+            "email":"hakeem@gmail.com",
+            "dob":"12/04/2024",
+            "tel":"672973390",
+            "selfie":"http://d13kl132lj23132jlj23.jpeg",
+            "docs":"https://23jo3uioewlksdkjsdsjo.jpeg",
+            "groups":["flutter_1"],
+            "chats":["hobn_jude_001"]
+        }
+
+    ],
+    
+    "group":[
+        
+        {
+            "id":"flutter_1",
+            "groupName":"Flutter",
+            "fee":"20000",
+            "limit":"30",
+            "createdAt":"01/2/2024.1:40pm",
+            "messages":[
+
+                {
+                    "sender":"JohnDoe",
+                    "receiver":"Marie",
+                    "time":"9.00pm",
+                    "message":"We have a course on Friday please, do well to be there.",
+                    "replySender":"JohnDoe",
+                    "replyMessage":"when do we have a class?"
+                },
+                {
+                    "sender":"JohnDoe",
+                    "receiver":"Marie",
+                    "time":"9.00pm",
+                    "message":"We have a course on Friday please, do well to be there.",
+                    "replySender":"JohnDoe",
+                    "replyMessage":"when do we have a class?"
+                }
+            ]
+        }
+    ],
+    "chats":[
+        {
+            "id":"hobn_jude_001",
+            "messages":[
+                {
+                    "sender":"JohnDoe",
+                    "receiver":"Jude",
+                    "time":"9.00pm",
+                    "message":"We have a course on Friday please, do well to be there.",
+                    "replySender":"JohnDoe",
+                    "replyMessage":"when do we have a class?"
+                }
+            ]
+        }
+    ]
+}

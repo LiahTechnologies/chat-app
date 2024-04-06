@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/utils/theme/theme_event.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeMode> {
-  ThemeBloc() : super(ThemeMode.dark) {
+  ThemeBloc() : super(ThemeMode.light) {
     on<OnThemeChange>((event, emit) {
       emit(event.isDark
           ? ThemeMode.dark
@@ -11,3 +11,4 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeMode> {
     });
   }
 }
+ 

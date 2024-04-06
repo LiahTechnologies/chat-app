@@ -1,11 +1,10 @@
-class Chat{
+import 'message.dart';
+
+class Chat {
   final String chatId;
-  final List<Map<String, dynamic >> messages;
-  final List<Map<String, dynamic >> entities; 
-  Chat({
-    required this.chatId,
-    required this.entities,
-    required this.messages
+  final String profilPic;
+  // final List<ChatMessage> messages;
+  Chat({required this.chatId, required this.profilPic, required String chatName});
+
   
-  });
 }
