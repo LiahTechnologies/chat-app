@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:njadia/src/common/errors/exceptions.dart';
-import 'package:njadia/src/common/urls.dart';
+import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/features/direct%20message/data/model/chat_model.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/chat.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 abstract class ChatRemoteDataSource {
   Future<Chat> fetchChats(String userId);
@@ -46,9 +47,10 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteChats(String chatId) async{
-     try {
-      final response = await client.delete(Uri.parse(AppUrls.BASEURL),body: chatId);
+  Future<bool> deleteChats(String chatId) async {
+    try {
+      final response =
+          await client.delete(Uri.parse(AppUrls.BASEURL), body: chatId);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -56,18 +58,17 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
       }
     } on ServerExceptions {
       throw ServerExceptions();
-    } 
+    }
   }
 }
 
-
 /********************* CHAT MESSAGEING PART************************ */
-
 
 abstract class ChatMessageRemoteDataSource {
   Future<ChatMessage> fetchMessages(String chatId);
 
   Future<bool> sendMessage(ChatMessage chatMessage, String chatId);
+  Future<List> fetchChats( String userId);
 
   Future<bool> deleteMessage(ChatMessage message, String chatId);
 }
@@ -104,18 +105,24 @@ class ChatMessageRemoteDataSourceImpl extends ChatMessageRemoteDataSource {
   }
 
   @override
-  Future<bool> sendMessage(ChatMessage chatMessage, String chatId) async {
+  Future<bool> sendMessage(ChatMessage chatMessage, String channel_id) async {
     try {
-      final response = await client.post(Uri.parse(AppUrls.BASEURL),
-          body: {"message": chatMessage, "chatId": chatId});
+      
+      final channel = WebSocketChannel.connect(
+        Uri.parse('http://ws/${channel_id}/'),
+      );
 
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        throw ServerExceptions();
-      }
+     channel.sink.add(chatMessage);
+
+      return true;
     } on ServerExceptions {
       throw ServerExceptions();
     }
+  }
+  
+  @override
+  Future<List> fetchChats(String userId) async {
+    // TODO: implement fetchChats
+    throw UnimplementedError();
   }
 }

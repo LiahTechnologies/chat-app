@@ -7,7 +7,7 @@ import 'package:njadia/src/features/group_chat/presentation/view/search_groups..
 import 'package:njadia/src/features/profile/presentation/views/profile.dart';
 
 
-import '../../../../common/helper_function.dart';
+import '../../../../core/common/helper_function.dart';
 // import '../../../../common/services/firebase_messaging.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
@@ -63,7 +63,8 @@ class _HomePageState extends State<HomePage> {
 
 // List fo pages
 
-  final Screens = const [AllGroups(), DirectMessage(), SearchGroups(), Profile()];
+  final Screens = const [AllGroups(),  SearchGroups(), Profile()];
+  // DirectMessage(),
 
   int currentScreen = 0;
   @override

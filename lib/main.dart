@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/authentication.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => locator<AuthBloc>()),
+              BlocProvider(create: (_) => locator<ThemeBloc>()),
               BlocProvider(create: (_) => locator<ThemeBloc>())
             ],
             child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {

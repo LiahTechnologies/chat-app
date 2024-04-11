@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 
-import 'package:njadia/src/common/errors/exceptions.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../common/urls.dart';
+import '../../../../core/common/urls.dart';
 
 abstract class UserRemoteDataSource {
   Future<bool> createUser(UserEntity user);

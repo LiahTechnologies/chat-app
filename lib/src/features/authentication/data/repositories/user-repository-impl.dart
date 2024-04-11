@@ -1,7 +1,7 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/exceptions.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/authentication/data/data_sources/user-data-source.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';

@@ -11,7 +11,7 @@ import 'package:dartz/dartz.dart' as _i2;
 import 'package:http/http.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i11;
-import 'package:njadia/src/common/errors/failures.dart' as _i7;
+import 'package:njadia/src/core/common/errors/failures.dart' as _i7;
 import 'package:njadia/src/features/authentication/data/data_sources/user-data-source.dart'
     as _i9;
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart'

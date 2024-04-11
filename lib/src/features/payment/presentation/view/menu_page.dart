@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 import 'package:njadia/src/utils/customGetxButtomSheet.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
+import 'package:njadia/src/core/common/constants/style/appfont.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
 import 'select_group_member.dart';

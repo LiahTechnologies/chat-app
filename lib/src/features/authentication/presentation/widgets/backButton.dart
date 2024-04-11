@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../common/constants/style/appfont.dart';
-import '../../../../common/constants/style/color.dart';
+import '../../../../core/common/constants/style/appfont.dart';
+import '../../../../core/common/constants/style/color.dart';
 
 
 class BackButton extends StatelessWidget {

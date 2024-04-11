@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/constants/style/color.dart';
+import '../../../../core/common/constants/style/color.dart';
 import '../widgets/groupTile.dart';
 import 'group_template_option.dart';
 

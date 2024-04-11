@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 
 import '../entities/chat.dart';
-import '../repository/chat_message_repository.dart';
 import '../repository/chat_repository.dart';
 
 class ChatUsecase {

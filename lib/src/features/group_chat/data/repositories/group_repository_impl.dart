@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/exceptions.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/group_chat/data/datq_source/group_chat_remote_data_source.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
-import 'package:njadia/src/features/group_chat/domain/entities/message_entity.dart';
+import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 
 class GroupRepositoryImpl extends GroupRepository {
@@ -35,14 +35,15 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> sendMessage(
-      MessageEntity messageEntity, String groupId) async {
+  Stream<Either<Failure, MessageEntity>> sendMessage(
+      MessageEntity messageEntity, String groupId) {
     try {
-      final response = await groupChatRemoteDataSource.sendMessage(
-          messageEntity: messageEntity, groupId: groupId);
+      final response = groupChatRemoteDataSource
+          .sendMessage(messageEntity: messageEntity, channel_id: groupId).
+         
       return Right(response);
     } on ServerExceptions {
-      throw Left(ServerFailure("Something went wrong"));
+      throw Left(ServerExceptions());
     }
   }
 }

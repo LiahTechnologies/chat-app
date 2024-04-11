@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/appfont.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 
 class RadioWidget extends StatefulWidget {
   const RadioWidget(

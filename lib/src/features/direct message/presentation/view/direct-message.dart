@@ -1,57 +1,65 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/features/direct%20message/presentation/bloc/chat_message_bloc.dart';
+import 'package:njadia/src/features/direct%20message/presentation/bloc/chat_message_event.dart';
+import 'package:njadia/src/features/direct%20message/presentation/bloc/chat_message_state.dart';
 
+import '../../../../core/common/helper_function.dart';
 
-import '../../../../common/helper_function.dart';
-
+import '../../domain/entities/chat.dart';
 import '../widget/chatTile.dart';
 
-class DirectMessage extends StatefulWidget {
-  const DirectMessage({super.key});
+class DirectMessage extends StatelessWidget {
+  DirectMessage({super.key});
 
-  @override
-  State<DirectMessage> createState() => _DirectMessageState();
-}
-
-class _DirectMessageState extends State<DirectMessage> {
   final TextEditingController searchController = TextEditingController();
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  @override
-  void initState() {
-    getUserData();
+  
+  
+  // @override
+  // void initState() {
+  //   getUserData();
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
+
 
   String userId = '';
+  String userName = '';
   String recipientName = "";
   Stream? chat;
-  // Stream<QuerySnapshot>? lastChat;
-// 
-  getUserData() async {
-    // await HelperFunction.getUserName().then((value) {
-    //   setState(() {
-    //     userName = value;
-    //   });
-    // });
-    await HelperFunction.getUserID().then((value) {
-      setState(() {
-        userId = value;
-      });
-    });
+  Stream<Chat>? lastChat;
 
-    // await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
-    //     .getUserChats()
-    //     .then((snapshot) {
-    //   setState(() {
-    //     chat = snapshot;
-    //   });
-    // });
 
-    // getChatandAdmin();
-  }
+
+//
+  // getUserData() async {
+  //   await HelperFunction.getUserName().then((value) {
+  //     setState(() {
+  //       userName = value;
+  //     });
+  //   });
+
+  //   await HelperFunction.getUserID().then((value) {
+  //     setState(() {
+  //       userId = value;
+  //     });
+  //   });
+
+  // await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+  //     .getUserChats()
+  //     .then((snapshot) {
+  //   setState(() {
+  //     chat = snapshot;
+  //   });
+  // });
+
+  // getChatandAdmin();
+  // }
+
+
 
   String getId(String res) {
     return res.substring(9, res.indexOf('_'));
@@ -61,13 +69,17 @@ class _DirectMessageState extends State<DirectMessage> {
     return res.substring(res.indexOf("_") + 1);
   }
 
-  void getChattLastMessage({chatId}) {    
+
+
+  void getChattLastMessage({chatId}) {
     // DatabaseServices(uid: userId).getChatMessages(chatId).then((val) {
     //   setState(() {
     //     // lastChat = val;
     //   });
     // });
   }
+
+
 
 // await chatCollection.doc(chatId).update({
   //   'message': chatMessages["message"],
@@ -79,6 +91,7 @@ class _DirectMessageState extends State<DirectMessage> {
   //   "recepientId": chatMessages["recepientId"],
   //   'time': chatMessages["time"],
   // });
+
 
 
   @override
@@ -94,98 +107,103 @@ class _DirectMessageState extends State<DirectMessage> {
         ),
         centerTitle: true,
       ),
-      body: RefreshIndicator(
-        key: refreshIndicatorKey,
-        onRefresh: () async {
-          await getUserData();
-        },
-        child: Container(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                grouplist()
-                ],
+      body: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+        return RefreshIndicator(
+          key: refreshIndicatorKey,
+          onRefresh: () async {
+            context.read<ChatBloc>().add(OnChatLoaded());
+            // await getUserData();
+          },
+          child: Container(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [grouplist()],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
+
+
 // get the last message
-/*
+
   Widget getLastMessage() {
-    return StreamBuilder(
-        // stream: lastChat,
-        builder: (context, snapshot) {
-          return snapshot.hasData && snapshot.data!.docs.length > 0
-              ? Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        print(
-                            "The last message and sender is ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['sender']}  ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['message']}");
-
-                        return Text(
-                          "${snapshot.data!.docs[snapshot.data!.docs.length - 1]['sender']}  ${snapshot.data!.docs[snapshot.data!.docs.length - 1]['message']}",
-                          style: Theme.of(context).textTheme.displaySmall,
-                        );
-                      }),
-                )
-              : Text("");
-        });
+    return BlocBuilder<ChatBloc,ChatState>(
+      builder: (context,state) {
+        return StreamBuilder(
+            stream: lastChat,
+            builder: (context, snapshot) {
+              return state.chat.messages.length>0
+                  ? Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 1,
+                          itemBuilder: (context, index) {
+                            print(
+                                "The last message and sender is ${state.chat.name}  ${state.chat.messages[index]}");
+        
+                            return Text(
+                              "${state.chat.name}  ${state.chat.messages[index]}",
+                              style: Theme.of(context).textTheme.displaySmall,
+                            );
+                          }),
+                    )
+                  : Text("");
+            });
+      }
+    );
   }
-*/
-
-
-
 
   grouplist() {
-    return StreamBuilder(
-        stream: chat,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data != null) {
-              
-              if (snapshot.data['chats'].length != 0) {
-
-                // getChattLastMessage(chatId:snapshot.data['chats'][Index]);
-
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data['chats'].length,
-                    itemBuilder: (context, index) {
-                      var reverseIndex =
-                          snapshot.data['chats'].length - index - 1;
-                      print(
-                          "THE LSIST OF CHAT USERS ARE: ${snapshot.data['chats'][index]}");
-                      return ChatTile(
-                        groupId:snapshot.data['chats'][index] ,
-                        lastMessage: Text("getLastMessage()") ,
-                        userName:
-                            "${snapshot.data['firstName'] + " " + snapshot.data['lastName']}",
-                        recepientId: snapshot.data['chats'][index],
-                        isDirectMessage: true,
-                      );
-                    });
-
-               
+    return BlocBuilder<ChatBloc,ChatState>(
+      builder: (context,state) {
+        return StreamBuilder(
+            stream: chat,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data != null) {
+                  if (snapshot.data['chats'].length != 0) {
+                    // getChattLastMessage(chatId:snapshot.data['chats'][Index]);
+        
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data['chats'].length,
+                        itemBuilder: (context, index) {
+                          var reverseIndex =
+                              snapshot.data['chats'].length - index - 1;
+                          print(
+                              "THE LSIST OF CHAT USERS ARE: ${snapshot.data['chats'][index]}");
+                          return ChatTile(
+                            groupId: snapshot.data['chats'][index],
+                            lastMessage: Text("getLastMessage()"),
+                            userName:
+                                "${snapshot.data['firstName'] + " " + snapshot.data['lastName']}",
+                            recepientId: snapshot.data['chats'][index],
+                            isDirectMessage: true,
+                          );
+                        });
+                  } else {
+                    return Center(
+                        child: Text(
+                      "No Chat",
+                    ));
+                    // return noGroupWidget();
+                  }
+                } else {
+                  return Text("No");
+                  // return noGroupWidget();
+                }
               } else {
-                return Center(child: Text("No Chat",));
-                // return noGroupWidget();
+                return Container(
+                    height: 560.h,
+                    child: const Center(child: Text("No chats Created")));
               }
-            } else {
-              return Text("No");
-              // return noGroupWidget();
-            }
-          } else {
-            return Container(
-                height: 560.h,
-                child: const Center(child: Text("No chats Created")));
-          }
-        });
+            });
+      }
+    );
   }
-  
 }

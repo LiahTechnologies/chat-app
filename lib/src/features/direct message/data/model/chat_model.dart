@@ -12,6 +12,7 @@ class ChatModel extends Chat {
     required this.chatName
   }) : super(chatId: chatId, profilPic: profilPic, chatName:chatName);
 
+
   factory ChatModel.fromjson(Map<String, dynamic> json) => ChatModel(
         chatId: json["chatId"],
         profilPic: json["profilPic"],

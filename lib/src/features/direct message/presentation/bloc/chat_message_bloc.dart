@@ -19,11 +19,11 @@ class ChatMessageBloc extends Bloc<ChatMessageEvent, ChatMessageState> {
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatUsecase chatUsecase;
-  ChatBloc({required this.chatUsecase}) : super(ChatEmpty()) {
+  ChatBloc({required this.chatUsecase}) : super(ChatEmpty(chat: null)) {
     on<OnChatLoading>((event, emit) async {
       final result = await chatUsecase.execute(event.chatId);
 
-      result.fold((failure) => emit(ChatErrorLoading()),
+      result.fold((failure) => emit(ChatErrorLoading(chat: null)),
           (data) => emit(ChatLoaded(chat: data)));
     });
   }

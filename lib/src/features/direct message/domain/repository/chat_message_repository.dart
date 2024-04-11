@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
 
 abstract class ChatMessageRepository {

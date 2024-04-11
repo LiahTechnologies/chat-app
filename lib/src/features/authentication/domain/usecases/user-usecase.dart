@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:njadia/src/features/authentication/domain/repositories/user-repository.dart';
 

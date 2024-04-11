@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/errors/exceptions.dart';
 
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/direct%20message/data/data_sources/chat_and_message_data_source.dart';
 
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
@@ -39,6 +39,7 @@ class ChatMessageRepositoryImpl extends ChatMessageRepository {
       throw ServerFailure("something went wrong");
     }
   }
+  
   
   
   @override

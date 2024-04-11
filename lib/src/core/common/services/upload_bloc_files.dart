@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../../features/authentication/presentation/bloc/auth_event.dart';
+import '../../../features/authentication/presentation/bloc/auth_event.dart';
 
 class UploadBlocFiles {
   final imgSource;

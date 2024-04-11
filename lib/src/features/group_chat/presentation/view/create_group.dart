@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:njadia/src/features/group_chat/presentation/controller/create_group_service.dart';
 import 'package:njadia/src/utils/customInput.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
 

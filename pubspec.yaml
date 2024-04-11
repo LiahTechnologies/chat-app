@@ -58,6 +58,7 @@ dependencies:
   dartz: ^0.10.1
   get_it: ^7.6.7
   flutter_bloc: ^8.1.4
+  socket_io_client: ^2.0.3+1
   
  
 

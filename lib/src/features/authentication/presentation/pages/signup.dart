@@ -19,15 +19,15 @@ import 'package:njadia/src/features/home/presentation/view/home.dart';
 
 import 'package:njadia/src/utils/CustomButton.dart';
 
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/appfont.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/authentication/presentation/widgets/imageRequirement.dart';
 import 'package:njadia/src/features/authentication/presentation/widgets/radioWidget.dart';
 import 'package:njadia/src/utils/customInputWidget.dart';
 import 'package:njadia/src/utils/datePicker.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/warning.dart';
-import '../../../../common/constants/style/appAsset.dart';
+import '../../../../core/common/constants/style/appAsset.dart';
 import '../../../../utils/CustomDots.dart';
 import '../../../../utils/customButtomWithCustomICons.dart';
 import '../widgets/otp.dart';

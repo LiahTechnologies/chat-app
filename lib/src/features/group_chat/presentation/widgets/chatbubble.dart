@@ -4,8 +4,8 @@ import 'package:njadia/src/features/group_chat/presentation/widgets/see-chat-pro
 import 'package:njadia/src/features/home/presentation/view/home.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
-import '../../../../common/constants/style/appAsset.dart';
-import '../../../../common/constants/style/color.dart';
+import '../../../../core/common/constants/style/appAsset.dart';
+import '../../../../core/common/constants/style/color.dart';
 import '../../../../warnings/longpressDialogue.dart';
 import '../../../direct message/presentation/view/chat.dart';
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:njadia/src/common/urls.dart';
+import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 
 class BackendApi {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 
 class CustomPaymetInput extends StatelessWidget {
   const CustomPaymetInput({super.key, required this.controller});

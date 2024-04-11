@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/direct%20message/presentation/controller/direct_message_controller.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
+import 'package:swipe_to/swipe_to.dart';
+
+import '../widget/direct_message_tile.dart';
 
 
 class DirectMessageChat extends StatefulWidget {
@@ -33,6 +36,8 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
   String admin = '';
   // User? user;
   String chatId = '';
+
+
   @override
   void initState() {
     getChatandAdmin();
@@ -76,13 +81,16 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
   final controller = DirectMessageController();
   final replyController = DirectReplyMessageController();
 
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          leading: CustomBackArrow(),
+          leading:const CustomBackArrow(),
           centerTitle: true,
           elevation: 0,
           title: Row(
@@ -173,6 +181,50 @@ class _DirectMessageChatState extends State<DirectMessageChat> {
         messageController.clear();
       });
     }
+  }
+
+
+
+  chatMessages() {
+    return StreamBuilder(
+        stream: chat,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Expanded(
+                  child: ListView.builder(
+                      key: PageStorageKey<String>('directchat'),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+
+                        //  this is is adda the current user to the view list of this message
+                        // controller.updateMessageViewed(messageId: snapshot.data!.docs[index].id,chatId: snapshot.data!.),
+                        return SwipeTo(
+                          onRightSwipe: (v) {
+                            // replyController.setReplyMessage(
+                            //     replymessage: snapshot.data!.docs[index]
+                            //         ['message'],
+                            //     replysender: snapshot.data!.docs[index]
+                            //         ['sender']);
+                          },
+                          child: DirectMessageTile(
+                            message: snapshot.data!.docs[index]['message'],
+                            sendbyMe: FirebaseAuth.instance.currentUser!.uid ==
+                                snapshot.data!.docs[index]['senderId'],
+                            repliedMessage: snapshot.data!.docs[index]
+                                ['replyMessage']??"",
+                            replySender: snapshot.data!.docs[index]
+                                ['replySender'],
+                            time: snapshot.data!.docs[index]['time'],
+                            messageId: snapshot.data!.docs[index]['messageId'],
+                            senderId: snapshot.data!.docs[index]['senderId'],
+                            sender: snapshot.data!.docs[index]['sender'],
+                          ),
+                        );
+                      }),
+                )
+              : Container();
+        });
   }
 
   Widget _buildMessageComposer() {

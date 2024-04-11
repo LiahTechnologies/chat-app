@@ -33,24 +33,30 @@ class ChatMessageErrorLoading extends ChatMessageState {}
 
 
 class ChatState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
-
-class ChatEmpty extends ChatState {
-  @override
-  List<Object?> get props => [];
-}
-
-class ChatLoading extends ChatState {}
-
-class ChatLoaded extends ChatState {
-  final Chat chat;
-  ChatLoaded({required this.chat});
+ final Chat chat;
+  ChatState({required this.chat});
 
   @override
   List<Object?> get props => [chat];
 }
 
+class ChatEmpty extends ChatState {
+  ChatEmpty({required super.chat});
 
-class ChatErrorLoading extends ChatState {}
+  @override
+  List<Object?> get props => [];
+}
+
+class ChatLoading extends ChatState {
+  ChatLoading({required super.chat});
+}
+
+class ChatLoaded extends ChatState {
+  ChatLoaded({required super.chat});
+ 
+}
+
+
+class ChatErrorLoading extends ChatState {
+  ChatErrorLoading({required super.chat});
+}

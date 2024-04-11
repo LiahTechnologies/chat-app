@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
 import 'package:njadia/src/features/direct%20message/domain/repository/chat_message_repository.dart';
 
@@ -15,7 +15,5 @@ class ChatMessageUseCase {
       chatMessageRepository.deleteMessages(message, chatId);
 
    Future<Either<Failure, bool>> sendMessage(String chatId, ChatMessage message) =>
-      chatMessageRepository.sendMessages(message, chatId);
-
-    
+      chatMessageRepository.sendMessages(message, chatId);   
 }

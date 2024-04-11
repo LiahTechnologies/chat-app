@@ -9,7 +9,7 @@ import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/coming%20_soon.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
 
-import '../../../../common/constants/style/appAsset.dart';
+import '../../../../core/common/constants/style/appAsset.dart';
 
 class GroupTemplateOption extends StatelessWidget {
   const GroupTemplateOption({super.key});

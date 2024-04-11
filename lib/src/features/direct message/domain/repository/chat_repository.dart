@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:njadia/src/common/errors/failures.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
-import 'package:njadia/src/features/group_chat/domain/entities/message_entity.dart';
+import 'package:njadia/src/core/entities/message_entity.dart';
 
 import '../entities/chat.dart';
 

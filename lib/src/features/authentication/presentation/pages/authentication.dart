@@ -4,7 +4,7 @@ import 'package:njadia/src/features/authentication/presentation/pages/login.dart
 import 'package:njadia/src/features/onboarding/onboardingScreen.dart';
 
 
-import '../../../../common/helper_function.dart';
+import '../../../../core/common/helper_function.dart';
 
 class Authenentication extends StatelessWidget {
   const Authenentication({super.key});

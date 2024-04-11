@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 
 
-import '../../../../common/helper_function.dart';
+import '../../../../core/common/helper_function.dart';
 
 class SearchGroups extends StatefulWidget {
   const SearchGroups({super.key});

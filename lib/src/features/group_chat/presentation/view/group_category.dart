@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
 import 'package:njadia/src/warnings/coming%20_soon.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
-import 'package:njadia/src/common/constants/style/appAsset.dart';
-import 'package:njadia/src/common/constants/style/appfont.dart';
-import 'package:njadia/src/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
+import 'package:njadia/src/core/common/constants/style/appfont.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
