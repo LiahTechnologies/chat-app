@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
-import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
+import 'package:njadia/src/features/group_chat/data/model/group_list_model.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -10,6 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/common/services/readjons.dart';
 import '../../../../core/common/urls.dart';
 import '../../../../core/entities/stream_socket.dart';
+import '../model/group_chat_model.dart';
 
 abstract class GroupChatRemoteDataSource {
   Stream<MessageEntity> sendMessage(
@@ -17,7 +18,7 @@ abstract class GroupChatRemoteDataSource {
 
   Future<GroupChatModel> fetchMessage({required String groupId});
 
-  Future<List<GroupChatModel>> fetchGroup({required String userId});
+  // Future<List<GroupChatModel>> fetchGroup({required String groupId});
 
   Future<bool> deleteMessage(
       {required String groupId, required MessageEntity messageEntity});
@@ -35,7 +36,7 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
       // final response = await client.delete(Uri.parse(AppUrls.BASEURL),body: messageEntity);
 
       final message = GroupChatModel.fromJson(
-          json.decode(readJson('../../../../common/services/chat-data.json')));
+         await readJson('lib/src/core/common/services/chat-data.json'));
 
       return true;
     } on ServerExceptions {
@@ -49,7 +50,7 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
       // final response = await client.get(Uri.parse(AppUrls.BASEURL));
 
       final message = GroupChatModel.fromJson(
-          json.decode(readJson('../../../../common/services/chat-data.json')));
+         await readJson('lib/src/core/common/services/chat-data.json'));
 
       return message;
     } on ServerExceptions {
@@ -59,8 +60,7 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
 
   @override
   Stream<MessageEntity> sendMessage(
-      {required MessageEntity messageEntity,
-      required String channel_id})  {
+      {required MessageEntity messageEntity, required String channel_id}) {
     try {
       IO.Socket socket = IO.io('http://localhost:3000',
           OptionBuilder().setTransports(['websocket']).build());
@@ -78,23 +78,28 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
     }
   }
 
+/*
   @override
-  Future<List<GroupChatModel>> fetchGroup({required String userId}) async {
+  Future<List<GroupChatModel>> fetchGroup({required String groupId}) async {
     try {
-      final response = await client
-          .post(Uri.parse(AppUrls.BASEURL), body: {"userId": userId});
+      print("THE CURRENT GROUP ID IS ${groupId}");
+      // final response = await client
+      //     .post(Uri.parse(AppUrls.BASEURL), body: {"userId": groupId});
 
       final message = GroupChatModel.fromJson(
-          json.decode(readJson('../../../../common/services/chat-data.json')));
-
+          json.decode(readJson('../../../../common/services/groups.json')));
+      print("THIS IS THE MESSAGE ${message}");
       return [message];
     } on ServerExceptions {
       throw ServerExceptions();
     }
   }
 
+
   // @override
   // Future <List<GroupChatModel>> fetchGroup({required String userId}) async {
 
   // }
+
+  */
 }

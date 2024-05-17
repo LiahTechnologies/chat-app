@@ -50,10 +50,10 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        centerTitle: true,
+        // centerTitle: true,
         title: Text(
           "Profile",
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(color: Colors.white),
         ),
         actions: [
           // Switch(value: context.read<ThemeBloc>().state==ThemeMode.dark, onChanged: (value){
@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> {
                   return IconButton(
                     icon: Icon(
                       Icons.sunny,
-                      color: Theme.of(context).iconTheme.color,
+                      color: Theme.of(context).bottomAppBarTheme.shadowColor,
                     ),
                     onPressed: () {
 
@@ -91,7 +91,7 @@ class _ProfileState extends State<Profile> {
                       },
                       icon: Icon(
                         Icons.dark_mode,
-                        color: Theme.of(context).iconTheme.color,
+                        color: Theme.of(context).bottomAppBarTheme.shadowColor,
                       ));
                 }
               ),
@@ -104,7 +104,7 @@ class _ProfileState extends State<Profile> {
               },
               icon: Icon(
                 Icons.logout,
-                color: Theme.of(context).iconTheme.color,
+                color: Theme.of(context).bottomAppBarTheme.shadowColor,
               )),
         ],
       ),
@@ -139,16 +139,16 @@ class _ProfileState extends State<Profile> {
                         padding: EdgeInsets.all(2),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppColor.whiteColor),
+                            color: Colors.white),
                         child: Container(
                             height: 22.h,
                             width: 22.w,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: AppColor.greenColor),
-                            child: Icon(
+                                color: AppColor.lightButtonColor),
+                            child:const Icon(
                               Icons.edit,
-                              color: AppColor.whiteColor,
+                              color: Colors.white,
                               size: 15,
                             )),
                       ),
@@ -183,13 +183,13 @@ class _ProfileState extends State<Profile> {
                 Container(
                   height: 40,
                   width: 2,
-                  color: AppColor.greenColor,
+                  color: Theme.of(context).iconTheme.color,
                 ),
                 profileText(number: 23, text: "Age"),
                 Container(
                   height: 40,
                   width: 2,
-                  color: AppColor.greenColor,
+                  color: Theme.of(context).iconTheme.color,
                 ),
                 Stack(
                   children: [
@@ -205,7 +205,7 @@ class _ProfileState extends State<Profile> {
                           },
                           child: Icon(
                             Icons.edit,
-                            color: AppColor.greenColor,
+                            color: Theme.of(context).iconTheme.color,
                             size: 15,
                           )
 

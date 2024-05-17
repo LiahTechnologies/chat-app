@@ -8,7 +8,7 @@ class CustomPaymetInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return  TextField(
       controller: controller,
-      decoration:const  InputDecoration(focusColor: AppColor.purpleColor),
+      decoration:  InputDecoration(focusColor: Theme.of(context).iconTheme.color),
     );
   }
 }

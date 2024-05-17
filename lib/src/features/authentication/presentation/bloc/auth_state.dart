@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 
 abstract class AuthState extends Equatable {
@@ -37,12 +38,12 @@ class Signup extends AuthState {
 
 
 class SignUpSuccessful extends AuthState {
-  final bool isSignup;
+  final LoginResponse signupRespons;
 
-  const SignUpSuccessful({required this.isSignup});
+  const SignUpSuccessful({required this.signupRespons});
 
   @override
-  List<Object?> get props => [isSignup];
+  List<Object?> get props => [signupRespons];
 }
 
 

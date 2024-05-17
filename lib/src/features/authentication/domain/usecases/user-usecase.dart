@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
+import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:njadia/src/features/authentication/domain/repositories/user-repository.dart';
 
@@ -7,12 +8,12 @@ class UserUsecase {
   UserRepository userRepository;
   UserUsecase({required this.userRepository});
 
-  Future<Either<Failure, bool>> create(UserEntity user) {
+  Future<Either<Failure, LoginResponse>> create(UserEntity user) {
     print("SIGNUP IN USECASE WAS CALLED SUCCESSFULLY");
     return userRepository.registerUser(user: user);
   }
 
-  Future<Either<Failure, Login>> login(
+  Future<Either<Failure, LoginResponse>> login(
       {required String email, required String password}) {
     print("LOG IN USECASE WAS CALLED SUCCESSFULLY");
     return userRepository.loginUser(email: email, password: password);

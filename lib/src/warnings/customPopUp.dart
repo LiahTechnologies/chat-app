@@ -20,7 +20,7 @@ class CustomNotification extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
             "Friend request sent",
-            style: AppFonts.defaultFonts,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
       ),
@@ -29,9 +29,7 @@ class CustomNotification extends StatelessWidget {
         
         children: [
         CustomButton(
-            borderColor: AppColor.greenColor,
-            containerColor: AppColor.whiteColor,
-            // textColor: AppColor.greenColor,
+            
             width: 90,
             height: 50,
             icon: null,
@@ -41,9 +39,7 @@ class CustomNotification extends StatelessWidget {
             text: firstButton),
       if (showHiddenButton)
         CustomButton(
-            borderColor: AppColor.greenColor,
-            containerColor: AppColor.whiteColor,
-            // textColor: AppColor.greenColor,
+           
             width: 90,
             height: 50,
             icon: null,
@@ -54,9 +50,7 @@ class CustomNotification extends StatelessWidget {
 
       if (showHiddenButton)
       CustomButton(
-          borderColor: AppColor.greenColor,
-          containerColor: AppColor.whiteColor,
-          // textColor: AppColor.greenColor,
+         
           width: 90,
           height: 50,
           icon: null,

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_state.dart';
@@ -48,19 +49,23 @@ class LoginScreen extends StatelessWidget {
                         text: TextSpan(children: [
                       TextSpan(
                           text: "Enter your ",
-                          style: Theme.of(context).textTheme.displayMedium),
+                          style: Theme.of(context).textTheme.displayLarge),
                       TextSpan(
                           text: "Email & Password",
-                          style: Theme.of(context).textTheme.displayMedium),
+                          style: Theme.of(context).textTheme.displayLarge),
                       TextSpan(
                           text: " Below.",
-                          style: Theme.of(context).textTheme.displayMedium),
+                          style: Theme.of(context).textTheme.displayLarge),
                     ])),
                   ),
 
+              SizedBox(height: 9,),
                   Text(
                       "We will send  a 6 digit code to verify your phone  number",
-                      style: Theme.of(context).textTheme.displaySmall),
+                      style: Theme.of(context).textTheme.displayMedium),
+                 
+                  SizedBox(height: 5,),
+                 
                   CustomInputWidget(
                       borderRadius: 12,
                       marginTop: 12,
@@ -101,10 +106,10 @@ class LoginScreen extends StatelessWidget {
                               context.read<AuthBloc>().add(
                                   OnLogin(email: email, password: password));
 
-                              if (state is LoggedIn) {
+                              // if (state is LoggedIn) {
                                 // print(" THE LOGGIN TOKEN IS ${state.token}");
                                 NextScreen(context: context, page: HomePage());
-                              }
+                              // }
                             } else
                               showDialog(
                                   context: context,
@@ -124,14 +129,14 @@ class LoginScreen extends StatelessWidget {
                     child: Text.rich((TextSpan(children: [
                       TextSpan(
                           text: "If you don't have an account",
-                          style: Theme.of(context).textTheme.displaySmall),
+                          style: Theme.of(context).textTheme.displayMedium),
                       TextSpan(
                           text: " Signup",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               NextScreen(context: context, page: SignUp());
                             },
-                          style: Theme.of(context).textTheme.labelSmall)
+                          style: Theme.of(context).textTheme.displayMedium!.copyWith(color:  Theme.of(context).colorScheme.onBackground))
                     ]))),
                   )
                 ],

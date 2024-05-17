@@ -18,9 +18,8 @@ class ChangeMobileNumber extends StatelessWidget {
           "Enter Your Number",
           style: Theme.of(context)
               .textTheme
-              .titleLarge!
-              .copyWith(color: AppColor.greenColor),
-        ),
+              .titleLarge!),
+        
         SizedBox(
           height: 30.h,
         ),
@@ -31,7 +30,7 @@ class ChangeMobileNumber extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: AppColor.greenColor,
+                  color: Theme.of(context).iconTheme.color!,
                 )),
             width: 300.w,
             child: TextField(

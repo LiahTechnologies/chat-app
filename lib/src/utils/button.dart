@@ -16,9 +16,9 @@ class AppButton extends StatelessWidget {
       this.isActive = true,
       this.borderRadius = 25,
       this.textColor = true,
-      this.iconColor = AppColor.whiteColor,
-      this.containerColor = AppColor.transparent,
-      this.borderColor = AppColor.whiteColor
+      // this.iconColor = AppColor.whiteColor,
+      // this.containerColor = AppColor.transparent,
+      // this.borderColor = Theme
       
       });
   final VoidCallback onPress;
@@ -30,9 +30,9 @@ class AppButton extends StatelessWidget {
   final String? image;
   final bool? isActive;
   final bool textColor;
-  final Color iconColor;
-  final Color containerColor;
-  final Color? borderColor;
+  // final Color iconColor;
+  // final Color containerColor;
+  // final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,9 @@ class AppButton extends StatelessWidget {
       width: width == 0 ? 150.w : width,
       height: height == 0 ? 40.h : height,
       decoration: BoxDecoration(
-          color: isActive! ? containerColor : Colors.grey.withOpacity(0.3),
+          color: isActive! ? Theme.of(context).iconTheme.color : Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: borderColor ?? Colors.transparent)),
+          border: Border.all(color: Theme.of(context).iconTheme.color ?? Colors.transparent)),
       child: MaterialButton(
         onPressed: onPress,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -50,7 +50,7 @@ class AppButton extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style:Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor? Theme.of(context).textTheme.displayLarge!.color:AppColor.whiteColor,  )
+              style:Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor? Theme.of(context).textTheme.displayLarge!.color:Theme.of(context).iconTheme.color,  )
             ),
           ),
           // if (icon != null)

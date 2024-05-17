@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import '../../../../../../chat/helper/helper_function.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/login.dart';
+import 'package:njadia/src/features/authentication/presentation/pages/signup.dart';
 import 'package:njadia/src/features/onboarding/onboardingScreen.dart';
 
 
@@ -18,8 +19,8 @@ class Authenentication extends StatelessWidget {
               if (snapshot.data == true) {
                 return LoginScreen();
               } else {
-                // return OnboardingWelcome();
-                return OnBoardingScreens();
+                return SignUp();
+                // return OnBoardingScreens();
               }
             }));
   }

@@ -15,10 +15,12 @@ class CustomButtonWithCustomIcons extends StatelessWidget {
       this.width = 0,
       this.isActive = true,
       this.borderRadius = 12,
-      this.textColor = AppColor.whiteColor,
-      this.iconColor = AppColor.whiteColor,
-      this.containerColor = AppColor.greenColor,
-      this.borderColor = AppColor.greenColor});
+      // this.textColor = AppColor.whiteColor,
+      // this.iconColor = AppColor.whiteColor,
+      // this.containerColor = AppColor.greenColor,
+      // this.borderColor = AppColor.greenColor
+      
+      });
   final VoidCallback onPress;
   final String text;
   final double height;
@@ -27,10 +29,10 @@ class CustomButtonWithCustomIcons extends StatelessWidget {
   final Widget icon;
   final String? image;
   final bool? isActive;
-  final Color textColor;
-  final Color iconColor;
-  final Color containerColor;
-  final Color? borderColor;
+  // final Color textColor;
+  // final Color iconColor;
+  // final Color containerColor;
+  // final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,9 @@ class CustomButtonWithCustomIcons extends StatelessWidget {
       width: width == 0 ? 150.w : width,
       height: height == 0 ? 40.h : height,
       decoration: BoxDecoration(
-          color: isActive! ? containerColor : Colors.grey.withOpacity(0.3),
+          color: isActive! ? AppColor.lightButtonColor : Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: borderColor ?? Colors.transparent)),
+          border: Border.all(color: Theme.of(context).iconTheme.color ?? Colors.transparent)),
       child: MaterialButton(
         onPressed: onPress,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -48,7 +50,7 @@ class CustomButtonWithCustomIcons extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style: AppFonts.buttonColor.copyWith(color: textColor),
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),
             ),
           ),
           if (icon != null)

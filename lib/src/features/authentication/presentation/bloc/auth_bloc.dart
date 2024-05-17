@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final response = await userUsecase.create(event.userEntity);
 
       response.fold((failure) => emit(AuthFailure(message: failure.message)),
-          (data) => emit(SignUpSuccessful(isSignup: data)));
+          (data) => emit(SignUpSuccessful(signupRespons: data)));
     });
 
     on<OnOTPGeneration>((event, emit) async {

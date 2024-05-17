@@ -93,7 +93,7 @@ class SendMoneyDetail extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColor.greenColor)),
+                        border: Border.all(color: Theme.of(context).iconTheme.color!)),
                     child: Row(
                       children: [
                         Text("Change",
@@ -129,7 +129,7 @@ class SendMoneyDetail extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColor.greenColor)),
+                        border: Border.all(color: Theme.of(context).iconTheme.color!)),
                     child: Row(
                       children: [
                         Text("Change",
@@ -176,13 +176,13 @@ class SendMoneyDetail extends StatelessWidget {
                       });
                 else
                   !isLoading
-                      ?showModalBottomSheet(context: context, builder: (context)=> showCustomeButtonSheet(
+                      ?showModalBottomSheet(context: context, builder: (context)=> showCustomeButtonSheet(context,
                               image: AppImages.PROCESSING_ICON),)
                       
                       
                       
                       : showModalBottomSheet(context:context,builder:(context)=>
-                          showCustomeButtonSheet(
+                          showCustomeButtonSheet(context,
                               image: AppImages.DONE__ICON,
                               text: "Done",
                               subtitle: "Continue",
@@ -199,7 +199,7 @@ class SendMoneyDetail extends StatelessWidget {
     );
   }
 
-  showCustomeButtonSheet({image, text, String? subtitle, double? fonts}) {
+  showCustomeButtonSheet(BuildContext context,{image, text, String? subtitle, double? fonts}) {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -212,13 +212,13 @@ class SendMoneyDetail extends StatelessWidget {
           Center(
             child: Text(
               "$text",
-              style: AppFonts.defaultFonts.copyWith(fontSize: fonts!),
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: fonts!),
             ),
           ),
           Center(
             child: Text(
               "$subtitle",
-              style: AppFonts.defaultFonts,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           )
         ],

@@ -18,7 +18,7 @@ class BackButton extends StatelessWidget {
         width: 90.w,
         height: 50.h,
         decoration: BoxDecoration(
-            color: AppColor.greenColor,
+            color: Theme.of(context).iconTheme.color,
             borderRadius: BorderRadius.circular(15)),
         child: MaterialButton(
             onPressed: () => controller.previousPage(
@@ -29,9 +29,9 @@ class BackButton extends StatelessWidget {
               children: [
                 Icon(
                   Icons.arrow_back,
-                  color: AppColor.whiteColor,
+                  color: Theme.of(context).iconTheme.color,
                 ),
-                Text("Back", style: AppFonts.buttonColor),
+                Text("Back", style: Theme.of(context).textTheme.displayMedium),
               ],
             ))),
   );

@@ -30,15 +30,15 @@ class GroupMenuPage extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () {
-                            customGetxBottomsheet(menuClicked(),context);
+                            customGetxBottomsheet(menuClicked(context),context);
                           },
                           icon: Icon(
                             Icons.menu_outlined,
-                            color: AppColor.greenColor,
+                            color: Theme.of(context).iconTheme.color,
                           )),
                       Text(
                         "# General",
-                        style: AppFonts.defaultFonts,
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ],
                   ),
@@ -48,15 +48,15 @@ class GroupMenuPage extends StatelessWidget {
                           onPressed: () {},
                           icon: Icon(
                             Icons.search_outlined,
-                            color: AppColor.greenColor,
+                            color: Theme.of(context).iconTheme.color,
                           )),
                       IconButton(
                           onPressed: () {
-                            customGetxBottomsheet(personClicked(),context);
+                            customGetxBottomsheet(personClicked(context),context);
                           },
                           icon: Icon(
                             Icons.person_outline,
-                            color: AppColor.greenColor,
+                            color: Theme.of(context).iconTheme.color,
                           ))
                     ],
                   )
@@ -72,11 +72,11 @@ class GroupMenuPage extends StatelessWidget {
                   width: 70.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: AppColor.blackColor.withOpacity(0.1)),
+                      color: Theme.of(context).iconTheme.color!.withOpacity(0.1)),
                   child: Center(
                       child: Text(
                     "#",
-                    style: AppFonts.defaultWhite.copyWith(fontSize: 35),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 35),
                   )),
                 ),
               ),
@@ -86,7 +86,7 @@ class GroupMenuPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 8.0.h),
                   child: Text(
                     "Welcome to Ekondo Njangi",
-                    style: AppFonts.heading3,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
               ),
@@ -96,7 +96,7 @@ class GroupMenuPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 8.0.h),
                   child: Text(
                     "This is your brand new, shiny Njangi group.",
-                    style: AppFonts.defaultFonts,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
               ),
@@ -133,7 +133,7 @@ class GroupMenuPage extends StatelessWidget {
     );
   }
 
-  menuClicked() {
+  menuClicked(BuildContext  context) {
     return Container(
       child: Column(children: [
         SizedBox(
@@ -142,11 +142,11 @@ class GroupMenuPage extends StatelessWidget {
         Image.asset(AppImages.NJANGI_ICON),
         Text(
           "Finish setting up your njangi group",
-          style: AppFonts.heading3,
+          style: Theme.of(context).textTheme.displayMedium
         ),
         Text.rich(TextSpan(children: [
-          TextSpan(text: "you have completed", style: AppFonts.defaultFonts),
-          TextSpan(text: " 0 of 3 steps", style: AppFonts.defaultFontsBold3)
+          TextSpan(text: "you have completed", style: Theme.of(context).textTheme.displayMedium),
+          TextSpan(text: " 0 of 3 steps", style: Theme.of(context).textTheme.displayMedium)
         ])),
         CustomCardItems(
             image: AppImages.GROUP_DEFAULT_ICON,
@@ -162,13 +162,13 @@ class GroupMenuPage extends StatelessWidget {
             onTap: () {}),
         Text(
           "skip these step",
-          style: AppFonts.defaultFonts,
+          style: Theme.of(context).textTheme.displayMedium,
         )
       ]),
     );
   }
 
-  personClicked() {
+  personClicked(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -182,15 +182,15 @@ class GroupMenuPage extends StatelessWidget {
             ),
             Text(
               "Invit your members to this njangi",
-              style: AppFonts.heading3,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             Text(
               "share this link with your members and they'll  ",
-              style: AppFonts.defaultFonts,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             Text(
               "automatically join your Njangi",
-              style: AppFonts.defaultFonts,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             Container(
               child: TextField(
@@ -206,7 +206,7 @@ class GroupMenuPage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Expires in 7days",
-                style: AppFonts.defaultFonts.copyWith(fontSize: 15),
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 15),
               ),
             ),
             SizedBox(

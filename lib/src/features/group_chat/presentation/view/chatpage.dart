@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/entities/message_entity.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_bloc.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_event.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 import '../../../payment/presentation/view/select_group_member.dart';
 
@@ -84,11 +89,11 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          // chatMessages(),
+          chatMessages(context),
           Stack(
             children: [
               Positioned(child: _buildMessageComposer()),
-              Positioned(bottom: 10, right: 14, child: sendButton())
+              Positioned(bottom: 10, right: 14, child: sendButton(context))
             ],
           )
         ],
@@ -96,21 +101,63 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  sendButton() {
+  sendButton(BuildContext context) {
     return GestureDetector(
-      // onTap: sendMessage,
+      onTap: ()=>context.read<GroupChatBloc>().add(OnGroupChatSent(message: MessageEntity(messageId: "messageId", messageReceiver: "messageReceiver", messageSender: "messageSender", replyMessage: "replyMessage", replySender: "replySender", dateTime: "9:00am", message: messageController.text, chatId: ''), groupId: "groupId")),
       child: Container(
           alignment: Alignment.bottomRight,
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-              color: AppColor.purpleColor,
+              color: Theme.of(context).iconTheme.color,
               borderRadius: BorderRadius.circular(30)),
           child: const Center(child: Icon(Icons.send, color: Colors.white))),
     );
   }
 
 
+
+
+  chatMessages(BuildContext context) {
+    return StreamBuilder(
+        stream: context.read<GroupChatBloc>().stream,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Expanded(
+                  child: ListView.builder(
+                      key: PageStorageKey<String>('directchat'),
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        //  this is is adda the current user to the view list of this message
+                        // controller.updateMessageViewed(messageId: snapshot.data!.docs[index].id,chatId: snapshot.data!.),
+                        return SwipeTo(
+                          onRightSwipe: (v) {
+                            // replyController.setReplyMessage(
+                            //     replymessage: snapshot.data!.docs[index]
+                            //         ['message'],
+                            //     replysender: snapshot.data!.docs[index]
+                            //         ['sender']);
+                          },
+                          child: Text(""),
+
+
+                          // child: DirectMessageTile(
+                          //   message: "We don't have a class today",
+                          //   sendbyMe: true,
+                          //   repliedMessage: "replied message",
+                          //   replySender: "John",
+                          //   time: DateTime.now().toString(),
+                          //   messageId: "jdso740843n3io390783",
+                          //   senderId: "sdjloewiu09800213djsd",
+                          //   sender: "Betrand",
+                          // ),
+                        );
+                      }),
+                )
+              : Container();
+        });
+  }
 
   Widget _buildMessageComposer() {
     return Container(
@@ -146,8 +193,8 @@ class _ChatPageState extends State<ChatPage> {
                                   Container(
                                     height: 50.h,
                                     width: 3.h,
-                                    decoration: const BoxDecoration(
-                                        color: AppColor.cardColor,
+                                    decoration:  BoxDecoration(
+                                        color:Theme.of(context).iconTheme.color,
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(10),
                                             bottomLeft: Radius.circular(10))),

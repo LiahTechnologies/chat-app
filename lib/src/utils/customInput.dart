@@ -27,7 +27,7 @@ class CustomInput extends StatelessWidget {
       height: height.h,
       decoration: BoxDecoration(
           border: Border.all(
-              color: isBorderColor ? AppColor.greenColor : Colors.transparent)),
+              color: isBorderColor ?Theme.of(context).iconTheme.color! : Colors.transparent)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

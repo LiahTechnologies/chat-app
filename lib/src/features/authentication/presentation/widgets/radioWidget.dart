@@ -30,7 +30,7 @@ class _RadioWidgetState extends State<RadioWidget> {
       child: Row(
         children: [
           Radio(
-              activeColor: AppColor.greenColor,
+              activeColor: Theme.of(context).iconTheme.color,
               value: widget.index,
               groupValue: widget.active,
               onChanged: (value) {

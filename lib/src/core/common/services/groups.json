@@ -1,0 +1,35 @@
+
+{
+     
+    "groups":[
+        {
+            "id":"Flutter_1",
+            "groupName":"Flutter",
+            "fee":"20000",
+            "limit":"30",
+            "profilePic":"F",
+            "unreadMessage":"3",
+            "createdAt":"01/2/2024.1:40pm",
+            "messages":[
+                {
+                    "messageId":"m1",
+                    "messageSender":"John",
+                    "messageReceiver":"Joe",
+                    "dateTime":"9.00pm",
+                    "message":"We have a course on Friday please, do well to be there.",
+                    "replySender":"JohnDoe",
+                    "replyMessage":"when do we have a class?"
+                },
+                {
+                    "messageId":"m1",
+                    "messageSender":"John",
+                    "messageReceiver":"Joe",
+                    "dateTime":"9.00pm",
+                    "message":"We have a course on Friday please, do well to be there.",
+                    "replySender":"JohnDoe",
+                    "replyMessage":"when do we have a class?"
+                }
+            ]
+        }
+    ]
+}

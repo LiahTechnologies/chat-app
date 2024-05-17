@@ -31,7 +31,7 @@ class _AddContactsState extends State<AddContacts> {
                     child: TextButton(
                       child: Text(
                         "close",
-                        style: AppFonts.defaultFonts,
+                        style: Theme.of(context).textTheme.displayMedium
                       ),
                       onPressed: () {
                         BackScreen(context: context);
@@ -39,13 +39,13 @@ class _AddContactsState extends State<AddContacts> {
                     )),
                 Text(
                   "Add your contacts",
-                  style: AppFonts.heading1,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15.0.w),
                   child: Text(
                     "Always be able to reach your njangi members on njadia",
-                    style: AppFonts.defaultFonts,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
                 Container(

@@ -10,6 +10,9 @@ import 'package:njadia/src/utils/theme/theme_bloc.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
 import 'src/features/authentication/dependencies_injection.dart';
+import 'src/features/direct message/presentation/bloc/chat_message_bloc.dart';
+import 'src/features/group_chat/presentation/bloc/group_bloc.dart';
+import 'src/features/group_chat/presentation/bloc/group_list_bloc.dart';
 
 /// ------- For Docs and Updates Check ------
 /// ------------------README.md--------------
@@ -36,7 +39,11 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(create: (_) => locator<AuthBloc>()),
               BlocProvider(create: (_) => locator<ThemeBloc>()),
-              BlocProvider(create: (_) => locator<ThemeBloc>())
+              BlocProvider(create: (_) => locator<GroupChatBloc>()),
+              BlocProvider(create: (_) => locator<GroupListBloc>()),
+              BlocProvider(create: (_)=>  locator<ChatMessageBloc>()),
+              BlocProvider(create: (_)=>  locator<ChatBloc>()),
+              
             ],
             child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {
               return MaterialApp(

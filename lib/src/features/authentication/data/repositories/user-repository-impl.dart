@@ -26,7 +26,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> registerUser({required UserEntity user}) async {
+  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user}) async {
     try {
       final response = await userRemoteDataSource.createUser(user);
       return Right(response);

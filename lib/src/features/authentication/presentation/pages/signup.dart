@@ -1,9 +1,8 @@
-
 import 'dart:io';
-
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,6 +107,9 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+                     
+
                     Text("Account Creation",
                         style: Theme.of(context).textTheme.titleMedium),
                     Container(
@@ -117,7 +119,8 @@ class _SignUpState extends State<SignUp> {
                           CustomDots(index: 1, position: 1),
                           CustomDots(index: 2, position: 1),
                           CustomDots(index: 3, position: 1),
-                          CustomDots(index: 3, position: 1),
+                          CustomDots(index: 4, position: 1),
+                          CustomDots(index: 5, position: 1),
                         ],
                       ),
                     ),
@@ -140,6 +143,9 @@ class _SignUpState extends State<SignUp> {
                     Text(
                         "We will send  a 6 digit code to verify your phone  number",
                         style: Theme.of(context).textTheme.displayMedium),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     CustomInputWidget(
                         borderRadius: 12,
                         marginTop: 12,
@@ -147,6 +153,9 @@ class _SignUpState extends State<SignUp> {
                         onChange: (v) {
                           email = v;
                         }),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     CustomInputWidget(
                         borderRadius: 12,
                         marginTop: 12,
@@ -154,6 +163,9 @@ class _SignUpState extends State<SignUp> {
                         onChange: (v) {
                           password = v;
                         }),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     CustomInputWidget(
                         borderRadius: 12,
                         marginTop: 12,
@@ -161,6 +173,9 @@ class _SignUpState extends State<SignUp> {
                         onChange: (v) {
                           confirm = v;
                         }),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(right: 18.0, top: 20.0.h),
                       child: Align(
@@ -204,7 +219,7 @@ class _SignUpState extends State<SignUp> {
                                     );
                                   })
                           },
-                          text: "Next",
+                          text: "Continue",
                         ),
                       ),
                     ),
@@ -213,7 +228,7 @@ class _SignUpState extends State<SignUp> {
                       child: Text.rich((TextSpan(children: [
                         TextSpan(
                             text: "If you already have an account",
-                            style: Theme.of(context).textTheme.displaySmall),
+                            style: Theme.of(context).textTheme.displayMedium),
                         TextSpan(
                             text: " Login",
                             recognizer: TapGestureRecognizer()
@@ -221,7 +236,10 @@ class _SignUpState extends State<SignUp> {
                                 NextScreen(
                                     context: context, page: LoginScreen());
                               },
-                            style: Theme.of(context).textTheme.labelSmall)
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .copyWith(color: Theme.of(context).colorScheme.onBackground))
                       ]))),
                     )
                   ],
@@ -238,6 +256,24 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+                      Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () {
+                          pagecontroller.previousPage(
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeIn);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5,),
+
                     Text(
                       "Account Creation",
                       style: Theme.of(context).textTheme.titleMedium,
@@ -249,7 +285,9 @@ class _SignUpState extends State<SignUp> {
                           CustomDots(index: 1, position: 2),
                           CustomDots(index: 2, position: 2),
                           CustomDots(index: 3, position: 2),
-                          CustomDots(index: 3, position: 2),
+                          CustomDots(index: 4, position: 2),
+                          CustomDots(index: 5, position: 2),
+
                         ],
                       ),
                     ),
@@ -315,6 +353,23 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                      Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () {
+                          pagecontroller.previousPage(
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeIn);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5,),
+
                     Text(
                       "Account Creation",
                       style: Theme.of(context).textTheme.titleMedium,
@@ -323,10 +378,12 @@ class _SignUpState extends State<SignUp> {
                       margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                       child: const Row(
                         children: [
-                          CustomDots(index: 1, position: 2),
-                          CustomDots(index: 2, position: 2),
-                          CustomDots(index: 3, position: 2),
-                          CustomDots(index: 3, position: 2),
+                          CustomDots(index: 1, position: 3),
+                          CustomDots(index: 2, position: 3),
+                          CustomDots(index: 3, position: 3),
+                          CustomDots(index: 4, position: 3),
+                          CustomDots(index: 5, position: 3),
+
                         ],
                       ),
                     ),
@@ -381,7 +438,7 @@ class _SignUpState extends State<SignUp> {
                             finalUserOTP = finalUserOTP + "" + value;
                           },
                         ),
-                        OTPInput(
+                        /*  OTPInput(
                           index: 5,
                           userOTP: (value) {
                             finalUserOTP = finalUserOTP + "" + value;
@@ -392,7 +449,7 @@ class _SignUpState extends State<SignUp> {
                           userOTP: (value) {
                             finalUserOTP = finalUserOTP + "" + value;
                           },
-                        ),
+                        ),*/
                       ],
                     ),
                     Row(
@@ -408,15 +465,10 @@ class _SignUpState extends State<SignUp> {
                               color: Color(0xff1FAF67),
                               size: 16,
                             ),
-                            label: Text(
-                              "Resend code",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium!
-                                  .copyWith(
-                                      fontStyle: FontStyle.italic,
-                                      color: AppColor.greenColor),
-                            )),
+                            label: Text("Resend code",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium!)),
                         TextButton.icon(
                             onPressed: () {
                               pagecontroller.previousPage(
@@ -428,15 +480,11 @@ class _SignUpState extends State<SignUp> {
                               color: Color(0xff1FAF67),
                               size: 16,
                             ),
-                            label: Text(
-                              "change phone number",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium!
-                                  .copyWith(
-                                      fontStyle: FontStyle.italic,
-                                      color: AppColor.greenColor),
-                            ))
+                            label: Text("Change phone number",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium!
+                                    .copyWith(fontSize: 14)))
                       ],
                     ),
                     Padding(
@@ -451,10 +499,11 @@ class _SignUpState extends State<SignUp> {
 
                             print("THE CURRENT STATE IS ${state}");
 
-                            if (state is OTPCodeVerified)
-                              pagecontroller.nextPage(
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.easeInOut);
+                            // if (state is OTPCodeVerified)
+
+                            pagecontroller.nextPage(
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut);
                           },
                           text: "Continue",
                         ),
@@ -474,16 +523,36 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+                      Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () {
+                          pagecontroller.previousPage(
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeIn);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5,),
+
                     Text("Account Creation",
                         style: Theme.of(context).textTheme.titleMedium),
                     Container(
                       margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                       child: const Row(
                         children: [
-                          CustomDots(index: 1, position: 3),
-                          CustomDots(index: 2, position: 3),
-                          CustomDots(index: 3, position: 3),
-                          CustomDots(index: 4, position: 3),
+                          CustomDots(index: 1, position: 4),
+                          CustomDots(index: 2, position: 4),
+                          CustomDots(index: 3, position: 4),
+                          CustomDots(index: 4, position: 4),
+                          CustomDots(index: 5, position: 4),
+
                         ],
                       ),
                     ),
@@ -575,6 +644,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
 
+                    SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       children: [
                         Checkbox(
@@ -584,18 +656,18 @@ class _SignUpState extends State<SignUp> {
                             }),
                         Text(
                           "I agree to the",
-                          style: Theme.of(context).textTheme.displayMedium,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
                           " Terms of service",
-                          style: Theme.of(context).textTheme.displayMedium,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(
                           " and",
-                          style: Theme.of(context).textTheme.displayMedium,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
                         Text(" Privacy Policy",
-                            style: Theme.of(context).textTheme.displayMedium),
+                            style: Theme.of(context).textTheme.displaySmall),
                       ],
                     ),
                     Padding(
@@ -634,10 +706,26 @@ class _SignUpState extends State<SignUp> {
 
               Container(
                 margin: EdgeInsets.only(
-                    top: 12.h, left: 12.w, right: 12.w, bottom: 7.h),
+                    top: 5.h, left: 12.w, right: 12.w, bottom: 7.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () {
+                          pagecontroller.previousPage(
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeIn);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5,),
                     Text(
                       "Verify your identity",
                       style: Theme.of(context).textTheme.titleMedium,
@@ -646,10 +734,12 @@ class _SignUpState extends State<SignUp> {
                       margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                       child: const Row(
                         children: [
-                          CustomDots(index: 1, position: 4),
-                          CustomDots(index: 2, position: 4),
-                          CustomDots(index: 3, position: 4),
-                          CustomDots(index: 4, position: 4),
+                          CustomDots(index: 1, position: 5),
+                          CustomDots(index: 2, position: 5),
+                          CustomDots(index: 3, position: 5),
+                          CustomDots(index: 4, position: 5),
+                          CustomDots(index: 5, position: 5),
+
                         ],
                       ),
                     ),
@@ -675,19 +765,22 @@ class _SignUpState extends State<SignUp> {
                       height: 50.h,
                       width: 350.w,
                       icon: !isSelfie
-                          ? const Icon(
+                          ? Icon(
                               Icons.arrow_forward_ios_outlined,
+                              color: Colors.white,
+                              size: 18,
                             )
                           : Container(
                               height: 30.h,
                               width: 30.w,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: AppColor.whiteColor),
-                              child: const Center(
+                                  color: Colors.white),
+                              child: Center(
                                 child: Icon(
                                   Icons.done,
-                                  color: AppColor.greenColor,
+                                  color: Colors.black,
+                                  size: 18,
                                 ),
                               ),
                             ),
@@ -704,17 +797,20 @@ class _SignUpState extends State<SignUp> {
                       icon: !isDocument
                           ? const Icon(
                               Icons.arrow_forward_ios_outlined,
+                              color: Colors.white,
+                              size: 18,
                             )
                           : Container(
                               height: 30.h,
                               width: 30.w,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: AppColor.whiteColor),
-                              child: const Center(
+                                  color: Colors.white),
+                              child: Center(
                                 child: Icon(
                                   Icons.done,
-                                  color: AppColor.greenColor,
+                                  color: Colors.black,
+                                  size: 18,
                                 ),
                               ),
                             ),
@@ -766,7 +862,7 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.only(bottom: 18.0.h, left: 35.w),
                         child: Text(
                           "Please take a portrait selfie whilst\nholding the ID card",
-                          style: AppFonts.defaultBlack600,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                       ),
                     ),
@@ -789,7 +885,7 @@ class _SignUpState extends State<SignUp> {
                           width: 150.w,
                           height: 40.h,
                           decoration: BoxDecoration(
-                              color: AppColor.greenColor,
+                              color: AppColor.lightButtonColor,
                               borderRadius: BorderRadius.circular(15)),
                           child: MaterialButton(
                             onPressed: () {
@@ -801,7 +897,10 @@ class _SignUpState extends State<SignUp> {
                               });
                             },
                             child: Text("Open the camera",
-                                style: AppFonts.buttonColor),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium!
+                                    .copyWith(color: Colors.white)),
                           ),
                         ),
                       );
@@ -848,15 +947,9 @@ class _SignUpState extends State<SignUp> {
                             color: Color(0xff1FAF67),
                             size: 16,
                           ),
-                          label: Text(
-                            "Retake",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium!
-                                .copyWith(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColor.greenColor),
-                          )),
+                          label: Text("Retake",
+                              style:
+                                  Theme.of(context).textTheme.displayMedium!)),
                     ),
                     Container(
                         margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -885,13 +978,17 @@ class _SignUpState extends State<SignUp> {
                         width: 150.w,
                         height: 40.h,
                         decoration: BoxDecoration(
-                            color: AppColor.greenColor,
+                            color: AppColor.lightButtonColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: MaterialButton(
                           onPressed: () => {
                             pagecontroller.jumpToPage(4),
                           },
-                          child: Text("Continue", style: AppFonts.buttonColor),
+                          child: Text("Continue",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(color: Colors.white)),
                         ),
                       ),
                     )
@@ -946,7 +1043,9 @@ class _SignUpState extends State<SignUp> {
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: AppColor.greenColor)),
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color!)),
                                     child: Text("Cameroon",
                                         style: Theme.of(context)
                                             .textTheme
@@ -1015,7 +1114,7 @@ class _SignUpState extends State<SignUp> {
                         width: 150.w,
                         height: 40.h,
                         decoration: BoxDecoration(
-                            color: AppColor.greenColor,
+                            color: AppColor.lightButtonColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: MaterialButton(
                           onPressed: () => {
@@ -1026,7 +1125,11 @@ class _SignUpState extends State<SignUp> {
                                   curve: Curves.easeInOut);
                             }),
                           },
-                          child: Text("Continue", style: AppFonts.buttonColor),
+                          child: Text("Continue",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(color: Colors.white)),
                         ),
                       ),
                     )
@@ -1071,15 +1174,9 @@ class _SignUpState extends State<SignUp> {
                             color: Color(0xff1FAF67),
                             size: 16,
                           ),
-                          label: Text(
-                            "Retake",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium!
-                                .copyWith(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColor.greenColor),
-                          )),
+                          label: Text("Retake",
+                              style:
+                                  Theme.of(context).textTheme.displayMedium!)),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
@@ -1089,11 +1186,15 @@ class _SignUpState extends State<SignUp> {
                         width: 150.w,
                         height: 40.h,
                         decoration: BoxDecoration(
-                            color: AppColor.greenColor,
+                            color: AppColor.lightButtonColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: MaterialButton(
                           onPressed: () => {pagecontroller.jumpToPage(4)},
-                          child: Text("Continue", style: AppFonts.buttonColor),
+                          child: Text("Continue",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(color: Colors.white)),
                         ),
                       ),
                     )
@@ -1108,12 +1209,13 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Finishing ...", style: AppFonts.heading3),
+                    Text("Finishing ...",
+                        style: Theme.of(context).textTheme.displayMedium),
                     SizedBox(
                       height: 30.h,
                     ),
                     Text("Syncing credentials ...",
-                        style: AppFonts.defaultFonts),
+                        style: Theme.of(context).textTheme.displayMedium),
                     SizedBox(
                       height: 200.h,
                     ),
@@ -1153,7 +1255,8 @@ class _SignUpState extends State<SignUp> {
                                           docs: selectedCameraImageDocs!))),
 
                                   if (state is SignUpSuccessful)
-                                    NextScreen(context: context, page: HomePage())
+                                    NextScreen(
+                                        context: context, page: HomePage())
                                 },
                             text: "Finish"))
                   ],
@@ -1174,7 +1277,7 @@ class _SignUpState extends State<SignUp> {
           padding: EdgeInsets.symmetric(horizontal: 12.0.w, vertical: 5.h),
           child: Text(
             "$name",
-            style: AppFonts.defaultFonts,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
         Container(
@@ -1182,7 +1285,7 @@ class _SignUpState extends State<SignUp> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 // color: AppColor.greenColor,
-                border: Border.all(color: AppColor.greenColor)),
+                border: Border.all(color: Theme.of(context).iconTheme.color!)),
             child: TextField(
                 // controller: pagecontroller,
                 decoration: InputDecoration(
@@ -1213,5 +1316,4 @@ class _SignUpState extends State<SignUp> {
 
     // if (type == "selfie") _detectFaces(image: cameraImage);
   }
-
 }

@@ -11,8 +11,8 @@ class CustomBackArrow extends StatelessWidget {
     return  IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            size: 11,
-            color: Theme.of(context).iconTheme.color,
+            size: 18,
+            color: Theme.of(context).colorScheme.background,
           ),
           onPressed: () => BackScreen(context: context),
         );

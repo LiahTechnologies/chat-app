@@ -14,7 +14,7 @@ class CustomDots extends StatelessWidget {
       width: 10.w,
       height: 10.h,
       decoration: BoxDecoration(
-          color: index != position ? AppColor.greenColor : Colors.black87,
+          color: index == position ? Colors.teal : Theme.of(context).colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(25)),
     );
   }

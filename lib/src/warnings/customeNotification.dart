@@ -18,14 +18,13 @@ class CustomNotification extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
             text,
-            style: AppFonts.defaultFonts,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
       ),
       Center(
         child: CustomButton(
-            borderColor: AppColor.greenColor,
-            containerColor: AppColor.whiteColor,
+            
             // textColor: AppColor.greenColor,
             width: 90,
             height: 50,

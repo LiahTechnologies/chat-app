@@ -49,9 +49,9 @@ class _GroupHomePageState extends State<GroupHomePage> {
                                 onPressed: () => NextScreen(
                                     context: context,
                                     page: const GroupTemplateOption()),
-                                icon: const Icon(
+                                icon:  Icon(
                                   Icons.add,
-                                  color: AppColor.greenColor,
+                                  color: Theme.of(context).iconTheme.color,
                                   size: 35,
                                 )),
                             Image.asset(AppImages.JOIN_GROUP_ICON)
@@ -75,7 +75,7 @@ class _GroupHomePageState extends State<GroupHomePage> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "Ekondo Titi",
-                                style: AppFonts.heading2,
+                                style: Theme.of(context).textTheme.displayMedium,
                               ),
                             ),
                             IconButton(
@@ -88,11 +88,11 @@ class _GroupHomePageState extends State<GroupHomePage> {
                         Image.asset(AppImages.GROUP_DEFAULT_ICON),
                         Text(
                           "Find your friends",
-                          style: AppFonts.heading1,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                         Text(
                           "sync your contacts and start chatting",
-                          style: AppFonts.defaultFonts3,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                         SizedBox(
                           height: 10.h,
@@ -150,13 +150,13 @@ class _GroupHomePageState extends State<GroupHomePage> {
         bottomNavigationBar: BottomAppBar(
             child: Container(
           height: 50.h,
-          color: AppColor.greenColor.withOpacity(0.1),
+          color: Theme.of(context).iconTheme.color!.withOpacity(0.1),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Image.asset(
                 AppImages.DASHBOARD_GROUp_ICON,
-                color: AppColor.greenColor,
+                color: Theme.of(context).iconTheme.color
               ),
               InkWell(
                   onTap: () {
@@ -180,7 +180,7 @@ class _GroupHomePageState extends State<GroupHomePage> {
                             child: Text(
                               "250",
                               style:
-                                  AppFonts.defaultWhite.copyWith(fontSize: 8),
+                                  Theme.of(context).textTheme.displayMedium,
                             ),
                           )))
                 ],

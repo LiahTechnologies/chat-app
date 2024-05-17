@@ -15,19 +15,19 @@ class SignUpDetails extends StatelessWidget {
   final TextEditingController firstNamecontroller;
   final TextEditingController lastNamecontroller;
 
-  Widget inputDetails(
+  Widget inputDetails(BuildContext context,
       {required String label,
       required TextEditingController controller,
       required width}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,style: AppFonts.defaultFonts3,),
+        Text(label,style: Theme.of(context).textTheme.displayMedium,),
         Container(
           width: width,
           padding: EdgeInsets.only(left: 10.w),
           decoration: BoxDecoration(
-              border: Border.all(color: AppColor.greenColor),
+              border: Border.all(color: Theme.of(context).iconTheme.color!),
               borderRadius: BorderRadius.circular(15)),
           child: TextField(
             controller: controller,
@@ -45,11 +45,11 @@ class SignUpDetails extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            inputDetails(
+            inputDetails(context,
                 label: "First Name",
                 controller: firstNamecontroller,
                 width: 130.w),
-            inputDetails(
+            inputDetails(context,
                 label: "Last Name",
                 controller: lastNamecontroller,
                 width: 130.w),

@@ -6,7 +6,7 @@ import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 
-class GroupRepositoryImpl extends GroupRepository {
+class GroupRepositoryImpl extends GroupChatRepository {
   final GroupChatRemoteDataSource groupChatRemoteDataSource;
 
   GroupRepositoryImpl({required this.groupChatRemoteDataSource});
@@ -24,7 +24,7 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<Either<Failure, GroupChatEntity>> fetchMessage(String groupId) async {
+  Future<Either<Failure, MessageEntity>> fetchMessage(String groupId) async {
     try {
       final response =
           await groupChatRemoteDataSource.fetchMessage(groupId: groupId);
@@ -34,16 +34,16 @@ class GroupRepositoryImpl extends GroupRepository {
     }
   }
 
+
+
   @override
-  Stream<Either<Failure, MessageEntity>> sendMessage(
+  Stream<MessageEntity> sendMessage(
       MessageEntity messageEntity, String groupId) {
     try {
-      final response = groupChatRemoteDataSource
-          .sendMessage(messageEntity: messageEntity, channel_id: groupId).
-         
-      return Right(response);
+      return groupChatRemoteDataSource.sendMessage(
+          messageEntity: messageEntity, channel_id: groupId); 
     } on ServerExceptions {
-      throw Left(ServerExceptions());
+      throw ServerExceptions();
     }
   }
 }

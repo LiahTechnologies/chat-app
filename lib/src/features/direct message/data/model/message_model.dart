@@ -1,6 +1,19 @@
+import 'package:njadia/src/core/entities/message_entity.dart';
+
 import '../../domain/entities/message.dart';
 
-class ChatMessageModel extends ChatMessage {
+class ChatMessageModel extends MessageEntity {
+  ChatMessageModel({
+    required this.message,
+    required this.messageId,
+    required this.sendId,
+    required this.sender,
+    required this.replyMessage,
+    required this.replySender,
+    required this.recepientId,
+    required this.time,
+    required this.chatId
+  }) : super(messageId: messageId, message: message, messageReceiver: recepientId, messageSender: sender, replyMessage: replyMessage, replySender: replySender, chatId: chatId, dateTime: time);
   final String message;
   final String messageId;
   final String sendId;
@@ -9,29 +22,9 @@ class ChatMessageModel extends ChatMessage {
   final String replySender;
   final String recepientId;
   final String time;
-  final String? chatId;
+  final String chatId;
 
-  ChatMessageModel(
-      {required this.message,
-      required this.messageId,
-      required this.sendId,
-      required this.sender,
-      required this.replyMessage,
-      required this.replySender,
-      required this.recepientId,
-      required this.time,
-      required this.chatId})
-      : super(
-            message: message,
-            messageId: messageId,
-            recepientId: recepientId,
-            replyMessage: replyMessage,
-            replySender: replySender,
-            sendId: sendId,
-            sender: sender,
-            time: time);
-
-
+ 
   factory ChatMessageModel.fromjson(Map<String, dynamic> json) =>
       ChatMessageModel(
           message: json["message"],
@@ -43,4 +36,17 @@ class ChatMessageModel extends ChatMessage {
           recepientId: json["recepientId"],
           time: json["time"],
           chatId: json["chatId"]);
+
+@override
+  Map<String, dynamic> toJson() => {
+        "message": message,
+        "messageId": messageId,
+        "sendId": sendId,
+        "sender": sender,
+        "replyMessage": replyMessage,
+        "replySender": replySender,
+        "recepientId": recepientId,
+        "time": time,
+        "chatId": chatId
+      };
 }

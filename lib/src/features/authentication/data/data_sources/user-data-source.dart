@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:http/http.dart' as http;
@@ -10,10 +10,10 @@ import 'package:http/http.dart' as http;
 import '../../../../core/common/urls.dart';
 
 abstract class UserRemoteDataSource {
-  Future<bool> createUser(UserEntity user);
+  Future<LoginResponse> createUser(UserEntity user);
   Future<LoginResponse> loginUser({required email, required password});
   Future<bool> generateOTP({required String number});
-  Future<bool> verifyOTP({required String number,required String OTPCode});
+  Future<bool> verifyOTP({required String number, required String OTPCode});
 }
 
 class UserRemoteDataSourceImpl extends UserRemoteDataSource {
@@ -22,7 +22,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   UserRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<bool> createUser(UserEntity user) async {
+  Future<LoginResponse> createUser(UserEntity user) async {
     var length = await user.selfie.length;
 
     var request = http.MultipartRequest(
@@ -59,10 +59,18 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       final response = await http.post(Uri.parse(AppUrls.signup_details),
           body: json.encode(data),
           headers: {"Content-Type": "Application/json"});
-      if (response.statusCode == 200)
-        return true;
-      else
-        return false;
+
+      if (response.statusCode == 200) {
+        final userData =
+            await LoginResponse.fromjson(json.decode(response.body));
+        await HelperFunction.saveUserEmail(userData.userEmail);
+        await HelperFunction.saveUserName(userData.userName);
+        await HelperFunction.saveUserID(userData.uid);
+        await HelperFunction.saveUserProfile(userData.profilePic);
+
+        return userData;
+      } else
+        throw ServerExceptions();
     } else
       throw ServerFailure("User was not created");
   }
@@ -78,15 +86,21 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     if (response.statusCode == 200) {
       print("LOGGED IN SUCCESSFULLY");
 
-      return LoginResponse.fromjson(json.decode(response.body));
+      final userData = LoginResponse.fromjson(json.decode(response.body));
+      await HelperFunction.saveUserEmail(userData.userEmail);
+      await HelperFunction.saveUserName(userData.userName);
+      await HelperFunction.saveUserID(userData.uid);
+      await HelperFunction.saveUserProfile(userData.profilePic);
+
+      return userData;
     } else {
       print("WAS NOT ABLE TO LOGGED IN SUCCESSFULLY");
       throw ServerExceptions();
     }
   }
-  
+
   @override
-  Future<bool> generateOTP({required String number}) async{
+  Future<bool> generateOTP({required String number}) async {
     final response = await http.post(Uri.parse(AppUrls.OTP),
         body: json.encode({"number": number}),
         headers: {"content-Type": "Application/json"});
@@ -98,9 +112,10 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       return false;
     }
   }
-  
+
   @override
-  Future<bool> verifyOTP({required String number, required String OTPCode}) async{
+  Future<bool> verifyOTP(
+      {required String number, required String OTPCode}) async {
     final response = await http.post(Uri.parse(AppUrls.OTP_VERIFICATION),
         body: json.encode({"number": number, "code": OTPCode}),
         headers: {"Content-Type": "Application/json"});
@@ -110,6 +125,4 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     else
       return false;
   }
-
-  
 }

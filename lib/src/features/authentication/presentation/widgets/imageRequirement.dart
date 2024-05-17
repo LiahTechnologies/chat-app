@@ -23,7 +23,7 @@ class ImageRequirementWidget extends StatelessWidget {
                     height: 10.h,
                     width: 10.w,
                     decoration: BoxDecoration(
-                        color: AppColor.greenColor.withOpacity(0.4),
+                        color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(15)),
                   )
                 : Container(

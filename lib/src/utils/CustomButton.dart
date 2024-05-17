@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/core/chats%20functionality/core/style.dart';
 
 import '../core/common/constants/style/appfont.dart';
 import '../core/common/constants/style/color.dart';
@@ -16,9 +17,9 @@ class CustomButton extends StatelessWidget {
       this.isActive = true,
       this.borderRadius = 12,
       this.textColor = true,
-      this.iconColor = AppColor.whiteColor,
-      this.containerColor = AppColor.greenColor,
-      this.borderColor = AppColor.greenColor
+      // this.iconColor = AppColor.whiteColor,
+      // this.containerColor = AppColor.greenColor,
+      // this.borderColor = AppColor.greenColor
       
       });
   final VoidCallback onPress;
@@ -30,9 +31,9 @@ class CustomButton extends StatelessWidget {
   final String? image;
   final bool? isActive;
   final bool textColor;
-  final Color iconColor;
-  final Color containerColor;
-  final Color? borderColor;
+  // final Color iconColor;
+  // final Color containerColor;
+  // final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +41,10 @@ class CustomButton extends StatelessWidget {
       width: width == 0 ? 150.w : width,
       height: height == 0 ? 40.h : height,
       decoration: BoxDecoration(
-          color: isActive! ? containerColor : Colors.grey.withOpacity(0.3),
+          color: isActive! ? AppColor.lightButtonColor : Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: borderColor ?? Colors.transparent)),
+          // border: Border.all(color: Theme.of(context).iconTheme.color ?? Colors.transparent)
+          ),
       child: MaterialButton(
         onPressed: onPress,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -50,7 +52,7 @@ class CustomButton extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style:Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor? Theme.of(context).textTheme.displayLarge!.color:AppColor.whiteColor,  )
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor&&isActive!? Colors.white:Theme.of(context).iconTheme.color,  )
             ),
           ),
           if (icon != null)
@@ -58,8 +60,8 @@ class CustomButton extends StatelessWidget {
               padding: EdgeInsets.only(left: 18.0),
               child: Icon(
                 icon,
-                color: Theme.of(context).iconTheme.color,
-                size: 14,
+                color:isActive!? Colors.white:Colors.black,
+                size: 18,
               ),
             )
         ]),

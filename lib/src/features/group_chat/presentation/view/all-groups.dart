@@ -1,9 +1,18 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/core/common/chat_model_list_data.dart';
+import 'package:njadia/src/core/utils/contact_card.dart';
+import 'package:njadia/src/core/utils/custom_popup_menu.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_event.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
 import '../../../../core/common/constants/style/color.dart';
+import '../bloc/group_bloc.dart';
+import '../bloc/group_list_bloc.dart';
+import '../bloc/group_list_event.dart';
+import '../bloc/group_list_state.dart';
+import '../bloc/group_state.dart';
 import '../widgets/groupTile.dart';
 import 'group_template_option.dart';
 
@@ -20,15 +29,14 @@ class _AllGroupsState extends State<AllGroups> {
       GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
-    // getUserData();
+    context.read<GroupListBloc>().add(OnGroupsLoainding(groupId: "Flutter_1"));
     super.initState();
   }
 
   String userName = '';
   String userEmail = '';
-  Stream? group;
 
-  // Stream<QuerySnapshot>? lastChat;
+  Stream<String>? lastChat;
 
   // getUserData() async {
   //   await DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
@@ -41,6 +49,10 @@ class _AllGroupsState extends State<AllGroups> {
   //     });
   //   });
   // }
+
+  List<PopupMenuItem> items = [
+    PopupMenuItem(child: Text(""))
+  ];
 
   String getId(String res) {
     return res.substring(9, res.indexOf('_'));
@@ -55,13 +67,26 @@ class _AllGroupsState extends State<AllGroups> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         automaticallyImplyLeading: false,
         title: Text(
-          "Njangi Groups",
+          "Njangi Group",
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        centerTitle: true,
+        // centerTitle: true,
+
+        actions: [
+
+           const Text("Text"),
+
+          IconButton(
+            onPressed: () {},
+            icon:const Icon(Icons.search,color: Colors.black,),
+          ),
+          CustomPopUpMenu(items: items)
+
+
+        ],
       ),
       body: RefreshIndicator(
         key: refreshIndicatorKey,
@@ -69,67 +94,118 @@ class _AllGroupsState extends State<AllGroups> {
           // await getUserData();
         },
         child: Container(
-          width: double.infinity,
+          // width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                
-                grouplist() 
-                ],
+                listOfGroups()
+               
+              ],
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => NextScreen(context: context, page: GroupTemplateOption()),
-        
-        child: const Icon(
+        onPressed: () =>
+            NextScreen(context: context, page: GroupTemplateOption()),
+        child:  Icon(
           Icons.add,
-          color: AppColor.whiteColor,
+          color:Theme.of(context).iconTheme.color,
         ),
-        backgroundColor: AppColor.greenColor,
+        backgroundColor: Theme.of(context).iconTheme.color,
       ),
     );
   }
 
-  grouplist() {
-    return StreamBuilder(
-        stream: group,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-             if (snapshot.data['groups'] != null) {
-              if (snapshot.data['groups'].length != 0) {
-                print("THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data['groups'].length,
-                    itemBuilder: (context, index) {
-                      var reverseIndex =
-                          snapshot.data['groups'].length - index - 1;
-                      return GroupTile(
-                          groupName:
-                              getName(snapshot.data['groups'][reverseIndex]),
-                          userName: snapshot.data['firstName'],
-                          groupid:
-                              getId(snapshot.data['groups'][reverseIndex]));
-                    });
-              } else {
-                return Text("No Group Created");
-                // return noGroupWidget();
-              }
-            } else {
-              return Text("No Group Created");
-
-              // return noGroupWidget();
-            }
-
-          } else {
-            return Container(
-                height: 560.h,
-                child: const Center(child: Text("No Group Created")));
-          }
+  Widget listOfGroups() {
+    return ListView.builder(
+        itemCount: contacts.length,
+        itemBuilder: (context, index) {
+          return ContactCard(contact: contacts[index]);
         });
   }
+
+  // grouplist() {
+  //   return BlocBuilder<GroupListBloc, GroupListState>(
+  //       builder: (context, state) {
+  //           print("DATA LOADED ${context.read<GroupListBloc>().stream.length}");
+  //     return StreamBuilder(
+  //         stream:state.groupChatEntityStream,
+  //         builder: (context, AsyncSnapshot snapshot) {
+  //           if (snapshot.hasData) {
+  //             print("DATA LOADED ${snapshot.data}");
+  //             if (snapshot.data['groups'] != null) {
+  //               if (snapshot.data['groups'].length != 0) {
+  //                 // print("THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
+  //                 return ListView.builder(
+  //                     shrinkWrap: true,
+  //                     itemCount: 2,
+  //                     itemBuilder: (context, index) {
+  //                       // var reverseIndex =
+  //                       //     snapshot.data['groups'].length - index - 1;
+  //                       return GroupTile(
+  //                           groupName: snapshot.data['groupName'],
+  //                           userName: snapshot.data['firstName'],
+  //                           groupid: getId(snapshot.data['groupId']));
+  //                     });
+  //               } else {
+  //                 return const Text("No Group. Please create one");
+  //                 // return noGroupWidget();
+  //               }
+  //             } else {
+  //               return const Text("No Group, Please add one");
+
+  //               // return noGroupWidget();
+  //             }
+  //           } else {
+  //             return Container(
+  //                 height: 560.h,
+  //                 child: Center(child: Text("No Group Created")));
+  //           }
+  //         });
+  //   });
+  // }
+
+  // grouplist() {
+  //   return BlocBuilder<GroupListBloc, GroupListState>(
+  //       builder: (context, state) {
+  //           print("DATA LOADED ${context.read<GroupListBloc>().stream.length}");
+  //     return FutureBuilder<GroupListState>(
+  //         // future: state,
+  //         builder: (context, AsyncSnapshot snapshot) {
+  //           if (snapshot.hasData) {
+  //             print("DATA LOADED ${snapshot.data}");
+  //             if (snapshot.data['groups'] != null) {
+  //               if (snapshot.data['groups'].length != 0) {
+  //                 // print("THE LIST OF GROUPS ARE ${snapshot.data['groups'].length}");
+  //                 return ListView.builder(
+  //                     shrinkWrap: true,
+  //                     itemCount: 2,
+  //                     itemBuilder: (context, index) {
+  //                       // var reverseIndex =
+  //                       //     snapshot.data['groups'].length - index - 1;
+  //                       return GroupTile(
+  //                           groupName: snapshot.data['groupName'],
+  //                           userName: snapshot.data['firstName'],
+  //                           groupid: getId(snapshot.data['groupId']));
+  //                     });
+  //               } else {
+  //                 return const Text("No Group. Please create one");
+  //                 // return noGroupWidget();
+  //               }
+  //             } else {
+  //               return const Text("No Group, Please add one");
+
+  //               // return noGroupWidget();
+  //             }
+  //           } else {
+  //             return Container(
+  //                 height: 560.h,
+  //                 child: Center(child: Text("No Group Created")));
+  //           }
+  //         });
+  //   });
+  // }
 }

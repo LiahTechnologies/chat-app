@@ -21,7 +21,7 @@ class GroupTemplateOption extends StatelessWidget {
         appBar: AppBar(
           leading: CustomBackArrow(),
           title: Text("Create Your Njadia Group",
-              style: Theme.of(context).textTheme.titleMedium),
+              style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(color: Colors.white)),
           centerTitle: true,
         ),
         body: SafeArea(
@@ -41,12 +41,12 @@ class GroupTemplateOption extends StatelessWidget {
                   height: 10.h,
                 ),
                 Text(
-                    "Begin your collective saving journey. Experience the power",
+                    "Begin your collective saving journey. Experience the power of communal finance",
                     style: Theme.of(context).textTheme.displayMedium),
-                Text(
-                  "of communal finance",
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
+                // Text(
+                //   "of communal finance",
+                //   style: Theme.of(context).textTheme.displayMedium,
+                // ),
 
                 SizedBox(height: 10.h),
                 CustomCardItems(
@@ -128,23 +128,32 @@ class GroupTemplateOption extends StatelessWidget {
                         });
                   },
                 ),
-                SizedBox(height: 30.h),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  child: Text("Have an invitation?",
-                      style: Theme.of(context).textTheme.displayMedium),
+
+                 CustomCardItems(
+                 image: AppImages.WORLD_ICON,
+                  text: "Join with a  Link ",
+                  onTap: () {
+                     NextScreen(context: context, page: JoinGroup());
+                  },
                 ),
 
-                CustomButton(
-                  onPress: () {
-                    NextScreen(context: context, page: JoinGroup());
-                    // Get.toNamed(AppRoutes.JOINGROUP);
-                  },
-                  text: "Join Njangi",
-                  icon: null,
-                  width: 250.w,
-                  borderRadius: 12,
-                )
+                // SizedBox(height: 30.h),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                //   child: Text("Have an invitation?",
+                //       style: Theme.of(context).textTheme.displayMedium),
+                // ),
+
+                // CustomButton(
+                //   onPress: () {
+                //     NextScreen(context: context, page: JoinGroup());
+                //     // Get.toNamed(AppRoutes.JOINGROUP);
+                //   },
+                //   text: "Join Njangi",
+                //   icon: null,
+                //   width: 250.w,
+                //   borderRadius: 12,
+                // )
               ],
             ),
           ),

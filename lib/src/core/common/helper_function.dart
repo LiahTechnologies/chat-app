@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/authentication/data/model/user_docs_response.dart';
+
 class HelperFunction {
   /**
    * Keys
@@ -10,29 +12,27 @@ class HelperFunction {
   static String _userNameKey = 'USERNAMEKEY';
   static String _userEmailKey = 'USEREMAILKEY';
   static String _userIDKey = 'UID';
-  static String theme = "isDarkMode";
-   static String Token = "_NjadiaToken";
-
+  static String _theme = "isDarkMode";
+  static String _Token = "_NjadiaToken";
+  static String _profilePic = "ProfilePic";
   /**
    * saving to share preferences
    */
 
   static Future<bool> writeTokne(value) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-   return await sharedPreference.setString(Token, value);
+    return await sharedPreference.setString(_Token, value);
   }
-
 
   static Future<bool> writeTheme(value) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-   return await sharedPreference.setBool(theme, value);
+    return await sharedPreference.setBool(_theme, value);
   }
 
-
-   // getting data
+  // getting data
   static Future<bool> getTheme() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getBool(theme)!;
+    return await sharedPreference.getBool(_theme)!;
   }
 
   static Future<bool> saveUserLoggInState(bool isLoggedIn) async {
@@ -45,11 +45,16 @@ class HelperFunction {
     return await sharedPreference.setString(_userNameKey, userName);
   }
 
+
+  static Future<bool> saveUserProfile(String profile) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_userNameKey, profile);
+  }
+
   static Future<bool> saveUserEmail(String userEmail) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return await sharedPreference.setString(_userEmailKey, userEmail);
   }
-
 
   static Future<bool> saveUserID(String id) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
@@ -60,10 +65,8 @@ class HelperFunction {
 
   static Future<String> getUserToken() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(Token)!;
+    return await sharedPreference.getString(_Token)!;
   }
-
-
 
   static Future<String> getUserEmail() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
@@ -75,6 +78,11 @@ class HelperFunction {
     return await sharedPreference.getString(_userEmailKey)!;
   }
 
+
+   static Future<String> getUserProfile() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.getString(_profilePic)!;
+  }
 
   static Future<String> getUserID() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();

@@ -28,7 +28,7 @@ class CustomDailog extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 14.0),
           child: Text(
             "What do you want to do?",
-            style: AppFonts.defaultFonts,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
       ),

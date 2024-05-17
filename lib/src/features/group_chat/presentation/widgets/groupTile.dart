@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
-import '../view/chatpage.dart';
+import '../../../../core/common/constants/style/color.dart';
 
 class GroupTile extends StatefulWidget {
   final String? userName;
@@ -45,13 +45,13 @@ class _GroupTileState extends State<GroupTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        NextScreen(
-          context: context,
-          page: ChatPage(
-              groupId: widget.groupid!,
-              groupName: widget.groupName,
-              userName: widget.groupName),
-        );
+        // NextScreen(
+        //   context: context,
+        //   page: ChatPage(
+        //       groupId: widget.groupid!,
+        //       groupName: widget.groupName,
+        //       userName: widget.groupName),
+        // );
        
       },
       child: Container(
@@ -59,7 +59,7 @@ class _GroupTileState extends State<GroupTile> {
         width: 500.w,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         // padding: const EdgeInsets.only(bottom: 16),
-/*
+
           child: ListTile(
               leading: CircleAvatar(
                 radius: 20,
@@ -75,19 +75,19 @@ class _GroupTileState extends State<GroupTile> {
                 widget.groupName,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
-              subtitle: getLastMessage(),
+              // subtitle: getLastMessage(),
               trailing: Container(
                 height: 20.h,
                 width: 20.w,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: AppColor.greenColor),
+                    color: Theme.of(context).iconTheme.color),
                 child: Center(
                     child: Text(
                   "22",
-                  style: TextStyle(color: AppColor.whiteColor),
+                  style: Theme.of(context).textTheme.displayMedium,
                 )),
-              ))*/
+              ))
       ),
     );
   }

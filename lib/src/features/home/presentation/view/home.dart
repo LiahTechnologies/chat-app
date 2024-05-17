@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/all-groups.dart';
 import 'package:njadia/src/features/direct%20message/presentation/view/direct-message.dart';
 import 'package:njadia/src/features/group_chat/presentation/view/search_groups..dart';
 import 'package:njadia/src/features/profile/presentation/views/profile.dart';
@@ -9,6 +8,7 @@ import 'package:njadia/src/features/profile/presentation/views/profile.dart';
 
 import '../../../../core/common/helper_function.dart';
 // import '../../../../common/services/firebase_messaging.dart';
+import '../../../group_chat/presentation/view/chatpage copy.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
 class HomePage extends StatefulWidget {
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
 
 // List fo pages
 
-  final Screens = const [AllGroups(),  SearchGroups(), Profile()];
+    List<Widget> Screens =  [GroupChatPage(), DirectMessage() ,SearchGroups(), Profile()];
   // DirectMessage(),
 
   int currentScreen = 0;
@@ -76,15 +76,15 @@ class _HomePageState extends State<HomePage> {
        
         bottomNavigationBar: CurvedNavigationBar(
           height:50.h,
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.background,
           // backgroundColor: AppColor.transparent,
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).bottomAppBarTheme.color!,
            key: _bottomNavigationKey,
           items: [
-          Icon(Icons.home,size: 18,),
-           Icon(Icons.group,size: 18,),
-            Icon(Icons.search,size: 18,),
-             Icon(Icons.person,size: 18,),
+          Icon(Icons.home,size: 18,color: Theme.of(context).bottomAppBarTheme.shadowColor),
+           Icon(Icons.group,size: 18,color: Theme.of(context).bottomAppBarTheme.shadowColor),
+            Icon(Icons.search,size: 18,color: Theme.of(context).bottomAppBarTheme.shadowColor),
+             Icon(Icons.person,size: 18,color: Theme.of(context).bottomAppBarTheme.shadowColor),
         ],
         onTap: (value){
           setState(() {

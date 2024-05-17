@@ -1,42 +1,56 @@
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
-class GroupChatModel extends GroupChatEntity {
-  final String id;
-  final String groupName;
-  final String profilePic;
-  final String unreadMessage;
-  final List<MessageEntity> message;
+class GroupChatModel extends MessageEntity {
+  final String messageId;
+  final String message;
+  final String messageSender;
+  final String messageReceiver;
+  final String chatId;
+  final String replySender;
+  final String replyMessage;
+  final String dateTime;
 
-
-  GroupChatModel(
-      {required this.groupName,
-      required this.id,
-      required this.profilePic,
-      required this.unreadMessage,
-      required this.message
-      })
+  const GroupChatModel(
+      {required this.messageId,
+      required this.message,
+      required this.messageReceiver,
+      required this.messageSender,
+      required this.replyMessage,
+      required this.replySender,
+      required this.chatId,
+      required this.dateTime})
       : super(
-            groupName: groupName,
-            id: id,
-            profilePic: profilePic,
-            unreadMessage: unreadMessage,
-            message: message);
-
+            messageId: messageId,
+            message: message,
+            messageReceiver: messageReceiver,
+            messageSender: messageSender,
+            replyMessage: replyMessage,
+            replySender: replySender,
+            dateTime: dateTime,
+            chatId: chatId
+            
+            );
 
   factory GroupChatModel.fromJson(Map<String, dynamic> json) => GroupChatModel(
-      groupName: json["groupName"],
-      id: json["id"],
-      profilePic: json["profilePic"],
-      unreadMessage: json["unreadMessage"],
-      message: json["message"]);
-
+      messageId: json["messageId"],
+      message: json["message"],
+      messageReceiver: json["messageReceiver"],
+      messageSender: json["messageSender"],
+      replyMessage: json["replyMessage"],
+      replySender: json["replySender"],
+      dateTime: json["dateTime"],
+      chatId: json['chatId']
+      );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "groupName": groupName,
-        "profilPic": profilePic,
-        "unreadMessage": unreadMessage,
-        "message": message
+       "messageId": messageId,
+      "message": message,
+      "messageReceiver": messageReceiver,
+      "messageSender":messageSender,
+      "replyMessage": replyMessage,
+      "replySender": replySender,
+      "dateTime": dateTime,
+      "chatId":chatId
       };
 }

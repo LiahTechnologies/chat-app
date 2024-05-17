@@ -53,7 +53,7 @@ class _SearchGroupsState extends State<SearchGroups> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Text(
           "Search Njangi Groups",
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(color: Colors.white),
         ),
       ),
       body: Column(
@@ -62,7 +62,7 @@ class _SearchGroupsState extends State<SearchGroups> {
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
-            decoration: BoxDecoration(color: Theme.of(context).cardTheme.color),
+            decoration: BoxDecoration(color: AppColor.darkIconColor),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -116,7 +116,7 @@ class _SearchGroupsState extends State<SearchGroups> {
               ? Container(
                 height: 300.h,
                 child: Center(
-                  child: CircularProgressIndicator(color: AppColor.purpleColor,),
+                  child: CircularProgressIndicator(color: Theme.of(context).iconTheme.color,),
                 ),
               )
               : Container(

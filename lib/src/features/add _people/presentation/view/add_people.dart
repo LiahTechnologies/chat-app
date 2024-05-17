@@ -27,20 +27,20 @@ class AddUserLink extends StatelessWidget {
                       },
                       child: Text(
                         "Skip",
-                        style: AppFonts.defaultFonts,
+                        style: Theme.of(context).textTheme.displayMedium
                       )),
                 ),
                 Text(
                   "Add some people",
-                  style: AppFonts.heading3,
+                  style: Theme.of(context).textTheme.displayMedium
                 ),
                 Text(
                   "You will need members to get the most out of your ",
-                  style: AppFonts.defaultFonts,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 Text(
                   "Njangi group",
-                  style: AppFonts.defaultFonts,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10.h),
@@ -50,10 +50,10 @@ class AddUserLink extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10.h, top: 10.h),
                   child: TextField(
                     controller: linkController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         suffixIcon: Icon(
                           Icons.link_outlined,
-                          color: AppColor.greenColor,
+                          color: Theme.of(context).iconTheme.color!,
                         ),
                         hintText: "https://njadi.liah",
                         border: InputBorder.none),
@@ -62,8 +62,8 @@ class AddUserLink extends StatelessWidget {
                 Text.rich(TextSpan(children: [
                   TextSpan(
                       text: "Your invitation link should expire in 7 days.",
-                      style: AppFonts.defaultFonts),
-                  TextSpan(text: "Edit invite link.", style: AppFonts.heading3),
+                      style: Theme.of(context).textTheme.displayMedium),
+                  TextSpan(text: "Edit invite link.", style: Theme.of(context).textTheme.displayMedium),
                 ])),
                 SizedBox(
                   height: 20.h,

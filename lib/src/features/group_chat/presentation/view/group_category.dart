@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/features/group_chat/presentation/view/select_contact_page.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
@@ -21,7 +22,7 @@ class GroupCategory extends StatelessWidget {
           centerTitle: true,
           title: Text("Select group categories",
               textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.titleMedium),
+              style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(color: Colors.white)),
         ),
         body: SafeArea(
           child: Container(
@@ -43,30 +44,30 @@ class GroupCategory extends StatelessWidget {
                 //   ],
                 // ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w),
+                  padding: EdgeInsets.only(left: 6.0.w ,top: 10),
                   child: Text(
-                      "Tell us more about your Njangi Group In order to help you",
+                      "Tell us more about your njangi group In order to help you with the setup, is your new ngangi group just for a few friends or a large community",
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.displayMedium),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 6.0.w),
-                  child: Text(
-                    "with the setup, is your new ngangi group just for a few friends ",
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 6.0.w),
-                  child: Text(
-                    "or a large community",
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                ),
+                // SizedBox(
+                //   height: 5.h,
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 6.0.w),
+                //   child: Text(
+                //     "with the setup, is your new ngangi group just for a few friends ",
+                //     textAlign: TextAlign.start,
+                //     style: Theme.of(context).textTheme.displayMedium,
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 6.0.w),
+                //   child: Text(
+                //     "or a large community",
+                //     style: Theme.of(context).textTheme.displayMedium,
+                //   ),
+                // ),
                 SizedBox(
                   height: 25.h,
                 ),
@@ -74,7 +75,7 @@ class GroupCategory extends StatelessWidget {
                     image: AppImages.TWO_PEOPLE_ICON,
                     text: "For me and my age",
                     onTap: () {
-                      NextScreen(context: context, page: CreateGroup());
+                      NextScreen(context: context, page: CreateGroupPage());
                     }),
                 CustomCardItems(
                     image: AppImages.TWO_PEOPLE_ICON,

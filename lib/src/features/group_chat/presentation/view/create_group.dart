@@ -1,8 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/core/common/constants/style/color.dart';
 
-import 'package:njadia/src/features/group_chat/presentation/controller/create_group_service.dart';
 import 'package:njadia/src/utils/customInput.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
@@ -18,7 +18,7 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  final contorller = CreateGroupService();
+  // final contorller = CreateGroupService();
   String groupName = '';
   String groupLimit = '';
   String groupAmount = '';
@@ -31,7 +31,7 @@ class _CreateGroupState extends State<CreateGroup> {
           leading: CustomBackArrow(),
           centerTitle: true,
           title: Text("Create your Njangi group",
-              style: Theme.of(context).textTheme.titleMedium),
+              style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(color: Colors.white)),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
@@ -60,12 +60,16 @@ class _CreateGroupState extends State<CreateGroup> {
                 //   padding: const EdgeInsets.all(8.0),
                 //   child: Text("Create your Njangi group", style: Theme.of(context).textTheme.titleMedium),
                 // )),
-                Text("Begin your collective saving journey, hangout and and",
-                    style: Theme.of(context).textTheme.displayMedium),
-                Text(
-                  "experience the power of communal finance",
-                  style: Theme.of(context).textTheme.displayMedium,
+
+                 SizedBox(
+                  height: 5.h,
                 ),
+                Text("Begin your collective saving journey, hangout and experience the power of communal finance",
+                    style: Theme.of(context).textTheme.displayMedium),
+                // Text(
+                //   "",
+                //   style: Theme.of(context).textTheme.displayMedium,
+                // ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -96,11 +100,11 @@ class _CreateGroupState extends State<CreateGroup> {
                             height: 35.h,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.black),
+                                color: AppColor.lightButtonColor),
                             child: Icon(
-                              Icons.add,
+                              Icons.edit,
                               color: Colors.white,
-                              size: 25.w,
+                              size: 18.w,
                             ),
                           ),
                         ),

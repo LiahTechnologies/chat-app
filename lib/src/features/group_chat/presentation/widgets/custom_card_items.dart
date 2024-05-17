@@ -24,7 +24,7 @@ class CustomCardItems extends StatelessWidget {
             width: 20,
             color: Theme.of(context).iconTheme.color,
           ),
-          title: Text(text,style: Theme.of(context).textTheme.displayMedium,),
+          title: Text(text,style: Theme.of(context).textTheme.displayLarge,),
           trailing:  Icon(Icons.arrow_forward_ios_outlined,size: 11,color: Theme.of(context).iconTheme.color,),
         ),
       )),
