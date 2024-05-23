@@ -293,17 +293,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                           'message',
                                                 // "testing sockets"
                                               
-                                         ( ChatMessageModel(
-                                                  message: controller.text,
-                                                  messageId: "messageId",
-                                                  sendId: "sendId",
-                                                  sender: socket.id!,
-                                                  replyMessage: "replyMessage",
-                                                  replySender: "replySender",
-                                                  recepientId: "recepientId",
-                                                  time: "9:00am",
-                                                  chatId: "chatId")
-                                              .toJson())
+                                         ( controller.text)
                                               
                                               );
 
