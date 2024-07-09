@@ -1,7 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
+import 'package:njadia/src/features/create_group/domain/entities/group-entity.dart';
 
 import 'package:njadia/src/utils/customInput.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
@@ -9,6 +12,11 @@ import 'package:njadia/src/utils/opneCamera.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
 
 import '../../../../utils/CustomButton.dart';
+import '../../../group_chat/presentation/view/group-chat-page.dart';
+import '../../../home/presentation/view/home.dart';
+import '../blocs/group-bloc.dart';
+import '../blocs/group-event.dart';
+import '../blocs/group-state.dart';
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});
@@ -159,52 +167,65 @@ class _CreateGroupState extends State<CreateGroup> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Center(
-                  child: CustomButton(
-                    onPress: () async {
-
-                    /*
-
-                      if (groupName.isNotEmpty ||
-                          groupAmount.isNotEmpty ||
-                          groupLimit.isNotEmpty)
-                        await contorller
-                            .checkIFGroupExist(groupName)
-                            .then((value) {
-                          value
-                              ? contorller
-                                  .createNewNjangiGroup(
-                                      groupName: groupName,
-                                      groupLevi: groupAmount,
-                                      groupLimit: groupLimit)
-                                  .then((Value) =>
-                                      Get.toNamed(AppRoutes.HOMEpAGE))
-                              : showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CustomWarning(
-                                      text: "Group Already Exist",
-                                    );
-                                  });
-                          groupAmount = groupName = groupLimit = "";
-                        });
-                      else
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return CustomWarning(
-                                text: "Fields can not be empty",
-                              );
+                BlocBuilder<GroupBloc,GroupState>(
+                  builder: (context,state) {
+                    return Center(
+                      child: CustomButton(
+                        onPress: () async {
+                    
+                        /*
+                    
+                          if (groupName.isNotEmpty ||
+                              groupAmount.isNotEmpty ||
+                              groupLimit.isNotEmpty)
+                            await contorller
+                                .checkIFGroupExist(groupName)
+                                .then((value) {
+                              value
+                                  ? contorller
+                                      .createNewNjangiGroup(
+                                          groupName: groupName,
+                                          groupLevi: groupAmount,
+                                          groupLimit: groupLimit)
+                                      .then((Value) =>
+                                          Get.toNamed(AppRoutes.HOMEpAGE))
+                                  : showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomWarning(
+                                          text: "Group Already Exist",
+                                        );
+                                      });
+                              groupAmount = groupName = groupLimit = "";
                             });
+                          else
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CustomWarning(
+                                    text: "Fields can not be empty",
+                                  );
+                                });
+                    
+                    members[]
+                               */ 
+                              final groupEntity = GroupEntity(groupName: groupName, groupIcon: "groupIcon", members: ["members"], levy: groupAmount, admins: ["admins"],limit: groupLimit);
+
+                           context
+                                .read<GroupBloc>()
+                                .add(OnCreateGroup(groupEntity: groupEntity));
+                       
+                        nextScreen(context, HomePage());
 
 
-                           */ 
-                    },
-                    text: "CreatE Njangi",
-                    icon: null,
-                    borderRadius: 12,
-                    width: 290.w,
-                  ),
+                        },
+                        text: "CreatE Njangi",
+                        icon: null,
+                        borderRadius: 12,
+                        width: 290.w,
+                      ),
+                    );
+                  }
                 )
               ],
             ),

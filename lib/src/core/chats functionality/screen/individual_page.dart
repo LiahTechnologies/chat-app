@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:njadia/src/core/chats%20functionality/model/messagemodel.dart';
 import 'package:njadia/src/core/chats%20functionality/pages/messages.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/direct%20message/data/model/message_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../../features/direct message/domain/entities/chat.dart';
 import '../../model/chat_model.dart';
 import '../core/style.dart';
 import '../../utils/custom_popup_menu.dart';
@@ -19,7 +22,7 @@ import '../../utils/user_card.dart';
 
 class IndividualPage extends StatefulWidget {
   const IndividualPage({super.key, required this.chatModel});
-  final ChatModel chatModel;
+  final Chat chatModel;
   @override
   State<IndividualPage> createState() => _IndividualPageState();
 }
@@ -74,7 +77,7 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.30.98:5000/", <String, dynamic>{
+    socket = IO.io("http://192.168.0.106:5000/", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
@@ -86,6 +89,10 @@ class _IndividualPageState extends State<IndividualPage> {
       print(socket.connected);
       print("USER SOCKET ID IS:${socket.id}");
     });
+
+    socket.emit(
+    'join', "chatId");
+
 
     //listen for incoming messages from the Server.
 
@@ -150,7 +157,7 @@ class _IndividualPageState extends State<IndividualPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.chatModel.name,
+                      widget.chatModel.userName,
                       style: TextStyle(
                           color: primaryWhite,
                           fontWeight: FontWeight.normal,
@@ -288,29 +295,17 @@ class _IndividualPageState extends State<IndividualPage> {
                                           : Icons.send,
                                       color: Theme.of(context).iconTheme.color,
                                     ),
-                                    onPressed: () {
-                                      socket.emit(
-                                          'message',
-                                                // "testing sockets"
-                                              
-                                         ( controller.text)
-                                              
-                                              );
+                                    onPressed: () async{
+                                      final currentUser = await HelperFunction.getUserID();
+                                      
+                                      socket.emit("newMessage",
+                                       MessageModel(messageId: "messageId", message: controller.text, messageReceiver: "messageReceiver", messageSender: currentUser, replyMessage: "replyMessage", replySender: "you", chatId: "chatId", dateTime: "dateTime").toJson()
+
+                                      );
 
                                       controller.clear();
 
-                                      // socket.on('message', (data) {
-                                      //   ;
-                                      //   // print(" THSI IS JSON DECODED  $info");
-                                      //   setState(() {
-                                      //     messages.add(
-                                      //         ChatMessageModel.fromjson(data));
-
-                                      //     print(
-                                      //         "the length is ${messages.length}");
-                                      //   });
-                                      //   //
-                                      // });
+                                      
                                     },
                                   ),
                                 ),

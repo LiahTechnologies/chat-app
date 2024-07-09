@@ -8,7 +8,7 @@ class ChatUsecase {
   final ChatRepository chatRepository;
   ChatUsecase({required this.chatRepository});
 
-  Future<Either<Failure, Chat>> execute(String chatId) => chatRepository.fetchChats(chatId);
+  Future<Either<Failure, List<Chat>>> execute(String chatId) => chatRepository.fetchChats(chatId);
 
   Future<Either<Failure, bool>> create(Chat chat) => chatRepository.createChats(chat);
 

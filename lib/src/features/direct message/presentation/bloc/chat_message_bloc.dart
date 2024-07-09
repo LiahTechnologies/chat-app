@@ -22,7 +22,7 @@ class ChatMessageBloc extends Bloc<ChatMessageEvent, ChatMessageState> {
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChatUsecase chatUsecase;
-  ChatBloc({required this.chatUsecase}) : super(ChatEmpty()) {
+  ChatBloc({required this.chatUsecase}) : super(ChatEmpty(chat: [])) {
     on<OnChatLoading>((event, emit) async {
       final result = await chatUsecase.execute(event.chatId);
 

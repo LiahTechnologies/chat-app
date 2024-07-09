@@ -4,17 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/core/common/chat_model_list_data.dart';
 import 'package:njadia/src/core/utils/contact_card.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
-import 'package:njadia/src/features/group_chat/presentation/bloc/group_event.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-event.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 
 import '../../../../core/common/constants/style/color.dart';
-import '../bloc/group_bloc.dart';
+import '../bloc/group_chat-bloc.dart';
 import '../bloc/group_list_bloc.dart';
 import '../bloc/group_list_event.dart';
 import '../bloc/group_list_state.dart';
-import '../bloc/group_state.dart';
+import '../bloc/group_chat-state.dart';
 import '../widgets/groupTile.dart';
-import 'group_template_option.dart';
+import '../../../create_group/presentation/view/group_template_option.dart';
 
 class AllGroups extends StatefulWidget {
   const AllGroups({super.key});
@@ -29,7 +29,7 @@ class _AllGroupsState extends State<AllGroups> {
       GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
-    context.read<GroupListBloc>().add(OnGroupsLoainding(groupId: "Flutter_1"));
+    // context.read<GroupListBloc>().add(OnGroupsLoainding(groupId: "Flutter_1"));
     super.initState();
   }
 

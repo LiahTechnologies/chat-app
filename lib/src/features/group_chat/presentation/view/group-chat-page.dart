@@ -1,46 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
 
 import '../../../../core/model/chat_model.dart';
 import '../../../../core/utils/custom_card.dart';
-import 'group_template_option.dart';
+import '../../../direct message/domain/entities/chat.dart';
+import '../../../create_group/presentation/view/group_template_option.dart';
+import '../bloc/group_list_bloc.dart';
+import '../bloc/group_list_state.dart';
 
-class GroupChatPage extends StatefulWidget {
-  const GroupChatPage({super.key});
-
-  @override
-  State<GroupChatPage> createState() => _GroupChatPageState();
-}
-
-class _GroupChatPageState extends State<GroupChatPage> {
-  List<ChatModel> chats = [
-    ChatModel(
-        name: "John Doe",
-        icon: "/",
-        isGroup: false,
-        time: "8:00",
-        status: "Frontend Developer",
-        currentMessage: "this is no school tomorrow"),
-    ChatModel(
-        name: "Flutter Developers",
-        icon: "/",
-        isGroup: true,
-        time: "11:00",
-        status: "Devops engineer",
-        currentMessage: "Hi How are you doing"),
-    ChatModel(
-        name: "Bernard",
-        icon: "/",
-        isGroup: false,
-        time: "2:00",
-        status: "Mobile developer",
-        currentMessage: "Ok Thanks"),
-  ];
+class GroupChatPage extends StatelessWidget {
+   GroupChatPage({super.key});
 
   List<PopupMenuItem> popItems = [
 
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,11 +47,24 @@ class _GroupChatPageState extends State<GroupChatPage> {
           CustomPopUpMenu(items: popItems)
         ],
       ),
-      body: ListView.builder(
-          itemCount: chats.length,
-          itemBuilder: (context, index) => CustomCard(
-                chatModel: chats[index],
-              )),
+      body: BlocBuilder<GroupListBloc,GroupListState>(
+        builder: (context,state) {
+
+         
+          if(state is GroupListLoaded){
+            return ListView.builder(
+              itemCount: state.groups.length,
+              itemBuilder: (context, index) => CustomCard(
+                    chatModel: Chat(chatId: state.groups[index].id,  profilePic: state.groups[index].profilePic, time: "12:00pm", userName: state.groups[index].groupName, isGroup: true, lastMessage: ""),
+                  ));
+          }
+
+          return Center(
+              child: CircularProgressIndicator(),
+            );
+         
+        }
+      ),
     );
   }
 }

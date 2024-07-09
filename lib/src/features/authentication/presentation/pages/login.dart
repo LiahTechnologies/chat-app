@@ -106,10 +106,10 @@ class LoginScreen extends StatelessWidget {
                               context.read<AuthBloc>().add(
                                   OnLogin(email: email, password: password));
 
-                              // if (state is LoggedIn) {
-                                // print(" THE LOGGIN TOKEN IS ${state.token}");
+                              if (state is LoggedIn) {
+                                print(" THE LOGGIN TOKEN IS ${state.token}");
                                 NextScreen(context: context, page: HomePage());
-                              // }
+                              }
                             } else
                               showDialog(
                                   context: context,

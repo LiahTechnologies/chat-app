@@ -9,7 +9,10 @@ import 'group_list_state.dart';
 class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
   final GroupListUsecase groupListUsecase;
   GroupListBloc({required this.groupListUsecase})
-      : super(GroupListState(groups: [])) {
+      : super(GroupListState()) {
+       
+
+
     // on<OnGroupsLoainding>((event, emit) async {
     //   print("ALL GROUPS STATE REACHING");
     //   emit(GroupEmpty());
@@ -19,16 +22,37 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
     //   //  await resulst.fold(emit(GroupListState()), (previous, element) =>emit(GroupListLoaded(groupChatEntity: element))
     //   // );
     // });
-    on<GroupListEvent>(_handleLoadGroupsList);
+    // on<GroupListEvent>(_handleLoadGroupsList);
+
+
+
+     on<OnGroupsFetch>(_handleFetchGroupList);
+
+
+
   }
 
-  Future<List<GroupEntity>> _handleLoadGroupsList(
-      GroupListEvent event, Emitter<GroupListState> emit) async {
-    // emit(GroupEmpty(groupListUsecase.execute("")));
-    final result = await groupListUsecase.fetch(event.groupId);
-    emit(GroupListState(groups: result));
-    // result.fold(emit(GroupListState()), (previous, element) => emit(GroupListLoaded(groupChatEntity: yield result)));
+  // Stream<GroupChatEntity> _handleLoadGroupsList(
 
-    return result;
+  //     GroupListEvent event, Emitter<GroupListState> emit) async*  {
+  //   // emit(GroupEmpty(groupListUsecase.execute("")));
+  //   final result =  groupListUsecase.fetch(event.groupId);
+  //   emit(GroupListState(groups: result));
+  //   // result.fold(emit(GroupListState()), (previous, element) => emit(GroupListLoaded(groupChatEntity: yield result)));
+
+  //   return result;GroupListEvent
+  // }
+
+
+  Stream<GroupListState>_handleFetchGroupList(OnGroupsFetch event, Emitter<GroupListState>emit)async*{
+
+
+       emit(GroupListLoading());
+
+          final result =  await groupListUsecase.fetch(event.groupId);
+          
+          yield GroupListLoaded(result); 
   }
+  
 }
+ 

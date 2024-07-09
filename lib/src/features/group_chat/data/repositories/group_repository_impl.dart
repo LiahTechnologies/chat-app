@@ -6,10 +6,10 @@ import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 
-class GroupRepositoryImpl extends GroupChatRepository {
+class GroupChatRepositoryImpl extends GroupChatRepository {
   final GroupChatRemoteDataSource groupChatRemoteDataSource;
 
-  GroupRepositoryImpl({required this.groupChatRemoteDataSource});
+  GroupChatRepositoryImpl({required this.groupChatRemoteDataSource});
 
   @override
   Future<Either<Failure, bool>> deleteMessage(
@@ -23,18 +23,26 @@ class GroupRepositoryImpl extends GroupChatRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, MessageEntity>> fetchMessage(String groupId) async {
-    try {
-      final response =
-          await groupChatRemoteDataSource.fetchMessage(groupId: groupId);
-      return Right(response);
-    } on ServerExceptions {
-      throw Left(ServerFailure("Something went wrong"));
-    }
-  }
 
 
+  // @override
+  // Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId) async {
+    // try {
+
+    //   final response =
+    //       await groupChatRemoteDataSource.fetchMessage(groupId: groupId);
+    //   return Right(response);
+
+    // } on ServerExceptions {
+
+    //   throw Left(ServerFailure("Something went wrong"));
+
+    // }
+  // }
+
+
+
+/*
 
   @override
   Stream<MessageEntity> sendMessage(
@@ -44,6 +52,36 @@ class GroupRepositoryImpl extends GroupChatRepository {
           messageEntity: messageEntity, channel_id: groupId); 
     } on ServerExceptions {
       throw ServerExceptions();
+    }
+  }
+
+*/
+
+   @override
+  Future<Either<Failure,String>> sendMessage(
+      MessageEntity messageEntity, String groupId) async{
+    try {
+      final result = await groupChatRemoteDataSource.sendMessage(
+          messageEntity: messageEntity,channel_id: groupId); 
+
+        return Right(result);
+    } on ServerExceptions {
+      throw ServerExceptions();
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId) async {
+    try {
+
+      final response =
+          await groupChatRemoteDataSource.fetchMessage(groupId: groupId);
+      return Right(response);
+
+    } on ServerExceptions {
+
+      throw Left(ServerFailure("Something went wrong"));
+
     }
   }
 }

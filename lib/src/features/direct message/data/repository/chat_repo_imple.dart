@@ -13,7 +13,7 @@ class ChatRepositoryImpl extends ChatRepository {
   ChatRepositoryImpl({required this.chatRemoteDataSource});
 
   @override
-  Future<Either<Failure, Chat>> fetchChats(String chatId) async {
+  Future<Either<Failure, List<Chat>>> fetchChats(String chatId) async {
     try {
       final response = await chatRemoteDataSource.fetchChats(chatId);
       return Right(response);

@@ -2,13 +2,13 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/features/direct%20message/presentation/view/direct-message.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/search_groups..dart';
+import 'package:njadia/src/features/create_group/presentation/view/search_groups..dart';
 import 'package:njadia/src/features/profile/presentation/views/profile.dart';
 
 
 import '../../../../core/common/helper_function.dart';
 // import '../../../../common/services/firebase_messaging.dart';
-import '../../../group_chat/presentation/view/chatpage copy.dart';
+import '../../../group_chat/presentation/view/group-chat-page.dart';
 import '../../../group_chat/presentation/widgets/groupTile.dart';
 
 class HomePage extends StatefulWidget {

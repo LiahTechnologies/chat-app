@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
-class GroupEntity extends Equatable {
+class GroupChatEntity extends Equatable {
   final String id;
   final String groupName;
   final String profilePic;
   final String unreadMessage;
   // final List<MessageEntity> message;
 
-  const GroupEntity(
+  const GroupChatEntity(
     
       {required this.groupName,
       required this.id,

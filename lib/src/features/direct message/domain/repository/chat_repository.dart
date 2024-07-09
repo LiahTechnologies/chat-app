@@ -7,7 +7,7 @@ import '../entities/chat.dart';
 
 abstract class ChatRepository {
 
-  Future<Either<Failure, Chat>> fetchChats(String ChatId);
+  Future<Either<Failure, List<Chat>>> fetchChats(String ChatId);
 
   Future<Either<Failure, bool>> createChats(Chat chat);
 

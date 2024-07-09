@@ -1,35 +1,28 @@
 import 'package:equatable/equatable.dart';
 
 class GroupListEvent extends Equatable {
-  GroupListEvent({
-    required this.groupId
-  });
+  GroupListEvent();
 
-  final String groupId;
+ 
   @override
-  List<Object?> get props => [groupId];
+  List<Object?> get props => [];
 }
 
-class OnGroupsLoainding extends GroupListEvent {
-  
-  OnGroupsLoainding({required super.groupId});
 
 
-   @override
-  List<Object?> get props => [groupId];
-}
-
-class OnGroupsLoaded extends GroupListEvent {
-  OnGroupsLoaded({required super.groupId});
+class OnGroupsFetch extends GroupListEvent {
+   final String groupId;
+  OnGroupsFetch({required this.groupId});
 
    @override
   List<Object?> get props => [groupId];
  
 }
 
-class OnGroupLoadError extends GroupListEvent {
-  OnGroupLoadError({required super.groupId});
+class OnGroupDelete extends GroupListEvent {
+   final String error;
+  OnGroupDelete({required this.error});
 
    @override
-  List<Object?> get props => [groupId];
+  List<Object?> get props => [error];
 }

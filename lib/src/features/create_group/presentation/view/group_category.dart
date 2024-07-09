@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/select_contact_page.dart';
-import 'package:njadia/src/features/group_chat/presentation/widgets/custom_card_items.dart';
+import 'package:njadia/src/features/create_group/presentation/view/select_contact_page.dart';
+import 'package:njadia/src/features/create_group/presentation/widgets/custom_card_items.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 

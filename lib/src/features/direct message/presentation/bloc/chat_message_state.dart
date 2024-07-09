@@ -28,32 +28,37 @@ class ChatMessageLoaded extends ChatMessageState {
 
 class ChatMessageErrorLoading extends ChatMessageState {}
 
-class ChatState extends Equatable {
-  ChatState();
 
+
+
+/****CHAT LIST*** */
+
+class ChatState extends Equatable {
+  ChatState({required this.chat});
+  final List<Chat> chat;
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [chat];
 }
 
 class ChatEmpty extends ChatState {
-  ChatEmpty();
+  ChatEmpty({required super.chat});
 
   @override
   List<Object?> get props => [];
 }
 
 class ChatLoading extends ChatState {
-  ChatLoading();
+  ChatLoading() : super(chat: []);
 }
 
 class ChatLoaded extends ChatState {
-  final Chat chat;
-  ChatLoaded({required this.chat});
+  final List<Chat> chat;
+  ChatLoaded({required this.chat}) : super(chat: chat);
 
   @override
   List<Object?> get props=>[chat];
 }
 
 class ChatErrorLoading extends ChatState {
-  ChatErrorLoading();
+  ChatErrorLoading() : super(chat: []);
 }

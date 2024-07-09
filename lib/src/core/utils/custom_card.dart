@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../features/direct message/domain/entities/chat.dart';
 import '../chats functionality/screen/individual_page.dart';
 import '../chats functionality/core/style.dart';
 import '../model/chat_model.dart';
@@ -6,7 +7,7 @@ import '../model/chat_model.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({super.key, required this.chatModel});
-  final ChatModel chatModel;
+  final Chat chatModel;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -28,7 +29,7 @@ class CustomCard extends StatelessWidget {
             ),
             trailing: Text("${chatModel.time}"),
             title: Text(
-              "${chatModel.name}",
+              "${chatModel.userName}",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Row(
@@ -37,7 +38,7 @@ class CustomCard extends StatelessWidget {
                 SizedBox(
                   width: 5,
                 ),
-                Text("${chatModel.currentMessage}"),
+                Text("${chatModel.lastMessage}"),
               ],
             ),
           ),

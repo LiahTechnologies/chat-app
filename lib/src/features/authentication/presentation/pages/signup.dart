@@ -1251,8 +1251,8 @@ class _SignUpState extends State<SignUp> {
                                           password: password,
                                           dob: dateOfBirth.text,
                                           tel: phoneNumber.text,
-                                          selfie: selectedCameraImage!,
-                                          docs: selectedCameraImageDocs!))),
+                                          selfie: "selectedCameraImage!",
+                                          docs: "selectedCameraImageDocs!"))),
 
                                   if (state is SignUpSuccessful)
                                     NextScreen(

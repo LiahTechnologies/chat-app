@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/features/direct%20message/data/model/chat_model.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/chat.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 abstract class ChatRemoteDataSource {
-  Future<Chat> fetchChats(String userId);
+  Future<List<Chat>> fetchChats(String userId);
 
   Future<bool> createChats(Chat chat);
 
@@ -22,11 +23,13 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
   ChatRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<Chat> fetchChats(String userId) async {
+  Future<List<Chat>> fetchChats(String userId) async {
     try {
-      final response = await client.get(Uri.parse(AppUrls.BASEURL));
-      final jsonResponse = json.decode(response.body);
-      return ChatModel.fromjson(jsonResponse);
+      final uid = await HelperFunction.getUserID();
+
+      final response = await client.get(Uri.parse(AppUrls.fetchChats+uid));
+      final jsonResponse = json.decode(response.body)..cast<Map<String, dynamic>>();
+     return  jsonResponse.map<Chat>((json)=>ChatModel.fromjson(json)).toList();
     } on ServerExceptions {
       throw ServerExceptions();
     }

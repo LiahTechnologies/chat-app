@@ -57,20 +57,20 @@ class LoginResponse extends Login {
   final String token;
   final String uid;
   final String userEmail;
-  final String profilePic;
+  final String lastName;
   final String userName;
   LoginResponse(
       {required this.token,
       required this.uid,
       required this.userEmail,
-      required this.profilePic,
+      required this.lastName,
       required this.userName})
       : super(token: token);
 
   factory LoginResponse.fromjson(Map<String, dynamic> json) => LoginResponse(
       token: json["token"],
-      uid: json['uid'],
-      userEmail: json['userEmail'],
-      profilePic: json['profilePic'],
-      userName: json['userName']);
+      uid: json['userId'],
+      userEmail: json['email'],
+      lastName: json['lastName'],
+      userName: json['firstName']);
 }

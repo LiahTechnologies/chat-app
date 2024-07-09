@@ -8,7 +8,7 @@ import 'package:njadia/src/features/group_chat/presentation/view/add_group_conta
 import 'package:njadia/src/utils/naviagtion.dart';
 
 import '../../../add _people/presentation/view/add_people.dart';
-import '../../../group_chat/presentation/view/group_template_option.dart';
+import '../../../create_group/presentation/view/group_template_option.dart';
 import 'menu_page.dart';
 
 class GroupHomePage extends StatefulWidget {

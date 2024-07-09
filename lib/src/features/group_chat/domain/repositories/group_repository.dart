@@ -5,10 +5,13 @@ import 'package:njadia/src/core/entities/message_entity.dart';
 
 abstract class GroupChatRepository {
 
-  Stream<MessageEntity> sendMessage(
-      MessageEntity messageEntity,String groupId);
+  // Stream<MessageEntity> sendMessage(
+  //     MessageEntity messageEntity,String groupId);
 
-  // Future<Either<Failure, GroupChatEntity>> fetchMessage(String groupId);
+   Future<Either<Failure,String>> sendMessage(
+      MessageEntity messageEntity,String groupId);
+      
+  Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId);
 
   Future<Either<Failure,bool>> deleteMessage(MessageEntity messageEntity,String groupId);
 }

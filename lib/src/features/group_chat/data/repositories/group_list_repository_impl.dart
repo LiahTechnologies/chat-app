@@ -16,7 +16,7 @@ class GroupListRepositoryImpl extends GroupListRepository {
   }
 
   @override
-  Stream<GroupEntity> fetchGroups(String groupId) {
+  Stream<GroupChatEntity> fetchGroups(String groupId) {
     try {
       print("REACHING REPOSITORY IMPLEMENTATION");
       return groupListRemoteDataSource.fetchGroup(groupId: groupId);
@@ -26,7 +26,7 @@ class GroupListRepositoryImpl extends GroupListRepository {
   }
   
   @override
-  Future<List<GroupEntity>> fetchchatgroups(String groupId) {
+  Future<List<GroupChatEntity>> fetchchatgroups(String groupId) {
     // TODO: implement fetchchatgroups
     throw UnimplementedError();
   }

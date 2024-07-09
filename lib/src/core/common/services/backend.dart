@@ -23,9 +23,11 @@ class BackendApi {
       "email": email,
       "password": password,
       "tel": phone_number,
-      "dob": date_of_birth
+      "dob": date_of_birth,
+      "selfie":"Selfie",
+      "docs":"docs"
     };
-    final response = await http.post(Uri.parse(AppUrls.signup_file),
+    final response = await http.post(Uri.parse(AppUrls.signup),
         body: json.encode(data), headers: {"Content-Type": "Application/json"});
     print(
         "THE INPUT FIELDS IMCLUDE $firstName $lastName  $email $password  $phone_number  $date_of_birth");

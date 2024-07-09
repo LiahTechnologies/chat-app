@@ -2,6 +2,8 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+
+   
 }
 
 def localProperties = new Properties()
@@ -50,6 +52,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -66,7 +70,7 @@ flutter {
 }
 
 dependencies {
-    //  api 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
-    //  api 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
+   
+        implementation 'androidx.multidex:multidex:2.0.1'
 
 }

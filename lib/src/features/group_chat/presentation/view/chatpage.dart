@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
-import 'package:njadia/src/features/group_chat/presentation/bloc/group_bloc.dart';
-import 'package:njadia/src/features/group_chat/presentation/bloc/group_event.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-bloc.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-event.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:swipe_to/swipe_to.dart';
 
@@ -103,7 +103,7 @@ class _ChatPageState extends State<ChatPage> {
 
   sendButton(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>context.read<GroupChatBloc>().add(OnGroupChatSent(message: MessageEntity(messageId: "messageId", messageReceiver: "messageReceiver", messageSender: "messageSender", replyMessage: "replyMessage", replySender: "replySender", dateTime: "9:00am", message: messageController.text, chatId: ''), groupId: "groupId")),
+      onTap: ()=>context.read<GroupChatBloc>().add(OnSentGroupMessage(message: MessageEntity(messageId: "messageId", messageReceiver: "messageReceiver", messageSender: "messageSender", replyMessage: "replyMessage", replySender: "replySender", dateTime: "9:00am", message: messageController.text, chatId: ''), groupId: "groupId")),
       child: Container(
           alignment: Alignment.bottomRight,
           width: 50,

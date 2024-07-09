@@ -8,12 +8,15 @@ class GroupChatUsecase {
   final GroupChatRepository groupRepository;
   const GroupChatUsecase({required this.groupRepository});
 
-  // Future<Either<Failure, GroupChatEntity>> execute(String groupId) async =>
-  //     await groupRepository.fetchMessage(groupId);
+  Future<Either<Failure, String>> sendMessage(MessageEntity message,String groupId) async =>
+      await groupRepository.sendMessage(message,groupId);
 
-  Stream< MessageEntity> sendMessage(
-          MessageEntity messageEntity, String groupId)  =>
-       groupRepository.sendMessage(messageEntity,groupId);
+  Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId) async =>
+      await groupRepository.fetchMessage(groupId);
+
+  // Stream< MessageEntity> sendMessage(
+  //         MessageEntity messageEntity, String groupId)  =>
+  //      groupRepository.sendMessage(messageEntity,groupId);
 
   Future<Either<Failure, bool>> deleteMessage(
           MessageEntity messageEntity, String groupId) async =>

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:njadia/src/core/model/chat_model.dart';
 
-import '../../../features/group_chat/presentation/view/group_template_option.dart';
+import '../../../features/direct message/domain/entities/chat.dart';
+import '../../../features/create_group/presentation/view/group_template_option.dart';
 import '../core/style.dart';
 import '../../utils/custom_card.dart';
 
@@ -14,12 +15,8 @@ class ChatListPage extends StatefulWidget {
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  List<ChatModel> chats = [
-    ChatModel(name: "John Doe", icon: "/", isGroup: false, time: "8:00", status: "Frontend Developer",currentMessage: "this is no school tomorrow"),
-    ChatModel(name: "Flutter Developers", icon: "/", isGroup: true, time: "11:00", status: "Devops engineer",currentMessage: "Hi How are you doing"),
-    ChatModel(name: "Bernard", icon: "/", isGroup: false, time: "2:00", status: "Mobile developer",currentMessage: "Ok Thanks"),
+  List<Chat> chats = [
     
-
   ];
   @override
   Widget build(BuildContext context) {

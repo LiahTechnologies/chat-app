@@ -11,9 +11,9 @@ class GroupListUsecase {
   final GroupListRepository groupListRepository;
   const GroupListUsecase({required this.groupListRepository});
 
-  Stream<GroupEntity> execute(String groupId) =>groupListRepository.fetchGroups(groupId);
+  Stream<GroupChatEntity> execute(String groupId) =>groupListRepository.fetchGroups(groupId);
   
-      Future<List<GroupEntity>> fetch(String groupId) =>groupListRepository.fetchchatgroups(groupId);
+      Future<List<GroupChatEntity>> fetch(String groupId) =>groupListRepository.fetchchatgroups(groupId);
 
   
 }

@@ -195,11 +195,15 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
 
 import '../../../../core/model/chat_model.dart';
 import '../../../../core/utils/custom_card.dart';
+import '../../domain/entities/chat.dart';
+import '../bloc/chat_message_bloc.dart';
+import '../bloc/chat_message_state.dart';
 
 class DirectMessage extends StatefulWidget {
   const DirectMessage({super.key});
@@ -209,33 +213,19 @@ class DirectMessage extends StatefulWidget {
 }
 
 class _DirectMessageState extends State<DirectMessage> {
-  List<ChatModel> chats = [
-    ChatModel(
-        name: "Albert Einstein",
-        icon: "/",
-        isGroup: false,
-        time: "8:00",
-        status: "Frontend Developer",
-        currentMessage: "this is no school tomorrow"),
-    ChatModel(
-        name: "Martin smirth",
-        icon: "/",
-        isGroup: true,
-        time: "11:00",
-        status: "Devops engineer",
-        currentMessage: "Hi How are you doing"),
-    ChatModel(
-        name: "Isaac Newton",
-        icon: "/",
-        isGroup: false,
-        time: "2:00",
-        status: "Mobile developer",
-        currentMessage: "Ok Thanks"),
-  ];
+ late List<Chat> chats ;
+
+  
 
   List<PopupMenuItem> popItems = [
     PopupMenuItem(child: Text("time")),
   ];
+
+  @override
+  void initState() {
+    
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,11 +243,15 @@ class _DirectMessageState extends State<DirectMessage> {
           CustomPopUpMenu(items: popItems)
         ],
       ),
-      body: ListView.builder(
-          itemCount: chats.length,
-          itemBuilder: (context, index) => CustomCard(
-                chatModel: chats[index],
-              )),
+      body: BlocBuilder<ChatBloc,ChatState>(
+        builder: (context,state) {
+          return ListView.builder(
+              itemCount: state.chat.length,
+              itemBuilder: (context, index) => CustomCard(
+                    chatModel: chats[index],
+                  ));
+        }
+      ),
     );
   }
 }

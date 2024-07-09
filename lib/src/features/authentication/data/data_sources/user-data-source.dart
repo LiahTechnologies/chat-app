@@ -23,11 +23,49 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
 
   @override
   Future<LoginResponse> createUser(UserEntity user) async {
+
+
+
+ 
+    final data = {
+      "firstName": user.firstName,
+      "lastName": user.lastName,
+      "email": user.email,
+      "password": user.password,
+      "tel": user.tel,
+      "dob": user.dob,
+      "selfie":"Selfie",
+      "docs":"docs"
+    };
+    print("SENDIND REQUEST");
+    final response = await http.post(Uri.parse(AppUrls.signup),
+        body: json.encode(data), headers: {"Content-Type": "Application/json"});
+    
+    print("PROCESSING RESPONSE ${response.statusCode}");
+
+    if (response.statusCode == 201){
+       final userData =
+            await LoginResponse.fromjson(json.decode(response.body));
+        await HelperFunction.saveUserEmail(userData.userEmail);
+        await HelperFunction.saveUserName(userData.userName);
+        await HelperFunction.saveUserID(userData.uid);
+        await HelperFunction.saveUserProfile(userData.lastName);
+        print("THIS IS THE USER DATA: $userData");
+
+        return userData;
+    }
+     
+    else
+      throw ServerFailure("User was not created");;
+  
+
+/*
+
     var length = await user.selfie.length;
 
     var request = http.MultipartRequest(
       "POST",
-      Uri.parse(AppUrls.signup_file),
+      Uri.parse(AppUrls.signup),
     );
 
     var multipartFile =
@@ -56,7 +94,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         "docs": result['docs']
       };
 
-      final response = await http.post(Uri.parse(AppUrls.signup_details),
+      final response = await http.post(Uri.parse(AppUrls.signup),
           body: json.encode(data),
           headers: {"Content-Type": "Application/json"});
 
@@ -73,16 +111,23 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         throw ServerExceptions();
     } else
       throw ServerFailure("User was not created");
+
+
+      */
   }
 
   @override
   Future<LoginResponse> loginUser({required email, required password}) async {
+
+
+
     print(
-        "THE INFORMATION IS REACHING THE DATASOURCE LEVEL OF THE APPLICATION");
+        "THE INFORMATION IS REACHING THE DATASOURCE LEVEL OF THE APPLICATION email: $email, password: $password");
     final response = await client.post(Uri.parse(AppUrls.login),
         body: json.encode({"email": email, "password": password}),
         headers: {"Content-Type": "Application/json"});
 
+   print("INFROMATION FROM THE RESPNSE ${response.statusCode}");
     if (response.statusCode == 200) {
       print("LOGGED IN SUCCESSFULLY");
 
@@ -90,8 +135,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       await HelperFunction.saveUserEmail(userData.userEmail);
       await HelperFunction.saveUserName(userData.userName);
       await HelperFunction.saveUserID(userData.uid);
-      await HelperFunction.saveUserProfile(userData.profilePic);
-
+      await HelperFunction.saveUserProfile(userData.lastName);
+      print("USER DATA $userData");
       return userData;
     } else {
       print("WAS NOT ABLE TO LOGGED IN SUCCESSFULLY");
@@ -111,6 +156,11 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       print("OTP VERIFICATION CODE NOT GENERATED");
       return false;
     }
+
+
+
+
+
   }
 
   @override

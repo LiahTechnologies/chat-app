@@ -1,7 +1,7 @@
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
-class GroupModel extends GroupEntity {
+class GroupModel extends GroupChatEntity {
   final String id;
   final String groupName;
   final String profilePic;

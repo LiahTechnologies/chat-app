@@ -48,9 +48,25 @@ import '../../domain/entities/group_chat_entity.dart';
 
 
 class GroupListState {
-  GroupListState({
-    required this.groups
-  });
-  List<GroupEntity> groups;
+//   GroupListState({
+//      this.groups
+//   });
+//  late Stream<GroupChatEntity>? groups;
 
+}
+
+
+class EmptyGroupList extends GroupListState{}
+
+class GroupListLoading extends GroupListState{}
+
+class GroupListLoaded extends GroupListState{
+
+  late List<GroupChatEntity> groups;
+  GroupListLoaded(this.groups);
+}
+
+class ErrorLoadingGroupList extends GroupListState{
+  final String error;
+  ErrorLoadingGroupList(this.error);
 }

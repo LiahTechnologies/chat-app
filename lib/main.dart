@@ -5,13 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/authentication.dart';
+import 'package:njadia/src/features/create_group/presentation/blocs/group-bloc.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
 import 'src/features/authentication/dependencies_injection.dart';
 import 'src/features/direct message/presentation/bloc/chat_message_bloc.dart';
-import 'src/features/group_chat/presentation/bloc/group_bloc.dart';
+import 'src/features/group_chat/presentation/bloc/group_chat-bloc.dart';
 import 'src/features/group_chat/presentation/bloc/group_list_bloc.dart';
 
 /// ------- For Docs and Updates Check ------
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (_) => locator<GroupListBloc>()),
               BlocProvider(create: (_)=>  locator<ChatMessageBloc>()),
               BlocProvider(create: (_)=>  locator<ChatBloc>()),
+              BlocProvider(create: (_)=>  locator<GroupBloc>()),
               
             ],
             child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {

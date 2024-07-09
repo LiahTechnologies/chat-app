@@ -9,8 +9,8 @@ class UserEntity extends Equatable {
   final String password;
   final String dob;
   final String tel;
-  final File selfie;
-  final File docs;
+  final dynamic selfie;
+  final dynamic docs;
 
   UserEntity(
       {required this.firstName,

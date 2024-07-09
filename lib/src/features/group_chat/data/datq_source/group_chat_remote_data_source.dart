@@ -13,10 +13,10 @@ import '../../../../core/entities/stream_socket.dart';
 import '../model/group_chat_model.dart';
 
 abstract class GroupChatRemoteDataSource {
-  Stream<MessageEntity> sendMessage(
+  Future<String> sendMessage(
       {required MessageEntity messageEntity, required String channel_id});
 
-  Future<GroupChatModel> fetchMessage({required String groupId});
+  Future<List<GroupChatModel>> fetchMessage({required String groupId});
 
   // Future<List<GroupChatModel>> fetchGroup({required String groupId});
 
@@ -45,19 +45,46 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
   }
 
   @override
-  Future<GroupChatModel> fetchMessage({required String groupId}) async {
+  Future<List<GroupChatModel>> fetchMessage({required String groupId}) async {
     try {
       // final response = await client.get(Uri.parse(AppUrls.BASEURL));
 
       final message = GroupChatModel.fromJson(
          await readJson('lib/src/core/common/services/chat-data.json'));
 
-      return message;
+      return [message];
+    } on ServerExceptions {
+      throw Left(ServerExceptions);
+    }
+  }
+  
+  @override
+  Future<String> sendMessage({required MessageEntity messageEntity, required String channel_id})async {
+    try {
+      final data =GroupChatModel(messageId: messageEntity.messageId, message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, chatId: messageEntity.chatId, dateTime: messageEntity.dateTime).toJson() ;
+      final response =client.post(Uri.parse(AppUrls.sendMessage),body:json.encode(data), headers: {"content-type":"application/json"});
+
+      IO.Socket socket = IO.io('http://localhost:3000',
+          OptionBuilder().setTransports(['websocket']).build());
+
+      socket.onConnect((_) {
+        print('connect');
+        socket.emit('msg', 'test');
+      });
+
+      socket.on('event', (data) => streamSocket.addResponse);
+      socket.onDisconnect((_) => print('disconnect'));
+
+      return  "";
+
     } on ServerExceptions {
       throw Left(ServerExceptions);
     }
   }
 
+
+
+/*
   @override
   Stream<MessageEntity> sendMessage(
       {required MessageEntity messageEntity, required String channel_id}) {
@@ -78,7 +105,7 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
     }
   }
 
-/*
+
   @override
   Future<List<GroupChatModel>> fetchGroup({required String groupId}) async {
     try {
