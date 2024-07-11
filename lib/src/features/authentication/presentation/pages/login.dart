@@ -81,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                         password = v;
                       }),
 
-                  BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+                  BlocConsumer<AuthBloc, AuthState>(builder: (context, state) {
                     return Padding(
                       padding: EdgeInsets.only(right: 18.0, top: 20.0.h),
                       child: Align(
@@ -106,10 +106,7 @@ class LoginScreen extends StatelessWidget {
                               context.read<AuthBloc>().add(
                                   OnLogin(email: email, password: password));
 
-                              if (state is LoggedIn) {
-                                print(" THE LOGGIN TOKEN IS ${state.token}");
-                                NextScreen(context: context, page: HomePage());
-                              }
+                              
                             } else
                               showDialog(
                                   context: context,
@@ -123,7 +120,13 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     );
-                  }),
+                  }, listener: (BuildContext context, AuthState state) {
+                          if (state is LoggedIn) {
+                                print(" THE LOGGIN TOKEN IS ${state.token}");
+                                NextScreen(context: context, page: HomePage());
+                              }
+
+                    },),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 18.0),
                     child: Text.rich((TextSpan(children: [

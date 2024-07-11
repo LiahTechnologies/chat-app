@@ -8,7 +8,7 @@ class GroupChatState extends Equatable {
   List<Object?> get props => [];
 }
 
-class GroupchatEmpty extends GroupChatState {}
+class GroupChatEmpty extends GroupChatState {}
 
 class GroupChatLoading extends GroupChatState {}
 class GroupChatSent extends GroupChatState {}
@@ -22,7 +22,12 @@ class GroupChatLoaded extends GroupChatState {
 }
 
 
-class GroupChatError extends GroupChatState {}
+class GroupChatError extends GroupChatState {
+  final String error;
+  GroupChatError({required this.error});
+
+  List<Object ?> get props => [error];
+}
 
 
 

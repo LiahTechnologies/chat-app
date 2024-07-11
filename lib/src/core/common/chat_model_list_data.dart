@@ -1,4 +1,4 @@
- import 'package:njadia/src/core/model/chat_model.dart';
+ import 'package:njadia/src/core/model/chatmodel.dart';
 
 List<ChatModel> contacts = [
     ChatModel(

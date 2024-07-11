@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:njadia/src/core/chats%20functionality/socketServicer.dart';
 import 'package:njadia/src/features/authentication/data/data_sources/user-data-source.dart';
 import 'package:njadia/src/features/authentication/data/repositories/user-repository-impl.dart';
 import 'package:njadia/src/features/authentication/domain/repositories/user-repository.dart';
@@ -35,7 +36,7 @@ final locator = GetIt.instance;
 
 void setUpLocator() {
 
-
+ locator.registerFactory(() => SocketService());
 
 /******AUTHENTICATION*****/
 
@@ -45,6 +46,8 @@ void setUpLocator() {
   //BLOC
   locator.registerFactory(() => AuthBloc(userUsecase:locator()));
   locator.registerFactory(() => ThemeBloc());
+
+ 
  
 
 
@@ -122,8 +125,8 @@ locator
 
 /******GROUP CHATS******/
 
- locator.registerFactory(() => GroupChatBloc(groupChatUsecase: locator()));
-   locator.registerFactory(() => GroupListBloc(groupListUsecase: locator()));
+ locator.registerFactory(() => GroupChatBloc(locator(), locator(),));
+ locator.registerFactory(() => GroupListBloc(groupListUsecase: locator()));
 
 
 //USECASES 
@@ -136,16 +139,16 @@ locator
 
 //REPOSITORY
   
-locator.registerLazySingleton<GroupChatRepository>(
+ locator.registerLazySingleton<GroupChatRepository>(
       () => GroupChatRepositoryImpl(groupChatRemoteDataSource: locator<GroupChatRemoteDataSource>()));
 
-locator.registerLazySingleton<GroupListRepository>(
+ locator.registerLazySingleton<GroupListRepository>(
       () => GroupListRepositoryImpl(groupListRemoteDataSource: locator<GroupListRemoteDataSource>()));
 
 
 //DATASOURCE
 
-locator
+ locator
       .registerLazySingleton<GroupChatRemoteDataSource>(() => GroupChatRemoteDataSourceImpl(client: locator()));
 
 
@@ -154,7 +157,7 @@ locator
 
 
 
-locator
+ locator
       .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
 
 
@@ -179,7 +182,7 @@ locator
 
 //REPOSITORY
   
-locator.registerLazySingleton<GroupRepository>(
+ locator.registerLazySingleton<GroupRepository>(
       () => GroupRepositoryImpl(groupRemoteDataSoucrce: locator<GroupRemoteDataSoucrce>()));
 
 
@@ -187,7 +190,7 @@ locator.registerLazySingleton<GroupRepository>(
 
 //DATASOURCE
 
-locator
+ locator
       .registerLazySingleton<GroupRemoteDataSoucrce>(() => GroupRemoteDataSourceImpl(client: locator()));
 
 }

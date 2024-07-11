@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:njadia/src/core/model/chat_model.dart';
+import 'package:njadia/src/core/model/chatmodel.dart';
 
-import '../chats functionality/core/style.dart';
+import '../common/constants/style/style.dart';
 
 
 class ContactCard extends StatelessWidget {

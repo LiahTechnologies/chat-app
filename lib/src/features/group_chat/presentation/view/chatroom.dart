@@ -1,33 +1,32 @@
-// import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'dart:convert';
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
-import 'package:njadia/src/core/chats%20functionality/model/messagemodel.dart';
-import 'package:njadia/src/core/chats%20functionality/pages/messages.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
-import 'package:njadia/src/features/direct%20message/data/model/message_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import '../../../features/direct message/domain/entities/chat.dart';
-import '../../model/chat_model.dart';
-import '../core/style.dart';
-import '../../utils/custom_popup_menu.dart';
-import '../../utils/reply_card.dart';
-import '../../utils/user_card.dart';
+import '../../../../core/common/constants/style/style.dart';
+import '../../../../core/model/messagemodel.dart';
+import '../../../../core/utils/custom_popup_menu.dart';
+import '../../../../utils/messages.dart';
+import '../../../direct message/domain/entities/chat.dart';
+import '../bloc/group_chat-bloc.dart';
+import '../bloc/group_chat-event.dart';
+import '../bloc/group_chat-state.dart';
 
-// import 'package:flutter/foundation.dart' as foundation;
 
-class IndividualPage extends StatefulWidget {
-  const IndividualPage({super.key, required this.chatModel});
+
+class GroupChatRoom extends StatefulWidget {
+  const GroupChatRoom({super.key, required this.chatModel});
   final Chat chatModel;
   @override
-  State<IndividualPage> createState() => _IndividualPageState();
+  State<GroupChatRoom> createState() => _GroupChatRoomState();
 }
 
-class _IndividualPageState extends State<IndividualPage> {
+class _GroupChatRoomState extends State<GroupChatRoom> {
   final TextEditingController controller = TextEditingController();
   bool showEmoji = false;
 
@@ -61,12 +60,16 @@ class _IndividualPageState extends State<IndividualPage> {
       value: "wallpaper",
     ),
   ];
+late String currentUser;
+getUid() async{ 
+   currentUser = await HelperFunction.getUserID();
+}
 
   @override
   void initState() {
     connect();
     super.initState();
-
+    getUid();
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         setState(() {
@@ -204,118 +207,126 @@ class _IndividualPageState extends State<IndividualPage> {
 
                 return Future.value(false);
               },
-              child: Stack(
-                children: [
-                  Container(
-                      height: MediaQuery.of(context).size.height - 144,
-                      child: ListView.builder(
-                          itemCount: messages.length,
-                          itemBuilder: (context, index) => MessageList(
-                                messageEntity: messages[index],
-                              ))),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Row(
+              child: BlocConsumer<GroupChatBloc, GroupChatState>(
+                builder: (context,state) {
+
+                 
+                  return Stack(
+                    children: [
+                       if(state is GroupChatLoaded)
+                      Container(
+                          height: MediaQuery.of(context).size.height - 144,
+                          child: ListView.builder(
+                              itemCount: state.messages.length,
+                              itemBuilder: (context, index) => MessageList(
+                                    messageEntity: messages[index],
+                                  ))),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                  width: MediaQuery.of(context).size.width - 60,
-                                  child: Card(
-                                      color: AppColor.darkIconColor,
-                                      margin: EdgeInsets.only(
-                                          left: 2, right: 2, bottom: 8),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25)),
-                                      child: TextFormField(
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                        controller: controller,
-                                        onChanged: (v) {
-                                          setState(() {
-                                            controller.text = v;
-                                          });
-                                        },
-                                        maxLines: 4,
-                                        minLines: 1,
-                                        keyboardType: TextInputType.multiline,
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            prefixIcon: IconButton(
-                                              icon: Icon(Icons.emoji_emotions),
-                                              onPressed: () {
-                                                focusNode.unfocus();
-                                                focusNode.canRequestFocus =
-                                                    false;
-
-                                                setState(() {
-                                                  showEmoji = !showEmoji;
-                                                });
-                                              },
-                                            ),
-                                            suffixIcon: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      showModalBottomSheet(
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              attarchCard());
-                                                    },
-                                                    icon: Icon(
-                                                        Icons.attach_file)),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon:
-                                                        Icon(Icons.camera_alt))
-                                              ],
-                                            ),
-                                            contentPadding: EdgeInsets.all(10),
-                                            hintText: "Type a message",
-                                            hintStyle: Theme.of(context)
+                              Row(
+                                children: [
+                                  Container(
+                                      width: MediaQuery.of(context).size.width - 60,
+                                      child: Card(
+                                          color: AppColor.darkIconColor,
+                                          margin: EdgeInsets.only(
+                                              left: 2, right: 2, bottom: 8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25)),
+                                          child: TextFormField(
+                                            style: Theme.of(context)
                                                 .textTheme
-                                                .displayMedium),
-                                      ))),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 8.0, right: 2),
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      controller.text.isEmpty
-                                          ? Icons.mic
-                                          : Icons.send,
-                                      color: Theme.of(context).iconTheme.color,
+                                                .bodyMedium,
+                                            controller: controller,
+                                            onChanged: (v) {
+                                              setState(() {
+                                                controller.text = v;
+                                              });
+                                            },
+                                            maxLines: 4,
+                                            minLines: 1,
+                                            keyboardType: TextInputType.multiline,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                prefixIcon: IconButton(
+                                                  icon: Icon(Icons.emoji_emotions),
+                                                  onPressed: () {
+                                                    focusNode.unfocus();
+                                                    focusNode.canRequestFocus =
+                                                        false;
+                  
+                                                    setState(() {
+                                                      showEmoji = !showEmoji;
+                                                    });
+                                                  },
+                                                ),
+                                                suffixIcon: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          showModalBottomSheet(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              context: context,
+                                                              builder: (context) =>
+                                                                  attarchCard());
+                                                        },
+                                                        icon: Icon(
+                                                            Icons.attach_file)),
+                                                    IconButton(
+                                                        onPressed: () {},
+                                                        icon:
+                                                            Icon(Icons.camera_alt))
+                                                  ],
+                                                ),
+                                                contentPadding: EdgeInsets.all(10),
+                                                hintText: "Type a message",
+                                                hintStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .displayMedium),
+                                          ))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 8.0, right: 2),
+                                    child: CircleAvatar(
+                                      radius: 25,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          controller.text.isEmpty
+                                              ? Icons.mic
+                                              : Icons.send,
+                                          color: Theme.of(context).iconTheme.color,
+                                        ),
+                                        onPressed: () {
+                                          
+                                          final message= MessageEntity( message: controller.text, messageSender: currentUser, replyMessage: "", replySender: "", dateTime: "12:00pm");
+                                          context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
+                                          socket.emit("newMessage",
+                                           
+                  
+                                          );
+                  
+                                          controller.clear();
+                  
+                                          
+                                        },
+                                      ),
                                     ),
-                                    onPressed: () async{
-                                      final currentUser = await HelperFunction.getUserID();
-                                      
-                                      socket.emit("newMessage",
-                                       MessageModel(messageId: "messageId", message: controller.text, messageReceiver: "messageReceiver", messageSender: currentUser, replyMessage: "replyMessage", replySender: "you", chatId: "chatId", dateTime: "dateTime").toJson()
-
-                                      );
-
-                                      controller.clear();
-
-                                      
-                                    },
-                                  ),
-                                ),
-                              )
+                                  )
+                                ],
+                              ),
+                              // emojiWidget(controller),
                             ],
-                          ),
-                          // emojiWidget(controller),
-                        ],
-                      )),
-                ],
+                          )),
+                    ],
+                  );
+                }, listener: (BuildContext context, GroupChatState state) {  },
               ),
             ),
           ),

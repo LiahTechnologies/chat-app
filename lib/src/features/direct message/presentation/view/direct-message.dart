@@ -199,11 +199,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
 
-import '../../../../core/model/chat_model.dart';
+import '../../../../core/model/chatmodel.dart';
 import '../../../../core/utils/custom_card.dart';
 import '../../domain/entities/chat.dart';
 import '../bloc/chat_message_bloc.dart';
 import '../bloc/chat_message_state.dart';
+import '../widget/chatroom.dart';
 
 class DirectMessage extends StatefulWidget {
   const DirectMessage({super.key});
@@ -249,6 +250,10 @@ class _DirectMessageState extends State<DirectMessage> {
               itemCount: state.chat.length,
               itemBuilder: (context, index) => CustomCard(
                     chatModel: chats[index],
+                    onTap: (){
+                      Navigator.push(
+            context, MaterialPageRoute(builder: (context) => PrivateChatRoom(chatModel: chats[index])));
+                    },
                   ));
         }
       ),

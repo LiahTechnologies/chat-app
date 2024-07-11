@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
-import 'package:njadia/src/features/group_chat/data/model/group_list_model.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:http/http.dart' as http;
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:socket_io_client/socket_io_client.dart';
+// import 'package:socket_io_client/socket_io_client.dart' as IO;
+// import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/common/services/readjons.dart';
 import '../../../../core/common/urls.dart';
 import '../../../../core/entities/stream_socket.dart';
@@ -14,7 +13,7 @@ import '../model/group_chat_model.dart';
 
 abstract class GroupChatRemoteDataSource {
   Future<String> sendMessage(
-      {required MessageEntity messageEntity, required String channel_id});
+      {required MessageEntity messageEntity, required String groupId});
 
   Future<List<GroupChatModel>> fetchMessage({required String groupId});
 
@@ -59,21 +58,16 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
   }
   
   @override
-  Future<String> sendMessage({required MessageEntity messageEntity, required String channel_id})async {
+  Future<String> sendMessage({required MessageEntity messageEntity, required String groupId})async {
     try {
-      final data =GroupChatModel(messageId: messageEntity.messageId, message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, chatId: messageEntity.chatId, dateTime: messageEntity.dateTime).toJson() ;
-      final response =client.post(Uri.parse(AppUrls.sendMessage),body:json.encode(data), headers: {"content-type":"application/json"});
+      final data =GroupChatModel( message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, dateTime: messageEntity.dateTime).toJson() ;
 
-      IO.Socket socket = IO.io('http://localhost:3000',
-          OptionBuilder().setTransports(['websocket']).build());
 
-      socket.onConnect((_) {
-        print('connect');
-        socket.emit('msg', 'test');
-      });
+      print("THIS IS THE SENT MESSAGE $data");
 
-      socket.on('event', (data) => streamSocket.addResponse);
-      socket.onDisconnect((_) => print('disconnect'));
+      final response =client.post(Uri.parse(AppUrls.sendMessage+groupId),body:json.encode(data), headers: {"content-type":"application/json"});
+
+     
 
       return  "";
 

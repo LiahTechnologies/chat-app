@@ -31,6 +31,25 @@ class _CreateGroupState extends State<CreateGroup> {
   String groupLimit = '';
   String groupAmount = '';
 
+  String userUid="";
+  
+
+  getUid() async {
+    
+        userUid = await HelperFunction.getUserID();
+  
+
+    print("create group uid: $userUid");
+  }
+
+
+
+  @override
+  void initState() {
+    getUid();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +67,8 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+
                 // Align(
                 //   alignment: Alignment.topLeft,
                 //   child: TextButton.icon(
@@ -68,6 +89,9 @@ class _CreateGroupState extends State<CreateGroup> {
                 //   padding: const EdgeInsets.all(8.0),
                 //   child: Text("Create your Njangi group", style: Theme.of(context).textTheme.titleMedium),
                 // )),
+
+
+
 
                  SizedBox(
                   height: 5.h,
@@ -167,12 +191,13 @@ class _CreateGroupState extends State<CreateGroup> {
                 SizedBox(
                   height: 10.h,
                 ),
-                BlocBuilder<GroupBloc,GroupState>(
+                BlocConsumer<GroupBloc,GroupState>(
                   builder: (context,state) {
                     return Center(
                       child: CustomButton(
                         onPress: () async {
                     
+
                         /*
                     
                           if (groupName.isNotEmpty ||
@@ -209,13 +234,15 @@ class _CreateGroupState extends State<CreateGroup> {
                     
                     members[]
                                */ 
-                              final groupEntity = GroupEntity(groupName: groupName, groupIcon: "groupIcon", members: ["members"], levy: groupAmount, admins: ["admins"],limit: groupLimit);
 
+
+                              final groupEntity = GroupEntity(groupName: groupName, groupIcon: "groupIcon", members:  [userUid], levy: groupAmount, admins: [userUid],limit: groupLimit);
+                                print("THIS IS THE CREATED GROUP ENTITY $groupEntity");
                            context
                                 .read<GroupBloc>()
                                 .add(OnCreateGroup(groupEntity: groupEntity));
                        
-                        nextScreen(context, HomePage());
+                     
 
 
                         },
@@ -225,7 +252,11 @@ class _CreateGroupState extends State<CreateGroup> {
                         width: 290.w,
                       ),
                     );
-                  }
+                  }, listener: (BuildContext context, GroupState state) { 
+
+                      if(state is GroupCreated)
+                        nextScreen(context, HomePage());
+                   },
                 )
               ],
             ),

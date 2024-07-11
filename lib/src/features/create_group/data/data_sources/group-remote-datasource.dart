@@ -39,8 +39,8 @@ class GroupRemoteDataSourceImpl extends GroupRemoteDataSoucrce{
    try {
     final data =GroupModel(groupName: groupEntity.groupName, groupIcon: groupEntity.groupIcon, members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit).toJson();
      
-      print("${data}    ${AppUrls.createGroup}");
-     final response =  await client.post(Uri.parse(AppUrls.createGroup),body: json.encode(data),headers: {"Content-Type": "Application/json"});
+      print("${data}    ${AppUrls.groups}");
+     final response =  await client.post(Uri.parse(AppUrls.groups),body: json.encode(data),headers: {"Content-Type": "Application/json"});
       print("THE RESPONSE STATUS CODE ${response.statusCode}");
       if(response.statusCode==201){
         print("Group Created");

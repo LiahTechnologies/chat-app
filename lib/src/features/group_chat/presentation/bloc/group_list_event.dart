@@ -10,14 +10,19 @@ class GroupListEvent extends Equatable {
 
 
 
-class OnGroupsFetch extends GroupListEvent {
+class OnFetchGroup extends GroupListEvent {
    final String groupId;
-  OnGroupsFetch({required this.groupId});
+  OnFetchGroup({required this.groupId});
 
    @override
   List<Object?> get props => [groupId];
  
 }
+
+
+class OnFetchGroups extends GroupListEvent {}
+
+
 
 class OnGroupDelete extends GroupListEvent {
    final String error;

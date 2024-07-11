@@ -15,6 +15,9 @@ class GroupListRepositoryImpl extends GroupListRepository {
     throw UnimplementedError();
   }
 
+
+
+
   @override
   Stream<GroupChatEntity> fetchGroups(String groupId) {
     try {
@@ -25,11 +28,19 @@ class GroupListRepositoryImpl extends GroupListRepository {
     }
   }
   
+
+
+
   @override
-  Future<List<GroupChatEntity>> fetchchatgroups(String groupId) {
-    // TODO: implement fetchchatgroups
-    throw UnimplementedError();
-  }
+  Future<Either<Failure,List<GroupChatEntity>>> fetchchatgroups() async{
+    try {
+       final result = await groupListRemoteDataSource.fetchGroups();
+
+       return Right(result);
+
+    } on ServerExceptions{
+      throw Left(ServerFailure("Error fetching groups"));
+    }}
   
   
 }

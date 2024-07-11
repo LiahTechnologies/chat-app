@@ -17,13 +17,19 @@ class AppUrls {
 
   // Messages
   static const String fetchChats = BASEURL+"user-chats";
-  static const String fetchMessages= BASEURL+"messages";
-  static const String sendMessage = BASEURL+"messages";
+  static const String fetchMessages= BASEURL+"messages/";
+  static const String sendMessage = BASEURL+"messages/send/";
 
 
   // Groups
-  static const String createGroup = BASEURL+"groups";
+  static const String groups = BASEURL+"groups";
   static const String groupAdmin = BASEURL+"groups/admins";
   static const String groupMembers = BASEURL+"groups/members";
+
+
+
+  // User Groups and Chats
+  static const String userGroups = BASEURL+"users/groups/";
+   static const String userChats = BASEURL+"users/chats/";
 
 }

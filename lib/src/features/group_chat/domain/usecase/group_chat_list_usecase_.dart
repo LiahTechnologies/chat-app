@@ -8,12 +8,13 @@ import 'package:njadia/src/features/group_chat/domain/repositories/group_reposit
 import '../repositories/group_list_repository.dart';
 
 class GroupListUsecase {
+
   final GroupListRepository groupListRepository;
   const GroupListUsecase({required this.groupListRepository});
 
   Stream<GroupChatEntity> execute(String groupId) =>groupListRepository.fetchGroups(groupId);
   
-      Future<List<GroupChatEntity>> fetch(String groupId) =>groupListRepository.fetchchatgroups(groupId);
+  Future<Either<Failure,List<GroupChatEntity>>> fetch() =>groupListRepository.fetchchatgroups();
 
   
 }

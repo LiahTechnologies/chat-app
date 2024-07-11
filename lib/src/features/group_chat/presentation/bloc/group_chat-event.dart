@@ -32,6 +32,16 @@ class OnFetchGroupMessage extends GroupChatEvent {
   List<Object?> get props => [groupId];
 }
 
+class OnNewMessageReceived extends GroupChatEvent {
+ 
+  final MessageEntity messageEntity;
+
+  OnNewMessageReceived({ required this.messageEntity});
+
+   @override
+  List<Object?> get props => [messageEntity];
+}
+
 class OnDeleteGroupChat extends GroupChatEvent {
   final MessageEntity messageEntity;
   final String groupId;

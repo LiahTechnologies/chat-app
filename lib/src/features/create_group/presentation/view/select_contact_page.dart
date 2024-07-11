@@ -3,7 +3,7 @@ import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
 
-import '../../../../core/model/chat_model.dart';
+import '../../../../core/model/chatmodel.dart';
 import '../../../../core/utils/avtar_card.dart';
 import '../../../../core/utils/contact_card.dart';
 import 'create_group.dart';
@@ -156,7 +156,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         onPressed: () {
           nextScreen(context, CreateGroup());
         },
-        child: const Text("Next"),
+        child:  Text("Next",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),),
       ),
     );
   }

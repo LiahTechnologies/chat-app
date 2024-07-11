@@ -2,10 +2,10 @@ import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity
 import 'package:njadia/src/core/entities/message_entity.dart';
 
 class GroupModel extends GroupChatEntity {
-  final String id;
-  final String groupName;
-  final String profilePic;
-  final String unreadMessage;
+  final String? id;
+  final String? groupName;
+  final String? profilePic;
+  final String? unreadMessage;
   // final List<MessageEntity> messages;
 
   GroupModel({
@@ -15,7 +15,7 @@ class GroupModel extends GroupChatEntity {
     required this.unreadMessage,
     // required this.messages
   }) : super(
-          groupName: groupName,
+          groupName: groupName!,
           id: id,
           profilePic: profilePic,
           unreadMessage: unreadMessage,
@@ -24,7 +24,7 @@ class GroupModel extends GroupChatEntity {
 
   factory GroupModel.fromJson(Map<String, dynamic> json) => GroupModel(
         groupName: json["groupName"],
-        id: json["id"],
+        id: json["_id"],
         profilePic: json["profilePic"],
         unreadMessage: json["unreadMessage"],
         // messages: json["messages"]

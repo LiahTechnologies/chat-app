@@ -2,23 +2,23 @@ import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity
 import 'package:njadia/src/core/entities/message_entity.dart';
 
 class MessageModel extends MessageEntity {
-  final String messageId;
+  final String? messageId;
   final String message;
   final String messageSender;
   final String messageReceiver;
-  final String chatId;
+  final String? chatId;
   final String replySender;
   final String replyMessage;
   final String dateTime;
 
   const MessageModel(
-      {required this.messageId,
+      { this.messageId,
       required this.message,
       required this.messageReceiver,
       required this.messageSender,
       required this.replyMessage,
       required this.replySender,
-      required this.chatId,
+       this.chatId,
       required this.dateTime})
       : super(
             messageId: messageId,

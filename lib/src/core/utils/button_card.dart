@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../chats functionality/core/style.dart';
+import '../common/constants/style/style.dart';
 
 
 class ButtonCard extends StatelessWidget {

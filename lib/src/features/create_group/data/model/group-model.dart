@@ -1,7 +1,8 @@
 
+import 'package:njadia/src/features/create_group/domain/entities/group-entity.dart';
 import 'package:njadia/src/features/create_group/presentation/blocs/group-state.dart';
 
-class GroupModel extends GroupEmpty{
+class GroupModel extends GroupEntity{
    final String groupName;
    final String  groupIcon;
    final List<String> members;
@@ -9,7 +10,7 @@ class GroupModel extends GroupEmpty{
    final String levy;
    final String limit;
 
-  GroupModel({required this.groupName, required this.groupIcon, required this.members, required this.admins, required this.levy, required this.limit}); 
+  GroupModel({required this.groupName, required this.groupIcon, required this.members, required this.admins, required this.levy, required this.limit}) : super(groupName: groupName, groupIcon:groupIcon, members: members, levy:levy, admins: admins, limit: limit); 
 
 
 

@@ -92,7 +92,8 @@ class _SignUpState extends State<SignUp> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
-        child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+        child: BlocConsumer<AuthBloc, AuthState>(builder: (context, state) {
+          
           return PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: pagecontroller,
@@ -1254,9 +1255,7 @@ class _SignUpState extends State<SignUp> {
                                           selfie: "selectedCameraImage!",
                                           docs: "selectedCameraImageDocs!"))),
 
-                                  if (state is SignUpSuccessful)
-                                    NextScreen(
-                                        context: context, page: HomePage())
+                                 
                                 },
                             text: "Finish"))
                   ],
@@ -1264,7 +1263,11 @@ class _SignUpState extends State<SignUp> {
               )
             ],
           );
-        }),
+        }, listener: (BuildContext context, AuthState state) { 
+                 if (state is SignUpSuccessful)
+                                    NextScreen(
+                                        context: context, page: HomePage());
+         },),
       ),
     );
   }

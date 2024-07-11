@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
 
-import '../../../../core/model/chat_model.dart';
+import '../../../../core/model/chatmodel.dart';
 import '../../../../core/utils/custom_card.dart';
 import '../../../direct message/domain/entities/chat.dart';
 import '../../../create_group/presentation/view/group_template_option.dart';
 import '../bloc/group_list_bloc.dart';
+import '../bloc/group_list_event.dart';
 import '../bloc/group_list_state.dart';
+import 'chatroom.dart';
 
 class GroupChatPage extends StatelessWidget {
    GroupChatPage({super.key});
@@ -17,17 +20,27 @@ class GroupChatPage extends StatelessWidget {
 
   ];
 
+  late List<Chat> chats ;
+
+  getUserId() async{
+    final uid = await HelperFunction.getUserID();
+    print("${uid} THIS IS THEUSER ID ");
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.read<GroupListBloc>().add(OnFetchGroups());
+    getUserId();
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         backgroundColor: AppColor.lightButtonColor,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => GroupTemplateOption()));
+          MaterialPageRoute(builder: (context) =>const GroupTemplateOption()));
         },
-        child:  Icon(
+        child:const  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -55,7 +68,14 @@ class GroupChatPage extends StatelessWidget {
             return ListView.builder(
               itemCount: state.groups.length,
               itemBuilder: (context, index) => CustomCard(
-                    chatModel: Chat(chatId: state.groups[index].id,  profilePic: state.groups[index].profilePic, time: "12:00pm", userName: state.groups[index].groupName, isGroup: true, lastMessage: ""),
+                  onTap: (){
+
+                  
+                    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),)));
+                  },
+               
+                    chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),
                   ));
           }
 
@@ -68,3 +88,5 @@ class GroupChatPage extends StatelessWidget {
     );
   }
 }
+
+

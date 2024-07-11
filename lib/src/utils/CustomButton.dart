@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/core/chats%20functionality/core/style.dart';
 
-import '../core/common/constants/style/appfont.dart';
 import '../core/common/constants/style/color.dart';
 
 class CustomButton extends StatelessWidget {

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:njadia/src/core/utils/chatroom.dart';
 import '../../features/direct message/domain/entities/chat.dart';
-import '../chats functionality/screen/individual_page.dart';
-import '../chats functionality/core/style.dart';
-import '../model/chat_model.dart';
+import '../common/constants/style/style.dart';
 
 
 class CustomCard extends StatelessWidget {
-  const CustomCard({super.key, required this.chatModel});
+  const CustomCard({super.key, required this.chatModel, required this.onTap});
   final Chat chatModel;
+  
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => IndividualPage(chatModel: chatModel,)));
-      },
+      onTap:onTap
+        
+      ,
       child: Column(
         children: [
           ListTile(

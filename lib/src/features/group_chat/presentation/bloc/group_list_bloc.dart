@@ -26,9 +26,13 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
 
 
 
-     on<OnGroupsFetch>(_handleFetchGroupList);
+     on<OnFetchGroup>(_handleFetchGroup);
 
+  on<OnFetchGroups>((event,emit)async{
 
+    final result = await groupListUsecase.fetch();
+    result.fold((l)=>emit(ErrorLoadingGroupList("Error Loading groups")), (data)=>emit(GroupListLoaded(data)));
+  });
 
   }
 
@@ -44,15 +48,17 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
   // }
 
 
-  Stream<GroupListState>_handleFetchGroupList(OnGroupsFetch event, Emitter<GroupListState>emit)async*{
+  Stream<GroupListState>_handleFetchGroup(OnFetchGroup event, Emitter<GroupListState>emit)async*{
 
 
-       emit(GroupListLoading());
+      //  emit(GroupListLoading());
 
-          final result =  await groupListUsecase.fetch(event.groupId);
+      //     final result =  await groupListUsecase.fetch(event.groupId);
           
-          yield GroupListLoaded(result); 
+      //     yield GroupListLoaded(result); 
   }
+
+
   
 }
  

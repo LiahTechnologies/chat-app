@@ -104,6 +104,8 @@ class _ChatPageState extends State<ChatPage> {
   sendButton(BuildContext context) {
     return GestureDetector(
       onTap: ()=>context.read<GroupChatBloc>().add(OnSentGroupMessage(message: MessageEntity(messageId: "messageId", messageReceiver: "messageReceiver", messageSender: "messageSender", replyMessage: "replyMessage", replySender: "replySender", dateTime: "9:00am", message: messageController.text, chatId: ''), groupId: "groupId")),
+
+
       child: Container(
           alignment: Alignment.bottomRight,
           width: 50,
@@ -112,6 +114,8 @@ class _ChatPageState extends State<ChatPage> {
               color: Theme.of(context).iconTheme.color,
               borderRadius: BorderRadius.circular(30)),
           child: const Center(child: Icon(Icons.send, color: Colors.white))),
+
+          
     );
   }
 

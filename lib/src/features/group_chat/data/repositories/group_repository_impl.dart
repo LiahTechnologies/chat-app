@@ -62,7 +62,7 @@ class GroupChatRepositoryImpl extends GroupChatRepository {
       MessageEntity messageEntity, String groupId) async{
     try {
       final result = await groupChatRemoteDataSource.sendMessage(
-          messageEntity: messageEntity,channel_id: groupId); 
+          messageEntity: messageEntity,groupId: groupId); 
 
         return Right(result);
     } on ServerExceptions {
