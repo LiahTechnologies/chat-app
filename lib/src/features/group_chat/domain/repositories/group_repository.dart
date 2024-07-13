@@ -8,7 +8,7 @@ abstract class GroupChatRepository {
   // Stream<MessageEntity> sendMessage(
   //     MessageEntity messageEntity,String groupId);
 
-   Future<Either<Failure,String>> sendMessage(
+   Future<Either<Failure,List<MessageEntity>>> sendMessage(
       MessageEntity messageEntity,String groupId);
       
   Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId);

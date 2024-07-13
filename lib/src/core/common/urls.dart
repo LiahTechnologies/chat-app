@@ -17,8 +17,10 @@ class AppUrls {
 
   // Messages
   static const String fetchChats = BASEURL+"user-chats";
-  static const String fetchMessages= BASEURL+"messages/";
+  static const String fetchMessages = BASEURL+"messages/";
+    static const String fetchGroupMessages = BASEURL+"messages/group";
   static const String sendMessage = BASEURL+"messages/send/";
+  static const String sendGroupMessage = BASEURL+"messages/group/send/";
 
 
   // Groups

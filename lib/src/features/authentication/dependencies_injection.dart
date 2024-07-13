@@ -11,11 +11,13 @@ import 'package:njadia/src/features/create_group/presentation/blocs/group-bloc.d
 import 'package:njadia/src/features/direct%20message/data/data_sources/chat_and_message_data_source.dart';
 import 'package:njadia/src/features/direct%20message/data/repository/chat_message_repository.dart';
 import 'package:njadia/src/features/direct%20message/domain/usecase/chat_usecase.dart';
+import 'package:njadia/src/features/direct%20message/presentation/bloc/socketServicer.dart';
 import 'package:njadia/src/features/group_chat/data/datq_source/group_chat_remote_data_source.dart';
 import 'package:njadia/src/features/group_chat/data/repositories/group_repository_impl.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 import 'package:njadia/src/features/group_chat/domain/usecase/group_chat_usecase.dart';
 import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-bloc.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/socketServicer.dart';
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 
 import '../create_group/data/data_sources/group-remote-datasource.dart';
@@ -36,7 +38,11 @@ final locator = GetIt.instance;
 
 void setUpLocator() {
 
- locator.registerFactory(() => SocketService());
+
+// Sockets
+
+ locator.registerFactory(() => GroupSocketService());
+ locator.registerFactory(() => PrivateSocketService());
 
 /******AUTHENTICATION*****/
 

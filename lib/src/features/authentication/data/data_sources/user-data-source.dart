@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/common/urls.dart';
 
@@ -25,7 +28,10 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   Future<LoginResponse> createUser(UserEntity user) async {
 
 
-
+ Directory tempDir = await getTemporaryDirectory();
+      var cookieJar = PersistCookieJar(
+        storage: FileStorage(tempDir.path),
+      );
  
     final data = {
       "firstName": user.firstName,
@@ -37,11 +43,14 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       "selfie":"Selfie",
       "docs":"docs"
     };
-    print("SENDIND REQUEST");
     final response = await http.post(Uri.parse(AppUrls.signup),
         body: json.encode(data), headers: {"Content-Type": "Application/json"});
     
-    print("PROCESSING RESPONSE ${response.statusCode}");
+       // Save the cookies from the response
+      var cookies = response.headers['set-cookie'];
+      if (cookies != null) {
+        cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
+      }
 
     if (response.statusCode == 201){
        final userData =
@@ -119,27 +128,32 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   @override
   Future<LoginResponse> loginUser({required email, required password}) async {
 
+       Directory tempDir = await getTemporaryDirectory();
+      var cookieJar = PersistCookieJar(
+        storage: FileStorage(tempDir.path),
+      );
+ 
 
-
-    print(
-        "THE INFORMATION IS REACHING THE DATASOURCE LEVEL OF THE APPLICATION email: $email, password: $password");
     final response = await client.post(Uri.parse(AppUrls.login),
         body: json.encode({"email": email, "password": password}),
         headers: {"Content-Type": "Application/json"});
 
-   print("INFROMATION FROM THE RESPNSE ${response.statusCode}");
+          // Save the cookies from the response
+      var cookies = response.headers['set-cookie'];
+      if (cookies != null) {
+        cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
+      }
+
+
     if (response.statusCode == 200) {
-      print("LOGGED IN SUCCESSFULLY");
 
       final userData = LoginResponse.fromjson(json.decode(response.body));
       await HelperFunction.saveUserEmail(userData.userEmail);
       await HelperFunction.saveUserName(userData.userName);
       await HelperFunction.saveUserID(userData.uid);
       await HelperFunction.saveUserProfile(userData.lastName);
-      print("USER DATA $userData");
       return userData;
     } else {
-      print("WAS NOT ABLE TO LOGGED IN SUCCESSFULLY");
       throw ServerExceptions();
     }
   }

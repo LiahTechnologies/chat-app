@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
+import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -64,12 +65,18 @@ late String currentUser;
 getUid() async{ 
    currentUser = await HelperFunction.getUserID();
 }
+ 
 
   @override
   void initState() {
-    connect();
+
+    // connect();
     super.initState();
+
     getUid();
+
+  context.read<GroupChatBloc>().add(OnFetchGroupMessage(groupId: widget.chatModel.chatId ));
+
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         setState(() {
@@ -79,8 +86,9 @@ getUid() async{
     });
   }
 
-  void connect() {
-    socket = IO.io("http://192.168.0.106:5000/", <String, dynamic>{
+  void connect() async{
+    final Uid = await HelperFunction.getUserID();
+    socket = IO.io(AppUrls.sendGroupMessage+Uid, <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
@@ -307,11 +315,13 @@ getUid() async{
                                           
                                           final message= MessageEntity( message: controller.text, messageSender: currentUser, replyMessage: "", replySender: "", dateTime: "12:00pm");
                                           context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
-                                          socket.emit("newMessage",
-                                           
+                                        //   socket.emit("newGroupMessage",
+                                        //    message
                   
-                                          );
-                  
+                                        //   );
+                                        // socket.on("newGroupMessage",(data){
+                                        //       print("LIVE MESSAGE  $data");
+                                        // });
                                           controller.clear();
                   
                                           

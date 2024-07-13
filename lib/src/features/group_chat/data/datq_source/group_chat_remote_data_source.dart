@@ -12,7 +12,7 @@ import '../../../../core/entities/stream_socket.dart';
 import '../model/group_chat_model.dart';
 
 abstract class GroupChatRemoteDataSource {
-  Future<String> sendMessage(
+  Future<List<GroupChatModel>> sendMessage(
       {required MessageEntity messageEntity, required String groupId});
 
   Future<List<GroupChatModel>> fetchMessage({required String groupId});
@@ -46,30 +46,52 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
   @override
   Future<List<GroupChatModel>> fetchMessage({required String groupId}) async {
     try {
-      // final response = await client.get(Uri.parse(AppUrls.BASEURL));
 
-      final message = GroupChatModel.fromJson(
-         await readJson('lib/src/core/common/services/chat-data.json'));
+      print("GROUpiD IS $groupId");
 
-      return [message];
+      final response = await client.post(Uri.parse(AppUrls.fetchGroupMessages),body: json.encode({"groupId":groupId}),headers: {"content-type":"application/json"});
+       print("Fetched ${json.decode(response.body)}");
+      print("reaching here");
+        Iterable data =json.decode(response.body);
+
+       print("reaching here $data");
+
+      List<GroupChatModel> messages = List<GroupChatModel>.from(data.map((e)=>GroupChatModel.fromJson(e)));
+    
+      print("reaching here");
+      print(messages);
+  
+
+  // await readJson('lib/src/core/common/services/chat-data.json')
+
+      return messages;
+
     } on ServerExceptions {
+      print("ERROR FETCHING MESSAGES");
       throw Left(ServerExceptions);
     }
   }
   
   @override
-  Future<String> sendMessage({required MessageEntity messageEntity, required String groupId})async {
+  Future<List<GroupChatModel>> sendMessage({required MessageEntity messageEntity, required String groupId})async {
     try {
-      final data =GroupChatModel( message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, dateTime: messageEntity.dateTime).toJson() ;
+      final data =GroupChatModel( chatId: groupId,message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, dateTime: messageEntity.dateTime).toJson() ;
 
 
-      print("THIS IS THE SENT MESSAGE $data");
+      // print("THIS IS THE SENT MESSAGE $data");
 
-      final response =client.post(Uri.parse(AppUrls.sendMessage+groupId),body:json.encode(data), headers: {"content-type":"application/json"});
+      final response = await client.post(Uri.parse(AppUrls.sendGroupMessage),body:json.encode(data), headers: {"content-type":"application/json"});
+      print(json.decode(response.body));
+         
+      Iterable res =json.decode(response.body);
 
-     
+      print("List data $res");
+     print("message sent response ${json.decode(response.body)}");
 
-      return  "";
+    List<GroupChatModel> messages = List<GroupChatModel>.from(res.map((e)=>GroupChatModel.fromJson(e)));
+
+    print("THIS IS THE DATA $res");
+      return  messages ;
 
     } on ServerExceptions {
       throw Left(ServerExceptions);

@@ -6,6 +6,8 @@ import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 
+import '../model/group_chat_model.dart';
+
 class GroupChatRepositoryImpl extends GroupChatRepository {
   final GroupChatRemoteDataSource groupChatRemoteDataSource;
 
@@ -58,7 +60,7 @@ class GroupChatRepositoryImpl extends GroupChatRepository {
 */
 
    @override
-  Future<Either<Failure,String>> sendMessage(
+  Future<Either<Failure,List<GroupChatModel>>> sendMessage(
       MessageEntity messageEntity, String groupId) async{
     try {
       final result = await groupChatRemoteDataSource.sendMessage(

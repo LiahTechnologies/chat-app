@@ -67,7 +67,7 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
 
               // print("\n\n\nTHIS IS THE REMOTE DATA $groupJson");
    
-   print("THESE ARE THE USER GROUPS ${json.decode(response.body)}");
+  //  print("THESE ARE THE USER GROUPS ${json.decode(response.body)}");
 
      Iterable groups = json.decode(response.body);
       

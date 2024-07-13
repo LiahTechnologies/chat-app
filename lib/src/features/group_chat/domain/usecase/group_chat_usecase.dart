@@ -8,7 +8,7 @@ class GroupChatUsecase {
   final GroupChatRepository groupRepository;
   const GroupChatUsecase({required this.groupRepository});
 
-  Future<Either<Failure, String>> sendMessage(MessageEntity message,String groupId) async =>
+  Future<Either<Failure, List<MessageEntity>>> sendMessage(MessageEntity message,String groupId) async =>
       await groupRepository.sendMessage(message,groupId);
 
   Future<Either<Failure, List<MessageEntity>>> fetchMessage(String groupId) async =>
