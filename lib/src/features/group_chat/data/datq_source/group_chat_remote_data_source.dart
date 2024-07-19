@@ -47,19 +47,17 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
   Future<List<GroupChatModel>> fetchMessage({required String groupId}) async {
     try {
 
-      print("GROUpiD IS $groupId");
+      
 
       final response = await client.post(Uri.parse(AppUrls.fetchGroupMessages),body: json.encode({"groupId":groupId}),headers: {"content-type":"application/json"});
-       print("Fetched ${json.decode(response.body)}");
-      print("reaching here");
+     
         Iterable data =json.decode(response.body);
 
-       print("reaching here $data");
+      
 
       List<GroupChatModel> messages = List<GroupChatModel>.from(data.map((e)=>GroupChatModel.fromJson(e)));
     
-      print("reaching here");
-      print(messages);
+     
   
 
   // await readJson('lib/src/core/common/services/chat-data.json')

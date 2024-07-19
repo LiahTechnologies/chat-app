@@ -12,6 +12,7 @@ import '../bloc/group_list_bloc.dart';
 import '../bloc/group_list_event.dart';
 import '../bloc/group_list_state.dart';
 import 'chatroom.dart';
+import 'group-socket-chat-room.dart';
 
 class GroupChatPage extends StatelessWidget {
    GroupChatPage({super.key});
@@ -65,14 +66,19 @@ class GroupChatPage extends StatelessWidget {
 
          
           if(state is GroupListLoaded){
+            // print("groups ${state.groups[0].id}");
             return ListView.builder(
               itemCount: state.groups.length,
               itemBuilder: (context, index) => CustomCard(
                   onTap: (){
-
+                        print("groups index ${state.groups[index].id}");
                   
                     Navigator.push(
-            context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),)));
+            context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),)
+            
+            // GroupChatRoom(chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),
+          // )
+          ));
                   },
                
                     chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),

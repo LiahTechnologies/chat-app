@@ -1,0 +1,32 @@
+abstract class SocketEvent {}
+
+class ConnectSocketEvent extends SocketEvent {}
+
+class DisconnectSocketEvent extends SocketEvent {}
+
+class SendMessageEvent extends SocketEvent {
+  final String event;
+  final dynamic data;
+
+  SendMessageEvent(this.event, this.data);
+}
+
+class OnMessageEvent extends SocketEvent {
+  final String event;
+  final Function(dynamic) callback;
+
+  OnMessageEvent(this.event, this.callback);
+}
+
+class FetchInitialMessagesEvent extends SocketEvent {
+  final String groupId;
+
+  FetchInitialMessagesEvent({required this.groupId});
+
+}
+
+class OnMessageEventReceived extends SocketEvent {
+  final Map<String, dynamic> message;
+
+  OnMessageEventReceived(this.message);
+}

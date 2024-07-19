@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:njadia/src/core/chats%20functionality/socketServicer.dart';
 import 'package:njadia/src/features/authentication/data/data_sources/user-data-source.dart';
 import 'package:njadia/src/features/authentication/data/repositories/user-repository-impl.dart';
 import 'package:njadia/src/features/authentication/domain/repositories/user-repository.dart';
@@ -28,10 +27,14 @@ import '../direct message/domain/repository/chat_message_repository.dart';
 import '../direct message/domain/repository/chat_repository.dart';
 import '../direct message/domain/usecase/chat_message_usecase..dart';
 import '../direct message/presentation/bloc/chat_message_bloc.dart';
+import '../group_chat/data/datq_source/group-socket-remote-data-source.dart';
 import '../group_chat/data/datq_source/group_list_remote_repository.dart';
+import '../group_chat/data/repositories/group-socket-repositroy-impl.dart';
 import '../group_chat/data/repositories/group_list_repository_impl.dart';
 import '../group_chat/domain/repositories/group_list_repository.dart';
+import '../group_chat/domain/usecase/group-socket-usecase.dart';
 import '../group_chat/domain/usecase/group_chat_list_usecase_.dart';
+import '../group_chat/presentation/bloc/group-socket-bloc.dart';
 import '../group_chat/presentation/bloc/group_list_bloc.dart';
 
 final locator = GetIt.instance;
@@ -43,6 +46,7 @@ void setUpLocator() {
 
  locator.registerFactory(() => GroupSocketService());
  locator.registerFactory(() => PrivateSocketService());
+
 
 /******AUTHENTICATION*****/
 
@@ -143,6 +147,7 @@ locator
 
 
 
+
 //REPOSITORY
   
  locator.registerLazySingleton<GroupChatRepository>(
@@ -198,5 +203,46 @@ locator
 
  locator
       .registerLazySingleton<GroupRemoteDataSoucrce>(() => GroupRemoteDataSourceImpl(client: locator()));
+
+
+
+
+
+
+
+/// THIS IS THE SOCKET PART
+
+// Bloc
+ locator.registerFactory(() => SocketBloc(connectSocket: locator(),disconnectSocket:locator(),sendMessage: locator(),onMessage: locator(),fetchInitialMessages: locator()));
+  // locator.registerFactory(() => ThemeBloc());
+
+
+//USECASES 
+ locator.registerLazySingleton(() => ConnectSocket( locator()));
+ locator.registerLazySingleton(() => DisconnectSocket( locator()));
+ locator.registerLazySingleton(() => SendMessage( locator()));
+
+ locator.registerLazySingleton(() => OnMessage( locator()));
+ locator.registerLazySingleton(() => FetchInitialMessages( locator()));
+  
+
+
+
+
+//REPOSITORY
+  
+  
+ locator.registerLazySingleton<SocketsRepository>(
+      () => SocketRepositoryImpl( locator<SocketRemoteDataSource>()));
+
+
+
+
+//DATASOURCE
+
+ locator
+      .registerLazySingleton<SocketRemoteDataSource>(() => SocketRemoteDataSourceImpl());
+
+
 
 }

@@ -30,4 +30,6 @@ class MessageEntity extends Equatable {
         dateTime,
         chatId
       ];
+
+factory MessageEntity.fromjson(Map<String,dynamic>json)=>MessageEntity(message: json["message"], messageSender: json["senderId"], replyMessage: json["receiverId"], replySender: json["replySender"], dateTime: json["dateTime"]);
 }

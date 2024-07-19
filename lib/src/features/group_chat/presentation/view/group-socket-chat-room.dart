@@ -1,39 +1,58 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:njadia/src/core/common/constants/style/color.dart';
-import 'package:njadia/src/core/common/helper_function.dart';
-import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-
+import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
+import 'package:njadia/src/features/group_chat/presentation/widgets/attarachment-widget.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import '../../../../core/common/constants/style/color.dart';
 import '../../../../core/common/constants/style/style.dart';
-import '../../../../core/model/messagemodel.dart';
+import '../../../../core/common/helper_function.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
 import '../../../direct message/domain/entities/chat.dart';
-import '../bloc/group_chat-bloc.dart';
-import '../bloc/group_chat-event.dart';
-import '../bloc/group_chat-state.dart';
+import '../bloc/group-socket-bloc.dart';
+import '../bloc/group-socket-event.dart';
+import '../bloc/group-socket-state.dart';
 
 
+class GroupChatRoom extends StatefulWidget {
 
-class GroupChatRoomm extends StatefulWidget {
-  const GroupChatRoomm({super.key, required this.chatModel});
+   const GroupChatRoom({super.key, required this.chatModel});
   final Chat chatModel;
   @override
-  State<GroupChatRoomm> createState() => _GroupChatRoommState();
+  _GroupChatRoomState createState() => _GroupChatRoomState();
 }
 
-class _GroupChatRoommState extends State<GroupChatRoomm> {
-  final TextEditingController controller = TextEditingController();
-  bool showEmoji = false;
+class _GroupChatRoomState extends State<GroupChatRoom> {
+  late SocketBloc socketBloc;
+  List<MessageEntity> messages = [];
 
-  FocusNode focusNode = FocusNode();
-  // late List<MessageEntity> messages = [];
-  late IO.Socket socket;
+  @override
+  void initState() {
+    super.initState();
+    socketBloc = BlocProvider.of<SocketBloc>(context);
+    socketBloc.add(ConnectSocketEvent());
+    socketBloc.add(FetchInitialMessagesEvent(groupId:widget.chatModel.chatId));
+    
+    // socketBloc.onMessage('OnGroup', (data) async{
+    //   final newMessage= await MessageEntity.fromjson(data);
+    //   setState(() {
+       
+    //    print("onGroup Message $newMessage");
+    //     messages.add(newMessage);
+    //   });
+    // });
+    getUid();
+  }
+
+  @override
+  void dispose() {
+    socketBloc.add(DisconnectSocketEvent());
+    super.dispose();
+  }
+
+
+
 
   final List<PopupMenuItem> items = [
     PopupMenuItem(
@@ -61,79 +80,23 @@ class _GroupChatRoommState extends State<GroupChatRoomm> {
       value: "wallpaper",
     ),
   ];
+
+  bool showEmoji = false;
+
+  FocusNode focusNode = FocusNode();
+    final TextEditingController controller = TextEditingController();
+
 late String currentUser;
 getUid() async{ 
    currentUser = await HelperFunction.getUserID();
 }
- 
-
-  @override
-  void initState() {
-
-    // connect();
-    super.initState();
-
-    getUid();
-
-  context.read<GroupChatBloc>().add(OnFetchGroupMessage(groupId: widget.chatModel.chatId ));
-
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        setState(() {
-          showEmoji = false;
-        });
-      }
-    });
-  }
-
-  void connect() {
-    // final Uid = await HelperFunction.getUserID();
-    socket = IO.io(AppUrls.sendGroupMessage, <String, dynamic>{
-      "transports": ["websocket"],
-      "autoConnect": false,
-    });
-    socket.connect(); //connect the Socket.IO Client to the Server
-
-    //SOCKET EVENTS
-    // --> listening for connection
-    socket.on('connect', (data) {
-      print(socket.connected);
-      print("USER SOCKET ID IS:${socket.id}");
-    });
-
-    socket.emit(
-    'join', "chatId");
-
-
-    //listen for incoming messages from the Server.
-
-    //listens when the client is disconnected from the Server
-    socket.on('disconnect', (data) {
-      print('disconnect');
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // CHAT BACKGROUND IMAGE
-        Image.asset(
-          "",
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.cover,
-        ),
-
-        Scaffold(
-          backgroundColor: Colors.blueGrey.shade400,
-          appBar: AppBar(
+    // context.read<SocketBloc>().add(ConnectSocketEvent());
+  
+    return Scaffold(
+      appBar: AppBar(
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             // centerTitle: true,
             leadingWidth: 70,
@@ -200,45 +163,110 @@ getUid() async{
               CustomPopUpMenu(items: items)
             ],
           ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: WillPopScope(
-              onWillPop: () {
-                if (showEmoji) {
-                  setState(() {
-                    showEmoji = false;
-                  });
-                } else {
-                  Navigator.pop(context);
-                }
+      body: BlocBuilder<SocketBloc, SocketState>(
+        builder: (context, state) {
 
-                return Future.value(false);
-              },
-              child: 
-              
-              
-              BlocConsumer<GroupChatBloc, GroupChatState>(
-                builder: (context,state) {
-                       
-                  return Stack(
-                    children: [
-                       if(state is GroupChatLoaded)
-                      Container(
-                          height: MediaQuery.of(context).size.height - 144,
-                          child: ListView.builder(
-                            // itemCount: 0,
-                              itemCount: state.messages.length,
-                              itemBuilder: (context, index) {
-                                return Text("data");
-                              //  return MessageList(
-                              //       messageEntity: state.messages[index],
-                              //     )
-                                  
-                                  ;})),
+          if (state is SocketConnectingState) {
+            return const Center(child: CircularProgressIndicator());
+          } 
+          
+          else if (state is SocketConnectedState) {
+
+            return  buildMessageList();
+            /*
+            Column(
+              children: [
+                Expanded(
+                  child:
+
+                  // ListView.builder(
+                  //   itemCount: messages.length,
+                  //   itemBuilder: (context, index) {
+                  //     return  MessageList(
+                  //                   messageEntity: messages[index],
+                  //                   uid: currentUser,
+                  //                 );
+                  //   },
+                  // ),
+                ),
+
+                chatInputWidget()
+
+      /*
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onSubmitted: (text) {
+                      socketBloc.add(SendMessageEvent('sendMessage', {'content': text}));
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Send a message',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                */
 
 
 
+              ],
+            );
+            */
+          } 
+          else if (state is InitialMessagesFetchedState) {
+            messages = state.messages;
+            return buildMessageList();
+
+          } 
+          
+          else if (state is SocketMessageReceivedState) {
+
+            print("CURRENT STATE EMITTED ${state.message}");
+
+            // setState(() {
+              messages.add(state.message);
+            // });
+            return buildMessageList();
+
+
+          } else if (state is SocketErrorState) {
+            return Center(child: Text('Error: ${state.message}'));
+          } 
+          
+          else {
+            return Center(child: Text('Disconnected'));
+          }
+        },
+      ),
+    );
+  }
+
+
+
+  Widget buildMessageList() {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return MessageList(
+                                    messageEntity: messages[index],
+                                    uid: currentUser,
+                                  );
+            },
+          ),
+        ),
+
+            chatInputWidget()
+                     
+        
+      ],
+    );
+  }
+
+  chatInputWidget(){
+    return 
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -293,9 +321,9 @@ getUid() async{
                                                                       .transparent,
                                                               context: context,
                                                               builder: (context) =>
-                                                                  attarchCard());
+                                                                  Attarachment());
                                                         },
-                                                        icon: Icon(
+                                                        icon:const Icon(
                                                             Icons.attach_file)),
                                                     IconButton(
                                                         onPressed: () {},
@@ -313,18 +341,30 @@ getUid() async{
                                     padding: const EdgeInsets.only(
                                         bottom: 8.0, right: 2),
                                     child: CircleAvatar(
+                                      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                                       radius: 25,
                                       child: IconButton(
                                         icon: Icon(
+                                          
                                           controller.text.isEmpty
                                               ? Icons.mic
                                               : Icons.send,
-                                          color: Theme.of(context).iconTheme.color,
+                                              color: Colors.white,
+                                          // color: Theme.of(context).iconTheme.color,
                                         ),
                                         onPressed: () {
                                           
-                                          final message= MessageEntity( message: controller.text, messageSender: currentUser, replyMessage: "", replySender: "", dateTime: "12:00pm");
-                                          context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
+                                          
+                                         
+
+                                          final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: "", replySender: "", dateTime: "12:00pm");
+
+                                          socketBloc.add(SendMessageEvent('groupMessage', message));
+                                         
+                                          messages.add(message);
+
+
+                                          // context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
                                         //   socket.emit("newGroupMessage",
                                         //    message
                   
@@ -332,7 +372,18 @@ getUid() async{
                                         // socket.on("newGroupMessage",(data){
                                         //       print("LIVE MESSAGE  $data");
                                         // });
+
+
+
                                           controller.clear();
+
+                                         socketBloc.add(OnMessageEvent("OnGroup",(data){
+
+                                                      print("THIS ISE THE RESPONSE $data");
+
+                                                    }));
+
+                                          // socketBloc.add(OnMessageEvent(events));
                   
                                           
                                         },
@@ -343,120 +394,6 @@ getUid() async{
                               ),
                               // emojiWidget(controller),
                             ],
-                          )),
-                    ],
-                  );
-                }, listener: (BuildContext context, GroupChatState state) {  },
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+                          ));
   }
-
-
-
-  Widget attarchCard() {
-    return Container(
-      height: 270,
-      width: MediaQuery.of(context).size.width,
-      child: Card(
-        margin: EdgeInsets.all(18),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  iconCreation(
-                      icon: Icons.insert_drive_file,
-                      text: "Document",
-                      color: Colors.indigo),
-                  SizedBox(width: 20),
-                  iconCreation(
-                      icon: Icons.camera_alt,
-                      text: "Camera",
-                      color: Colors.pink),
-                  SizedBox(width: 20),
-                  iconCreation(
-                      icon: Icons.insert_photo,
-                      text: "Photo",
-                      color: Colors.purple),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  iconCreation(
-                      icon: Icons.headset, text: "Audio", color: Colors.orange),
-                  SizedBox(width: 20),
-                  iconCreation(
-                      icon: Icons.location_pin,
-                      text: "Location",
-                      color: Colors.teal),
-                  SizedBox(width: 20),
-                  iconCreation(
-                      icon: Icons.person, text: "Contact", color: Colors.blue),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget iconCreation(
-      {required IconData icon, required String text, required Color color}) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundColor: color,
-            radius: 30,
-            child: Icon(
-              icon,
-              color: primaryWhite,
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text("$text")
-        ],
-      ),
-    );
-  }
-
-  // Widget emojiWidget(TextEditingController controller) {
-  //   return Offstage(
-  //     offstage: showEmoji,
-  //     child: EmojiPicker(
-  //       textEditingController: controller,
-  //       // scrollController: _scrollController,
-  //       config: Config(
-  //         height: 256,
-  //         checkPlatformCompatibility: true,
-  //         emojiViewConfig: EmojiViewConfig(
-  //           // Issue: https://github.com/flutter/flutter/issues/28894
-  //           emojiSizeMax: 28 *
-  //               (foundation.defaultTargetPlatform == TargetPlatform.iOS
-  //                   ? 1.2
-  //                   : 1.0),
-  //         ),
-  //         swapCategoryAndBottomBar: false,
-  //         skinToneConfig: const SkinToneConfig(),
-  //         categoryViewConfig: const CategoryViewConfig(),
-  //         bottomActionBarConfig: const BottomActionBarConfig(),
-  //         searchViewConfig: const SearchViewConfig(),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

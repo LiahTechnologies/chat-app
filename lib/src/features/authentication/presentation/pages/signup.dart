@@ -826,7 +826,7 @@ class _SignUpState extends State<SignUp> {
                               ? true
                               : false,
                           onPress: () {
-                            if (isSelfie == true && isDocument == true)
+                            // if (isSelfie == true && isDocument == true)
                               pagecontroller.jumpToPage(9);
                           },
                           text: "Continue",

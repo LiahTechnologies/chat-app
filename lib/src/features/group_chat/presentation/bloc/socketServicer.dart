@@ -6,7 +6,7 @@ class GroupSocketService {
   GroupSocketService();
 
 
- final socket = IO.io(AppUrls.sendGroupMessage, <String, dynamic>{
+ final socket = IO.io(AppUrls.SOCKET_URL, <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': false,
   });
@@ -14,6 +14,7 @@ class GroupSocketService {
 
   void connect(String groupId) {
     socket.connect();
+    print("USER SOCKET iD ${socket.id}");
     // socket.emit('join', groupId);
   }
 

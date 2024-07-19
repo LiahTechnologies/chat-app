@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/common/constants/style/style.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
 class UserCard extends StatelessWidget {
@@ -21,7 +22,7 @@ class UserCard extends StatelessWidget {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(20))),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          color: Theme.of(context).colorScheme.secondary,
+          color:primaryGreen.withOpacity(0.7),
           child: Stack(children: [
             Padding(
               padding: const EdgeInsets.only(

@@ -207,9 +207,12 @@ class _ChatRoomState extends State<ChatRoom> {
                       height: MediaQuery.of(context).size.height - 144,
                       child: ListView.builder(
                           itemCount: messages.length,
-                          itemBuilder: (context, index) => MessageList(
-                                messageEntity: messages[index],
-                              ))),
+                          itemBuilder: (context, index) => Text("")
+                          // MessageList(
+                          //       messageEntity: messages[index],
+                          //     )
+                              
+                              )),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Column(

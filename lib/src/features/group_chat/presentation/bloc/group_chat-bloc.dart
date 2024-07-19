@@ -44,7 +44,6 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
     on<OnFetchGroupMessage>((event, emit) async {
       try {
         emit(GroupChatLoading());
-        print("FETCHING ALL GROUPS FROM DATABASE");
 
         final result = await groupChatUsecase.fetchMessage(event.groupId);
         result.fold(
@@ -52,7 +51,7 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
           (messages) => emit(GroupChatLoaded(messages: messages)),
         );
 
-      print("state ${Right(result)}");
+      // print("state at state ${Right(result.length())}");
 
         print("FETCHING ALL GROUPS FROM DATABASE");
 

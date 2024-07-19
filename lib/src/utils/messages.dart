@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/core/utils/reply_card.dart';
 import 'package:njadia/src/core/utils/user_card.dart';
 
-class MessageList extends StatefulWidget {
-  const MessageList({super.key, required this.messageEntity});
+class MessageList extends StatelessWidget {
+  const MessageList({super.key, required this.messageEntity, required this.uid});
 
   final MessageEntity messageEntity;
+  final String uid;
 
-  @override
-  State<MessageList> createState() => _MessageListState();
-}
-
-class _MessageListState extends State<MessageList> {
+// late String uid;
   @override
   Widget build(BuildContext context) {
-    return widget.messageEntity.messageSender=="me"?UserCard(messageEntity: widget.messageEntity,):ReplyCard(messageEntity: widget.messageEntity,);
+    print("Messagelist Widget $messageEntity");
+    return messageEntity.messageSender==uid?UserCard(messageEntity: messageEntity,):ReplyCard(messageEntity: messageEntity,);
   }
 }
