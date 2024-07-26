@@ -9,10 +9,11 @@ import 'send_money_details.dart';
 
 class SendMoney extends StatelessWidget {
   const SendMoney(
-      {super.key, this.amount = 25000, this.name = "Erling Haland"});
+      {super.key, this.amount = 25000, this.name = "Erling Haland", required this.groupName});
 
   final int amount;
   final String name;
+  final String groupName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,12 +25,12 @@ class SendMoney extends StatelessWidget {
         title: Column(
           children: [
             Text(
-              "Send  Money",
-              style: Theme.of(context).textTheme.displayMedium,
+              "Payment Method",
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),
             ),
             Text(
-              "Ekondo Njangi",
-              style: Theme.of(context).textTheme.displaySmall,
+              "${groupName}",
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),
             ),
           ],
         ),
@@ -80,7 +81,7 @@ class SendMoney extends StatelessWidget {
             ),
             InkWell(
                 onTap: () {
-                  NextScreen(context: context, page: SendMoneyDetail());
+                  NextScreen(context: context, page: SendMoneyDetail(groupName: name,));
                 },
                 child: Image.asset(AppImages.MTP)),
             SizedBox(

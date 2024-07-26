@@ -183,7 +183,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     Icons.call,
                     color: primaryWhite,
                   )),
-              CustomPopUpMenu(items: items)
+              CustomPopUpMenu(items: items,onSelected: (v){},)
             ],
           ),
           body: Container(

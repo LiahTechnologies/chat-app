@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
+import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 
 import '../entities/chat.dart';
 import '../repository/chat_repository.dart';
 
-class ChatUsecase {
-  final ChatRepository chatRepository;
-  ChatUsecase({required this.chatRepository});
+class ChatListUsecase {
+  final ChatListRepository chatRepository;
+  ChatListUsecase({required this.chatRepository});
 
-  Future<Either<Failure, List<Chat>>> execute(String chatId) => chatRepository.fetchChats(chatId);
+  Future<Either<Failure, List<UserProfile>>> execute() => chatRepository.fetchChats();
 
-  Future<Either<Failure, bool>> create(Chat chat) => chatRepository.createChats(chat);
+  // Future<Either<Failure, bool>> create(Chat chat) => chatRepository.createChats(chat);
 
-  Future<Either<Failure, bool>> deleteChat(String chatId) => chatRepository.deleteChats(chatId);
+  Future<Either<Failure, bool>> deleteChat(String receiverId) => chatRepository.deleteChats(receiverId);
 
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
+import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 
 import '../../domain/entities/chat.dart';
 
@@ -34,31 +35,31 @@ class ChatMessageErrorLoading extends ChatMessageState {}
 /****CHAT LIST*** */
 
 class ChatState extends Equatable {
-  ChatState({required this.chat});
-  final List<Chat> chat;
+
+  
   @override
-  List<Object?> get props => [chat];
+  List<Object?> get props => [];
 }
 
 class ChatEmpty extends ChatState {
-  ChatEmpty({required super.chat});
+ 
 
   @override
   List<Object?> get props => [];
 }
 
 class ChatLoading extends ChatState {
-  ChatLoading() : super(chat: []);
+  ChatLoading() : super();
 }
 
 class ChatLoaded extends ChatState {
-  final List<Chat> chat;
-  ChatLoaded({required this.chat}) : super(chat: chat);
+  final List<UserProfile> chat;
+  ChatLoaded({required this.chat}) : super();
 
   @override
   List<Object?> get props=>[chat];
 }
 
 class ChatErrorLoading extends ChatState {
-  ChatErrorLoading() : super(chat: []);
+  ChatErrorLoading() : super();
 }

@@ -8,11 +8,13 @@ class UserCard extends StatelessWidget {
   final MessageEntity messageEntity;
   @override
   Widget build(BuildContext context) {
+
+    print("THIS IS THE MESSAGE $messageEntity");
     return Align(
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 65,
+          maxWidth: MediaQuery.of(context).size.width - 165,
         ),
         child: Card(
           elevation: 1,
@@ -24,16 +26,140 @@ class UserCard extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           color:primaryGreen.withOpacity(0.7),
           child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 10.0, bottom: 20, right: 35, top: 5),
-              child: Text(
-                "${messageEntity.message}",
-                style: TextStyle(fontSize: 16),
+
+/*
+                  if(messageEntity.replyMessage.isNotEmpty)
+                                              Positioned(
+                                                top: 1,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(top: 8,bottom: 10),
+                                                  height: 45,
+                                                  width: MediaQuery.of(context).size.width - 100,
+                                                 decoration: BoxDecoration(
+                                                   color: Colors.grey[700]!.withOpacity(0.15),
+                                                   borderRadius: BorderRadius.circular(15)
+                                                 ),
+                                                  child: Stack(
+                                                    children: [
+
+
+                                                      // Positioned(
+                                                      //   top: -10,
+                                                      //   right: -1,
+                                                      //   child: IconButton(onPressed: (){
+                                                      //       setState(() {
+                                                      //         isReplyMessage=false;
+                                                      //       });
+                                                      //     }, icon: Icon(Icons.close)),),
+
+                                                      
+                                                      SizedBox(
+                                                        height: 50,
+                                                        child:
+                                                        
+                                                        
+                                                         Row(
+                                                          children: [
+                                                              Container(
+                                                                
+                                                                margin: const EdgeInsets.only(right: 5,bottom: 8),
+                                                        
+                                                                                     width: 5,
+                                                                                            height: 30,
+                                                                                            
+                                                                                            decoration: BoxDecoration(
+                                                                                               color: Theme.of(context).appBarTheme.backgroundColor,
+                                                                                               borderRadius: BorderRadius.only(
+                                                                                               topLeft: Radius.circular(10),
+                                                                                               bottomLeft: Radius.circular(10)
+                                                                                               )
+                                                                                                        
+                                                                                            ),
+                                                                                           ),
+                                                                                            Expanded(
+                                                                                              child: Column(
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                children: [
+                                                                                                Text("${messageEntity.messageSender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                                                                                Text("${messageEntity.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                  ],
+                                                                                              ),
+                                                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),*/
+
+              if(messageEntity.replyMessage.isNotEmpty)
+         
+
+           
+           Positioned(child: Padding(padding: EdgeInsets.only(left: 10, bottom: 10,top: 10),child: 
+
+          
+           
+            Row(
+              mainAxisSize: MainAxisSize.min,
+
+
+                                                           children: [
+
+
+
+                                                               Container(
+                                                                 
+                                                                 margin: const EdgeInsets.only(right: 5,bottom: 8),
+                                                         
+                                                                                      width: 5,
+                                                                                             height: 30,
+                                                                                             
+                                                                                             decoration: BoxDecoration(
+                                                                                                color: Theme.of(context).appBarTheme.backgroundColor,
+                                                                                                borderRadius: BorderRadius.only(
+                                                                                                topLeft: Radius.circular(10),
+                                                                                                bottomLeft: Radius.circular(10)
+                                                                                                )
+                                                                                                         
+                                                                                             ),
+                                                                                            ),
+                                                                                             Expanded(
+                                                                                               child: Column(
+                                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                 children: [
+                                                                                                 Text("${messageEntity.messageId}",overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                                                                                 Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                   ],
+                                                                                               ),
+                                                                                             ),
+
+
+                                                                                             
+                                                           ],
+                                                         )
+           
+           ,)
+           
+           ),
+                                                  
+            Positioned(
+              // bottom: 4,
+              child: Padding(
+                padding:  EdgeInsets.only(
+                    left: 10.0, bottom: 20, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
+                child: Text(
+                  "${messageEntity.message}",
+                  style:const TextStyle(fontSize: 16),
+                ),
               ),
             ),
+
+
             Positioned(
-              bottom: 4,
+              bottom: 8,
               right: 10,
               child: Row(
                 children: [
@@ -50,7 +176,12 @@ class UserCard extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
+
+
+
+            
+
           ]),
         ),
       ),

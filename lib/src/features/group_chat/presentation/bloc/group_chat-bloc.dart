@@ -61,7 +61,7 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
             messageId: data["_id"], 
             message: data["message"], 
             messageReceiver: data["receiverId"], 
-            messageSender: data["senderId"]['lastNAme'], 
+            messageSender: data["senderId"]['lastName'], 
             replyMessage: data["replyMessage"], 
             replySender: data["replySender"], 
             chatId: data["chatId"], 

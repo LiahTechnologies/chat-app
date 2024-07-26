@@ -21,4 +21,6 @@ class GroupChatUsecase {
   Future<Either<Failure, bool>> deleteMessage(
           MessageEntity messageEntity, String groupId) async =>
       await groupRepository.deleteMessage(messageEntity, groupId);
+
+  Future<Either<Failure, bool>> addChat({required String uid, required String receiverId}) async=> await groupRepository.addChat(uid: uid, receiverId: receiverId) ;
 }

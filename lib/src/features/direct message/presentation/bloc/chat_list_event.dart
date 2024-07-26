@@ -54,15 +54,14 @@ class ChatEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class OnChatLoading extends ChatEvent {
-  final String chatId;
+class OnFetchChats extends ChatEvent {
 
-  OnChatLoading({required this.chatId});
+  OnFetchChats();
 
   @override
-  List<Object?> get props => [chatId];
+  List<Object?> get props => [];
 }
 
-class OnChatLoaded extends ChatEvent {}
+class OnDeleteChat extends ChatEvent {}
 
-class OnChatError extends ChatEvent {}
+// class OnChatError extends ChatEvent {}

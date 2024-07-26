@@ -30,3 +30,11 @@ class OnMessageEventReceived extends SocketEvent {
 
   OnMessageEventReceived(this.message);
 }
+
+
+class OnAddChat extends SocketEvent{
+  final String uid;
+  final String receiverId;
+
+  OnAddChat({required this.uid, required this.receiverId});
+}

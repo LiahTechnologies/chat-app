@@ -11,10 +11,12 @@ import '../../../../warnings/warning.dart';
 
 class SendMoneyDetail extends StatelessWidget {
   SendMoneyDetail(
-      {super.key, this.amount = 25000, this.name = "Erling Haland"});
+      {super.key, this.amount = 25000, this.name = "Erling Haland", required this.groupName});
 
   final int amount;
   final String name;
+  final String groupName;
+
 
   final TextEditingController referenceController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
@@ -30,9 +32,9 @@ class SendMoneyDetail extends StatelessWidget {
         title: Column(
           children: [
             Text("Send  Money",
-                style: Theme.of(context).textTheme.displayMedium),
-            Text("Ekondo Njangi",
-                style: Theme.of(context).textTheme.displaySmall),
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white)),
+            Text("${groupName}",
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white)),
           ],
         ),
       ),

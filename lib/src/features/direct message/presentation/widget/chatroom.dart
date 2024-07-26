@@ -1,37 +1,51 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
+import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:swipe_to/swipe_to.dart';
 
 
 import '../../../../core/common/constants/style/style.dart';
 import '../../../../core/model/messagemodel.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
+import '../../../group_chat/data/model/group_chat_model.dart';
+import '../../../group_chat/domain/entities/reply-message.dart';
+import '../../../group_chat/presentation/widgets/attarachment-widget.dart';
 import '../../domain/entities/chat.dart';
+import '../bloc/private-socket-bloc.dart';
+import '../bloc/private-socket-event.dart';
+import '../bloc/private-socket-state.dart';
 
 
 
 
 class PrivateChatRoom extends StatefulWidget {
-  const PrivateChatRoom({super.key, required this.chatModel});
-  final Chat chatModel;
+  const PrivateChatRoom({super.key,  required this. user});
+  final UserProfile user;
   
   @override
   State<PrivateChatRoom> createState() => _PrivateChatRoomState();
 }
 
 class _PrivateChatRoomState extends State<PrivateChatRoom> {
+  late PrivateSocketBloc socketBloc;
+  List<MessageEntity> messages = [];
+
+   ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
+
+  bool isReplyMessage = false;
   final TextEditingController controller = TextEditingController();
   bool showEmoji = false;
 
+
   FocusNode focusNode = FocusNode();
-  late List<MessageEntity> messages = [];
-  late IO.Socket socket;
 
   final List<PopupMenuItem> items =const [
     PopupMenuItem(
@@ -62,7 +76,13 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
 
   @override
   void initState() {
-    connect();
+
+
+    socketBloc = BlocProvider.of<PrivateSocketBloc>(context);
+    socketBloc.add(ConnectSocketEvent());
+    socketBloc.add(FetchInitialMessagesEvent(groupId:widget.user.uid));
+    
+    getUid();
     super.initState();
 
     focusNode.addListener(() {
@@ -73,6 +93,13 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
       }
     });
   }
+
+
+late String currentUser;
+getUid() async{ 
+   currentUser = await HelperFunction.getUserID();
+}
+/*
 
   void connect() {
     socket = IO.io("http://192.168.0.106:5000/", <String, dynamic>{
@@ -99,6 +126,8 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
       print('disconnect');
     });
   }
+
+  */
 
   @override
   void dispose() {
@@ -139,10 +168,7 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
                 CircleAvatar(
                   radius: 18,
                   backgroundColor: Colors.grey.shade300,
-                  child: Icon(
-                    widget.chatModel.isGroup ? Icons.group : Icons.person,
-                    size: 22,
-                  ),
+                  child: Image.asset(widget.user.profile,)
                 )
               ],
             ),
@@ -155,7 +181,7 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.chatModel.userName,
+                      widget.user.firstName,
                       style:const TextStyle(
                           color: primaryWhite,
                           fontWeight: FontWeight.normal,
@@ -184,10 +210,48 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
                     Icons.call,
                     color: primaryWhite,
                   )),
-              CustomPopUpMenu(items: items)
+              CustomPopUpMenu(items: items,onSelected: (v){},)
             ],
           ),
-          body: Container(
+
+          body: BlocBuilder<PrivateSocketBloc, SocketState>(
+        builder: (context, state) {
+
+          if (state is SocketConnectingState) {
+            return const Center(child: CircularProgressIndicator());
+          } 
+          
+          else if (state is SocketConnectedState) {
+
+            return  buildMessageList();
+          
+          } 
+          else if (state is InitialMessagesFetchedState) {
+            messages = state.messages;
+            return buildMessageList();
+
+          } 
+          
+          else if (state is SocketMessageReceivedState) {
+
+            print("CURRENT STATE EMITTED ${state.message}");
+
+            // setState(() {
+              messages.add(state.message);
+            // });
+            return buildMessageList();
+
+
+          } else if (state is SocketErrorState) {
+            return Center(child: Text('Error: ${state.message}'));
+          } 
+          
+          else {
+            return Center(child: Text('Disconnected'));
+          }
+        },
+      ),
+         /* body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: WillPopScope(
@@ -335,11 +399,274 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
               ),
             ),
           ),
+          */
         ),
       ],
     );
   }
 
+
+
+
+
+
+
+
+
+
+
+  Widget buildMessageList() {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return SwipeTo(
+                onLeftSwipe: (v){
+                                      print("THE CURRENT STATE OF isReplyMessage is $isReplyMessage");
+
+                    setState(() {
+                      isReplyMessage=true;
+                      replyMessage.message= messages[index].message;
+                      replyMessage.userName= messages[index].messageSender;
+                      replyMessage.messageId= messages[index].messageId!;
+                    });
+                    print("THE CURRENT STATE OF isReplyMessage is $isReplyMessage");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:18.0),
+                  child: MessageList(
+                                        messageEntity: messages[index],
+                                        uid: currentUser,
+                                      ),
+                ),
+              );
+            },
+          ),
+        ),
+
+            chatInputWidget()
+                     
+        
+      ],
+    );
+  }
+
+  chatInputWidget(){
+    return 
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
+                            child: Stack(
+                              
+                              children: [
+                                Positioned(
+                                
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width - 60,
+                                      child: Card(
+                                          color: AppColor.darkIconColor,
+                                          margin: EdgeInsets.only(
+                                              left: 2, right: 2, bottom: 8),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25)),
+                                          child: Column(
+                                           
+                                            children: [
+                                      if(isReplyMessage)
+
+                                              Container(
+                                                margin: EdgeInsets.only(top: 8),
+                                                height: 45,
+                                                width: MediaQuery.of(context).size.width - 100,
+                                               decoration: BoxDecoration(
+                                                 color: Colors.grey[700]!.withOpacity(0.15),
+                                                 borderRadius: BorderRadius.circular(15)
+                                               ),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      top: -10,
+                                                      right: -1,
+                                                      child: IconButton(onPressed: (){
+                                                          setState(() {
+                                                            isReplyMessage=false;
+                                                          });
+                                                        }, icon: Icon(Icons.close)),),
+                                                    
+                                                    Row(
+                                                      children: [
+                                                          Container(
+                                                            margin: const EdgeInsets.only(right: 5),
+                                                    
+                                                            width: 5,
+                                                            height: 40,
+                                                                                        
+                                                            decoration: BoxDecoration(
+                                                            color: AppColor.greenColor,
+                                                            borderRadius: BorderRadius.only(
+                                                            topLeft: Radius.circular(10),
+                                                            bottomLeft: Radius.circular(10)
+                                                                                           )
+                                                                                                    
+                                                                                        ),
+                                                                                       ),
+                                                                                        Expanded(
+                                                                                          child: Column(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                                                                                                children: [
+                                                                                                                                                                                Text("${replyMessage.userName}",overflow:TextOverflow.ellipsis,),
+                                                                                                                                                                                Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                              ],
+                                                                                          ),
+                                                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                                            
+                                                            
+                                                            
+                                                            
+                                              TextFormField(
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium,
+                                                controller: controller,
+                                                onChanged: (v) {
+                                                  setState(() {
+                                                    controller.text = v;
+                                                  });
+                                                },
+                                                maxLines: 4,
+                                                minLines: 1,
+                                                keyboardType: TextInputType.multiline,
+                                                decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    prefixIcon: IconButton(
+                                                      icon: Icon(Icons.emoji_emotions),
+                                                      onPressed: () {
+                                                        focusNode.unfocus();
+                                                        focusNode.canRequestFocus =
+                                                            false;
+                                                            
+                                                        setState(() {
+                                                          showEmoji = !showEmoji;
+                                                        });
+                                                      },
+                                                    ),
+                                                    suffixIcon: Row(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showModalBottomSheet(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  context: context,
+                                                                  builder: (context) =>
+                                                                      Attarachment());
+                                                            },
+                                                            icon:const Icon(
+                                                                Icons.attach_file)),
+                                                        IconButton(
+                                                            onPressed: () {},
+                                                            icon:
+                                                                Icon(Icons.camera_alt))
+                                                      ],
+                                                    ),
+                                                    contentPadding: EdgeInsets.all(10),
+                                                    hintText: "Type a message",
+                                                    hintStyle: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium),
+                                              ),
+                                            ],
+                                          ))),
+                                ),
+                            
+                            
+                                Positioned(
+                                 
+                                  right: 1,
+                                  bottom: 8,
+                                  // padding: const EdgeInsets.only(
+                                  //     bottom: 8.0, right: 2),
+                                  child: CircleAvatar(
+                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                                    radius: 22,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        
+                                        controller.text.isEmpty
+                                            ? Icons.mic
+                                            : Icons.send,
+                                            color: Colors.white,
+                                        // color: Theme.of(context).iconTheme.color,
+                                      ),
+                                      onPressed: () {
+                                        
+                                        
+                                       
+                                                                  
+                                        final message= GroupChatModel(chatId: widget.user.uid,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName);
+                                                                  
+                                        socketBloc.add(SendMessageEvent('privateMessage', message));
+                                       
+                                        messages.add(message);
+                                                                  
+                                                                  
+                                        // context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
+                                      //   socket.emit("newGroupMessage",
+                                      //    message
+                                                  
+                                      //   );
+                                      // socket.on("newGroupMessage",(data){
+                                      //       print("LIVE MESSAGE  $data");
+                                      // });
+                                                                  
+                                                setState(() {
+                                                  isReplyMessage=false;
+                                                  replyMessage.message="";
+                                                  replyMessage.userName="";
+                                                  replyMessage.messageId="";
+                                                });                  
+                                                                  
+                                        controller.clear();
+                                                                  
+                                       socketBloc.add(OnMessageEvent("OnGroup",(data){
+                                                                  
+                                                    print("THIS ISE THE RESPONSE $data");
+                                                                  
+                                                  }));
+                                                                  
+                                        // socketBloc.add(OnMessageEvent(events));
+                                                  
+                                        
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ));
+  }
+}
+
+
+
+
+
+
+
+/*
   Widget attarchCard() {
     return Container(
       height: 270,
@@ -442,4 +769,6 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
   //     ),
   //   );
   // }
-}
+
+  */
+

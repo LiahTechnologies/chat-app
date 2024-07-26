@@ -7,28 +7,28 @@ import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.d
 import 'package:http/http.dart' as http;
 import 'package:njadia/src/features/create_group/domain/usecases/create-group-usecase.dart';
 import 'package:njadia/src/features/create_group/presentation/blocs/group-bloc.dart';
-import 'package:njadia/src/features/direct%20message/data/data_sources/chat_and_message_data_source.dart';
-import 'package:njadia/src/features/direct%20message/data/repository/chat_message_repository.dart';
+import 'package:njadia/src/features/direct%20message/data/data_sources/chat-list-remote-data-source.dart';
 import 'package:njadia/src/features/direct%20message/domain/usecase/chat_usecase.dart';
+import 'package:njadia/src/features/direct%20message/presentation/bloc/private-socket-bloc.dart';
 import 'package:njadia/src/features/direct%20message/presentation/bloc/socketServicer.dart';
-import 'package:njadia/src/features/group_chat/data/datq_source/group_chat_remote_data_source.dart';
+import 'package:njadia/src/features/group_chat/data/data_source/group_chat_remote_data_source.dart';
 import 'package:njadia/src/features/group_chat/data/repositories/group_repository_impl.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
 import 'package:njadia/src/features/group_chat/domain/usecase/group_chat_usecase.dart';
-import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-bloc.dart';
-import 'package:njadia/src/features/group_chat/presentation/bloc/socketServicer.dart';
+
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 
 import '../create_group/data/data_sources/group-remote-datasource.dart';
 import '../create_group/data/repository/group-repositories-impl.dart';
 import '../create_group/domain/repository/group-repository.dart';
+import '../direct message/data/data_sources/socket-remote-datasource.dart';
 import '../direct message/data/repository/chat_repo_imple.dart';
-import '../direct message/domain/repository/chat_message_repository.dart';
+import '../direct message/data/repository/socket-repository.dart';
 import '../direct message/domain/repository/chat_repository.dart';
-import '../direct message/domain/usecase/chat_message_usecase..dart';
-import '../direct message/presentation/bloc/chat_message_bloc.dart';
-import '../group_chat/data/datq_source/group-socket-remote-data-source.dart';
-import '../group_chat/data/datq_source/group_list_remote_repository.dart';
+import '../direct message/domain/usecase/socket-chat-usecase.dart';
+import '../direct message/presentation/bloc/chat_list_bloc.dart';
+import '../group_chat/data/data_source/group-socket-remote-data-source.dart';
+import '../group_chat/data/data_source/group_list_remote_repository.dart';
 import '../group_chat/data/repositories/group-socket-repositroy-impl.dart';
 import '../group_chat/data/repositories/group_list_repository_impl.dart';
 import '../group_chat/domain/repositories/group_list_repository.dart';
@@ -36,6 +36,11 @@ import '../group_chat/domain/usecase/group-socket-usecase.dart';
 import '../group_chat/domain/usecase/group_chat_list_usecase_.dart';
 import '../group_chat/presentation/bloc/group-socket-bloc.dart';
 import '../group_chat/presentation/bloc/group_list_bloc.dart';
+import '../search-groups/data/data-sources/search-group-remote-data-source.dart';
+import '../search-groups/data/repositories/search-group-repository-impl.dart';
+import '../search-groups/domain/repository/search-group-repository.dart';
+import '../search-groups/domain/usecase/search-group-usecase.dart';
+import '../search-groups/presentation/bloc/search-group-bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -44,7 +49,7 @@ void setUpLocator() {
 
 // Sockets
 
- locator.registerFactory(() => GroupSocketService());
+//  locator.registerFactory(() => GroupSocketService());
  locator.registerFactory(() => PrivateSocketService());
 
 
@@ -95,37 +100,6 @@ void setUpLocator() {
 
 
 
-/******PRIVATE CHATS******/
-
-
-
-locator.registerFactory(() => ChatMessageBloc(chatMessageUseCase:locator()));  
-locator.registerFactory(() => ChatBloc(chatUsecase: locator()));  // usecase
-
-locator.registerLazySingleton(() => ChatMessageUseCase(chatMessageRepository: locator()));
-locator.registerLazySingleton(() => ChatUsecase(chatRepository: locator()));
-
-
-
-  // Repository 
-  
-locator.registerLazySingleton<ChatMessageRepository>(
-      () => ChatMessageRepositoryImpl(chatMessageRemoteDataSource: locator<ChatMessageRemoteDataSource>()));
-locator.registerLazySingleton<ChatRepository>(
-      () => ChatRepositoryImpl(chatRemoteDataSource: locator<ChatRemoteDataSource>()));
-
-  // Datasource
-
-locator
-      .registerLazySingleton<ChatMessageRemoteDataSource>(() => ChatMessageRemoteDataSourceImpl(client: locator()));
-locator
-      .registerLazySingleton<ChatRemoteDataSource>(() => ChatRemoteDataSourceImpl(client: locator()));
-
-
-
-
-
-
 
 
 
@@ -135,7 +109,7 @@ locator
 
 /******GROUP CHATS******/
 
- locator.registerFactory(() => GroupChatBloc(locator(), locator(),));
+//  locator.registerFactory(() => GroupChatBloc(locator(), locator(),));
  locator.registerFactory(() => GroupListBloc(groupListUsecase: locator()));
 
 
@@ -170,6 +144,59 @@ locator
 
  locator
       .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
+
+
+
+
+
+
+// PRIVATE CHAT
+
+
+
+
+/******GROUP CHATS******/
+
+ locator.registerFactory(() => ChatListBloc( chatListUsecase: locator(),));
+  locator.registerFactory(() => PrivateSocketBloc(  connectSocket:  locator(), disconnectSocket:  locator(), sendMessage:  locator(), onMessage:  locator(), fetchInitialMessages:  locator(),));
+
+
+//USECASES 
+ locator.registerLazySingleton(() => ChatListUsecase( chatRepository: locator()));
+
+ locator.registerLazySingleton(() => PrivateConnectSocket( locator()));
+ locator.registerLazySingleton(() => DisconnectPrivateSocket( locator()));
+ locator.registerLazySingleton(() => SendPrivateMessage( locator()));
+
+ locator.registerLazySingleton(() => OnPrivateMessage( locator()));
+ locator.registerLazySingleton(() => FetchInitialPrivateMessages( locator()));
+  
+
+
+
+
+
+//REPOSITORY
+  
+ locator.registerLazySingleton<ChatListRepository>(
+      () => ChatListRepositoryImpl( privatChatListRemoteDataSource:  locator<PrivatChatListRemoteDataSource>(),));
+ 
+ locator.registerLazySingleton<PrivateSocketsRepository>(
+      () => PrivateSocketRepositoryImpl( locator<PrivateSocketRemoteDataSource>()));
+ 
+
+//DATASOURCE
+
+ locator
+      .registerLazySingleton<PrivatChatListRemoteDataSource>(() => PrivatChatListRemoteDataSourceImpl(client: locator()));
+
+
+
+
+ locator
+      .registerLazySingleton<PrivateSocketRemoteDataSource>(() => PrivateSocketRemoteDataSourceImpl(locator()));
+
+
 
 
 
@@ -213,7 +240,7 @@ locator
 /// THIS IS THE SOCKET PART
 
 // Bloc
- locator.registerFactory(() => SocketBloc(connectSocket: locator(),disconnectSocket:locator(),sendMessage: locator(),onMessage: locator(),fetchInitialMessages: locator()));
+ locator.registerFactory(() => SocketBloc(connectSocket: locator(),disconnectSocket:locator(),sendMessage: locator(),onMessage: locator(),fetchInitialMessages: locator(),addChatUseCase: locator()));
   // locator.registerFactory(() => ThemeBloc());
 
 
@@ -224,6 +251,7 @@ locator
 
  locator.registerLazySingleton(() => OnMessage( locator()));
  locator.registerLazySingleton(() => FetchInitialMessages( locator()));
+  locator.registerLazySingleton(() => AddChatUseCase( locator()));
   
 
 
@@ -241,7 +269,49 @@ locator
 //DATASOURCE
 
  locator
-      .registerLazySingleton<SocketRemoteDataSource>(() => SocketRemoteDataSourceImpl());
+      .registerLazySingleton<SocketRemoteDataSource>(() => SocketRemoteDataSourceImpl(locator()));
+
+
+
+
+/******SEARCH GROUPS*****/
+
+
+  
+
+  // BLOC
+  locator.registerFactory(() => SearchGroupBloc(locator()));
+ 
+
+ 
+ 
+
+
+
+
+ //USECASE
+
+    locator.registerLazySingleton(() => SearchGroupUsecase( searchGroupRepository: locator()));
+
+
+  //Repository* 
+  
+  locator.registerLazySingleton<SearchGroupRepository>(
+      () => searchGroupRepositoryImpl(searchGroupRemoteDataSource: locator<SearchGroupRemoteDataSource>()));
+
+  
+
+  
+
+
+//DATASOURCES
+  locator
+      .registerLazySingleton<SearchGroupRemoteDataSource>(() => SearchGroupRemoteDataSourceImpl(client: locator()));
+
+
+
+
+
 
 
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/features/group_chat/presentation/view/add_group_contact.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 
 import 'package:njadia/src/utils/naviagtion.dart';
@@ -78,7 +77,7 @@ class JoinGroup extends StatelessWidget {
                 ),
                 CustomButton(
                   onPress: () {
-                    NextScreen(context: context, page: AddContacts());
+                    // NextScreen(context: context, page: AddContacts());
                     // Get.toNamed(AppRoutes.ADDCONTACT);
                   },
                   text: "Join Njangi",

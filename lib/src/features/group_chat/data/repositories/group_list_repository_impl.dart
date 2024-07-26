@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
-import 'package:njadia/src/features/group_chat/data/datq_source/group_list_remote_repository.dart';
+import 'package:njadia/src/features/group_chat/data/data_source/group_list_remote_repository.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_list_repository.dart';
 

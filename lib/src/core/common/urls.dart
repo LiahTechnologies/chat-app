@@ -1,7 +1,7 @@
 class AppUrls {
   
-  static const String BASEURL = "http://192.168.34.98:5000/api/";
-  static const String SOCKET_URL ="http://192.168.34.98:5000";
+  static const String BASEURL = "http://192.168.0.104:5000/api/";
+  static const String SOCKET_URL ="http://192.168.0.104:5000";
   static const String signup_file    =   BASEURL+"signup_files";
   static const String signup_details =   BASEURL+"signup_details";
   static const String login =   BASEURL+"auth/login";
@@ -20,7 +20,7 @@ class AppUrls {
   // Messages
   static const String fetchChats = BASEURL+"user-chats";
   static const String fetchMessages = BASEURL+"messages/";
-    static const String fetchGroupMessages = BASEURL+"messages/group";
+  static const String fetchGroupMessages = BASEURL+"messages/group";
   static const String sendMessage = BASEURL+"messages/send/";
   static const String sendGroupMessage = BASEURL+"messages/group/send/";
 
@@ -34,6 +34,7 @@ class AppUrls {
 
   // User Groups and Chats
   static const String userGroups = BASEURL+"users/groups/";
-   static const String userChats = BASEURL+"users/chats/";
+   static const String userChats = BASEURL+"user-chats/chats/";
+   static const String userChatList = BASEURL+"user-chats/";
 
 }

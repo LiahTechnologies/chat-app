@@ -5,6 +5,9 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../../../core/common/errors/exceptions.dart';
+import '../../../../core/common/errors/failures.dart';
+
 abstract class SocketRemoteDataSource {
   void connect();
   void disconnect();
@@ -12,15 +15,18 @@ abstract class SocketRemoteDataSource {
 
   void onMessage(String event, Function(dynamic) callback);
   Future<List<GroupChatModel>> fetchInitialMessages(String groupId);
+  Future<bool>addChat({required String uid, required String receiverId});
+
 }
 
 class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
   late IO.Socket socket;
-
+  late http.Client client;
+  SocketRemoteDataSourceImpl(this.client);
   @override
   void connect() async {
     print("THE CONNECTION IS BEING CALLED");
-    socket = IO.io('http://192.168.34.98:5000', <String, dynamic>{
+    socket = IO.io('http://192.168.0.104:5000', <String, dynamic>{
       "query":{
           "userId":await HelperFunction.getUserID()
       },
@@ -36,9 +42,9 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
       print('User connected');
     });
 
-    // socket.on("OnGroup",(data){
-    //     print("SERVER RESPONSE $data");
-    // });
+    socket.on("groupMessage",(data){
+        print("SERVER RESPONSE $data");
+    });
    
 
 
@@ -56,6 +62,7 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
   @override
   void sendMessage(String event, dynamic data) {
     print("THIS IS THE SEND MESSAGE EVENT $data");
+    // socket.on(event,(data));
     socket.emit(event, data);
   }
 
@@ -73,7 +80,7 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
       "groupId":groupId
     };
 
-    final response = await http.post(Uri.parse(AppUrls.BASEURL+"messages/init"),body: json.encode(data),headers: {"content-type":"application/json"});
+    final response = await http.post(Uri.parse("${AppUrls.BASEURL}messages/init"),body: json.encode(data),headers: {"Content-Type": "Application/json"});
     print("FETCHED MESSAGE STATUS CODE ${json.decode(response.body)}");
 
     if (response.statusCode == 200) {
@@ -85,6 +92,22 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
     } else {
       throw Exception('Failed to load messages');
     }
+  }
+
+
+  @override
+  Future<bool> addChat({required String uid, required String receiverId})async {
+   try {
+     print("SEND THE REQUEST TO THE BACKED TO ADD A CHAT $uid  reci $receiverId");
+
+     final result = await http.patch(Uri.parse("${AppUrls.userChats}$uid"), body: json.encode({"userId":receiverId}),headers: {"Content-Type": "Application/json"});
+     
+        final data = json.decode(result.body);
+        print("RESPONSE FROM DATABASE CHAT $data");
+     return data["message"] as bool;
+   } on ServerExceptions {
+      throw ServerFailure("error adding chats");
+   }
   }
 }
 

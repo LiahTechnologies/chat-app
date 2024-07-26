@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
+import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:http/http.dart' as http;
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -21,6 +22,9 @@ abstract class GroupChatRemoteDataSource {
 
   Future<bool> deleteMessage(
       {required String groupId, required MessageEntity messageEntity});
+
+
+Future<bool>addChat({required String uid, required String receiverId});
 }
 
 class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
@@ -94,6 +98,17 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
     } on ServerExceptions {
       throw Left(ServerExceptions);
     }
+  }
+  
+  @override
+  Future<bool> addChat({required String uid, required String receiverId})async {
+   try {
+     
+     final result = await client.patch(Uri.parse(AppUrls.userChats+"/"+uid), body: json.encode({"userId":receiverId}),headers: {"content-type":"application/json"});
+     return json.decode(result.body);
+   } on ServerExceptions {
+      throw ServerFailure("error adding chats");
+   }
   }
 
 

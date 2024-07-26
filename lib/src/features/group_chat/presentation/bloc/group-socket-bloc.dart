@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 // import '../../domain/socket_use_cases.dart';
-import '../../domain/usecase/group-socket-usecase.dart';
+import '../../../group_chat/domain/usecase/group-socket-usecase.dart';
 import 'group-socket-event.dart';
 import 'group-socket-state.dart';
+
 // import 'socket_event.dart';
 // import 'socket_state.dart';
 
@@ -15,8 +16,10 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
   final SendMessage sendMessage;
   final OnMessage onMessage;
   final FetchInitialMessages fetchInitialMessages;
+  final AddChatUseCase addChatUseCase;
 
   SocketBloc({
+    required this.addChatUseCase,
     required this.connectSocket,
     required this.disconnectSocket,
     required this.sendMessage,
@@ -71,6 +74,10 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     });
 
 
+  on<OnAddChat>((event, emit)async{
+    final result = await addChatUseCase.repository.addChat(uid: event.uid, receiverId: event.receiverId);
+    result.fold((l)=>emit(SocketErrorState("Error adding chats")), (data)=>emit(PrivateChatCreated(data)));
+  });
 
     on<OnMessageEventReceived>((event, emit) {
 

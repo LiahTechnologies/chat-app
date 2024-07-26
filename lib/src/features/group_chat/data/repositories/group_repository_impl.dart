@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
-import 'package:njadia/src/features/group_chat/data/datq_source/group_chat_remote_data_source.dart';
+import 'package:njadia/src/features/group_chat/data/data_source/group_chat_remote_data_source.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_repository.dart';
@@ -85,5 +85,16 @@ class GroupChatRepositoryImpl extends GroupChatRepository {
       throw Left(ServerFailure("Something went wrong"));
 
     }
+  }
+  
+  @override
+  Future<Either<Failure, bool>> addChat({required String uid, required String receiverId})async {
+   try {
+    final result = await groupChatRemoteDataSource.addChat(uid: uid, receiverId: receiverId);
+    return Right(result);
+     
+   } on ServerExceptions {
+      throw Left(ServerFailure("Error adding chat")); 
+   }
   }
 }

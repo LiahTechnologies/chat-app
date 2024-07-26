@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/features/create_group/presentation/view/group_category.dart';
-import 'package:njadia/src/features/create_group/presentation/view/join_group.dart';
+import 'package:njadia/src/features/join-group/presentation/view/join_group.dart';
 import 'package:njadia/src/features/create_group/presentation/widgets/custom_card_items.dart';
 import 'package:njadia/src/utils/CustomButton.dart';
 
