@@ -317,7 +317,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
 
                                       socket.emit("newMessage",
-                                       MessageModel(messageId: "messageId", message: controller.text, messageReceiver: "messageReceiver", messageSender: currentUser, replyMessage: "replyMessage", replySender: "you", chatId: "chatId", dateTime: "dateTime").toJson()
+                                      //  MessageModel(messageId: "messageId", message: controller.text, messageReceiver: "messageReceiver", messageSender: currentUser, replyMessage: "replyMessage", replySender: "you", chatId: "chatId", dateTime: "dateTime").toJson()
 
                                       );
 

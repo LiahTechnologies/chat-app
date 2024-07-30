@@ -422,7 +422,7 @@ getUid() async{
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName);
+                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName,senderId: currentUser, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
                                                                   
                                         socketBloc.add(SendMessageEvent('groupMessage', message));
                                        

@@ -616,7 +616,7 @@ getUid() async{
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.user.uid,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName);
+                                        final message= GroupChatModel(chatId: widget.user.uid,messageReceiver: widget.user.firstName,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName,senderId:currentUser,receiverId:  widget.user.uid);
                                                                   
                                         socketBloc.add(SendMessageEvent('privateMessage', message));
                                        

@@ -12,17 +12,20 @@ class ChatMessageModel extends MessageEntity {
     required this.replySender,
     required this.recepientId,
     required this.time,
+     
     required this.chatId
-  }) : super(messageId: messageId, message: message, messageReceiver: recepientId, messageSender: sender, replyMessage: replyMessage, replySender: replySender, chatId: chatId, dateTime: time);
+  }) : super(senderId: sendId, receiverId: recepientId,messageId: messageId, message: message, messageReceiver: recepientId, messageSender: sender, replyMessage: replyMessage, replySender: replySender, chatId: chatId, dateTime: time);
   final String message;
   final String messageId;
   final String sendId;
   final String sender;
+
   final String replyMessage;
   final String replySender;
   final String recepientId;
   final String time;
   final String chatId;
+
 
  
   factory ChatMessageModel.fromjson(Map<String, dynamic> json) =>

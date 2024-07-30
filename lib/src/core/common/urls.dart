@@ -1,6 +1,6 @@
 class AppUrls {
   
-  static const String BASEURL = "http://192.168.0.104:5000/api/";
+  static const String BASEURL = "http://192.168.159.98:5000/api/";
   static const String SOCKET_URL ="http://192.168.0.104:5000";
   static const String signup_file    =   BASEURL+"signup_files";
   static const String signup_details =   BASEURL+"signup_details";

@@ -77,7 +77,7 @@ class GroupChatRemoteDataSourceImpl extends GroupChatRemoteDataSource {
   @override
   Future<List<GroupChatModel>> sendMessage({required MessageEntity messageEntity, required String groupId})async {
     try {
-      final data =GroupChatModel( chatId: groupId,message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, dateTime: messageEntity.dateTime).toJson() ;
+      final data =GroupChatModel( chatId: groupId,message: messageEntity.message, messageReceiver: messageEntity.messageReceiver, messageSender: messageEntity.messageSender, replyMessage: messageEntity.replyMessage, replySender: messageEntity.replySender, dateTime: messageEntity.dateTime,senderId:messageEntity.senderId,receiverId: messageEntity.receiverId).toJson() ;
 
 
       // print("THIS IS THE SENT MESSAGE $data");

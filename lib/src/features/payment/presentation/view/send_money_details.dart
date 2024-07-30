@@ -70,7 +70,7 @@ class SendMoneyDetail extends StatelessWidget {
               width: double.infinity,
               color: Theme.of(context).cardTheme.color,
               child: Text("PAYMENT METHOD",
-                  style: Theme.of(context).textTheme.displayMedium),
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white)),
             ),
             Align(
               alignment: Alignment.topLeft,
@@ -191,7 +191,7 @@ class SendMoneyDetail extends StatelessWidget {
                               fonts: 19),
                           enableDrag: true);
               },
-              text: "PLAY YOUR NJANGI",
+              text: "Pay now ",
               width: 250.w,
               icon: null,
             )

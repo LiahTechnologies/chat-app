@@ -10,6 +10,8 @@ class MessageModel extends MessageEntity {
   final String replySender;
   final String replyMessage;
   final String dateTime;
+  final String senderId;
+  final String receiverId;
 
   const MessageModel(
       { this.messageId,
@@ -18,6 +20,8 @@ class MessageModel extends MessageEntity {
       required this.messageSender,
       required this.replyMessage,
       required this.replySender,
+      required this.senderId,
+      required this.receiverId,
        this.chatId,
       required this.dateTime})
       : super(
@@ -28,7 +32,9 @@ class MessageModel extends MessageEntity {
             replyMessage: replyMessage,
             replySender: replySender,
             dateTime: dateTime,
-            chatId: chatId
+            chatId: chatId,
+            senderId: senderId,
+            receiverId: receiverId,
             
             );
 
@@ -40,7 +46,9 @@ class MessageModel extends MessageEntity {
       replyMessage: json["replyMessage"],
       replySender: json["replySender"],
       dateTime: json["dateTime"],
-      chatId: json['chatId']
+      chatId: json['chatId'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId']
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +59,8 @@ class MessageModel extends MessageEntity {
       "replyMessage": replyMessage,
       "replySender": replySender,
       "dateTime": dateTime,
-      "chatId":chatId
+      "chatId":chatId,
+      "senderId":senderId,
+      "receiverId":receiverId
       };
 }

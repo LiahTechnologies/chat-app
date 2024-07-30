@@ -26,7 +26,7 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
   @override
   void connect() async {
     print("THE CONNECTION IS BEING CALLED");
-    socket = IO.io('http://192.168.0.104:5000', <String, dynamic>{
+    socket = IO.io('http://192.168.159.98:5000', <String, dynamic>{
       "query":{
           "userId":await HelperFunction.getUserID()
       },

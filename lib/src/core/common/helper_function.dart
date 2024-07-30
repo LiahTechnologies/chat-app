@@ -75,7 +75,7 @@ class HelperFunction {
 
   static Future<String> getUserName() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(_userEmailKey)!;
+    return await sharedPreference.getString(_userNameKey)!;
   }
 
 

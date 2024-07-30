@@ -10,6 +10,8 @@ class GroupChatModel extends MessageEntity {
   final String replySender;
   final String replyMessage;
   final String dateTime;
+  final String senderId;
+  final String receiverId;
 
   const GroupChatModel(
       { this.messageId,
@@ -19,6 +21,8 @@ class GroupChatModel extends MessageEntity {
       required this.replyMessage,
       required this.replySender,
        this.chatId,
+       required this.senderId,
+       required this.receiverId,
       required this.dateTime})
       : super(
             messageId: messageId,
@@ -28,7 +32,10 @@ class GroupChatModel extends MessageEntity {
             replyMessage: replyMessage,
             replySender: replySender,
             dateTime: dateTime,
-            chatId: chatId
+            chatId: chatId,
+            receiverId: receiverId,
+            senderId: senderId
+
             
             );
 
@@ -40,7 +47,9 @@ class GroupChatModel extends MessageEntity {
       replyMessage: json["senderId"],
       replySender: json["receiverId"],
       dateTime: json["receiverId"],
-      chatId: json['message']
+      chatId: json['message'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId']
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +60,8 @@ class GroupChatModel extends MessageEntity {
       "replyMessage": replyMessage,
       "replySender": replySender,
       "dateTime": dateTime,
-      "chatId":chatId
+      "chatId":chatId,
+      "senderId":senderId,
+      "receiverId":receiverId
       };
 }

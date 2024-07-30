@@ -1,6 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:njadia/src/core/chats%20functionality/socketServicer.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/usecase/group_chat_usecase.dart';
 import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-event.dart';
@@ -66,6 +64,8 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
             replySender: data["replySender"], 
             chatId: data["chatId"], 
             dateTime: data["dateTime"],
+            senderId: data['senderId'],
+            receiverId: data['receiverId']
           )));
         });
 

@@ -4,7 +4,9 @@ class MessageEntity extends Equatable {
   final String? messageId;
   final String message;
   final String messageSender;
+  final String senderId;
   final String? messageReceiver;
+  final String receiverId;
   final String replySender;
   final String replyMessage;
   final String? chatId;
@@ -14,6 +16,8 @@ class MessageEntity extends Equatable {
       { this.messageId,
       required this.message,
        this.messageReceiver,
+      required  this.senderId,
+      required this.receiverId,
       required this.messageSender,
       required this.replyMessage,
       required this.replySender,
@@ -31,5 +35,5 @@ class MessageEntity extends Equatable {
         chatId
       ];
 
-factory MessageEntity.fromjson(Map<String,dynamic>json)=>MessageEntity(message: json["message"], messageSender: json["senderId"], replyMessage: json["receiverId"], replySender: json["replySender"], dateTime: json["dateTime"]);
+factory MessageEntity.fromjson(Map<String,dynamic>json)=>MessageEntity(message: json["message"], messageSender: json["senderId"], replyMessage: json["receiverId"], replySender: json["replySender"], dateTime: json["dateTime"],senderId: json['senderId'], receiverId: json['receiverId']);
 }

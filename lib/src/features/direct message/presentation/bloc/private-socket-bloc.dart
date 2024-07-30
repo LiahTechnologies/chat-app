@@ -47,7 +47,7 @@ class PrivateSocketBloc extends Bloc<SocketEvent, SocketState> {
     on<OnMessageEvent>((event, emit) {
       onMessage.call(event.event, (data) async {
        
-       final message = await MessageEntity(message: data["message"], messageSender: data["senderId"]['_id'], replyMessage: data["receiverId"], replySender: "replySender", dateTime: "dateTime");
+       final message = await MessageEntity(message: data["message"], messageSender: data["senderId"]['_id'], replyMessage: data["receiverId"], replySender: data["replySender"], dateTime: data["dateTime"],senderId: data['senderId'],receiverId: data['receiverId']);
         emit(SocketMessageReceivedState( message ));
         // add(OnMessageEventReceived(de_data));
 

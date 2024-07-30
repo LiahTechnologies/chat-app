@@ -56,7 +56,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
        final userData =
             await LoginResponse.fromjson(json.decode(response.body));
         await HelperFunction.saveUserEmail(userData.userEmail);
-        await HelperFunction.saveUserName(userData.userName);
+        await HelperFunction.saveUserName("${userData.lastName  +userData.userName}");
         await HelperFunction.saveUserID(userData.uid);
         await HelperFunction.saveUserProfile(userData.lastName);
         print("THIS IS THE USER DATA: $userData");
@@ -149,7 +149,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
 
       final userData = LoginResponse.fromjson(json.decode(response.body));
       await HelperFunction.saveUserEmail(userData.userEmail);
-      await HelperFunction.saveUserName(userData.userName);
+      await HelperFunction.saveUserName("${userData.lastName  +userData.userName}");
       await HelperFunction.saveUserID(userData.uid);
       await HelperFunction.saveUserProfile(userData.lastName);
       return userData;
