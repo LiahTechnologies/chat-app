@@ -14,6 +14,6 @@ class MessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Messagelist Widget $messageEntity");
-    return messageEntity.messageSender==uid?UserCard(messageEntity: messageEntity,):ReplyCard(messageEntity: messageEntity,);
+    return messageEntity.senderId==uid?UserCard(messageEntity: messageEntity,):ReplyCard(messageEntity: messageEntity,);
   }
 }

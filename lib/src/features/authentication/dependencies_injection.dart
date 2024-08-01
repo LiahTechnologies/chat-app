@@ -36,6 +36,11 @@ import '../group_chat/domain/usecase/group-socket-usecase.dart';
 import '../group_chat/domain/usecase/group_chat_list_usecase_.dart';
 import '../group_chat/presentation/bloc/group-socket-bloc.dart';
 import '../group_chat/presentation/bloc/group_list_bloc.dart';
+import '../payment/data/data-sources/get-group-member-data-source.dart';
+import '../payment/data/repository/get-group-member-replository-impl.dart';
+import '../payment/domain/repository/get-group-members-repository.dart';
+import '../payment/domain/usecases/get-group-members-usecase.dart';
+import '../payment/presentation/bloc/group-bloc.dart';
 import '../search-groups/data/data-sources/search-group-remote-data-source.dart';
 import '../search-groups/data/repositories/search-group-repository-impl.dart';
 import '../search-groups/domain/repository/search-group-repository.dart';
@@ -312,6 +317,39 @@ void setUpLocator() {
 
 
 
+
+// Group Members
+
+ 
+
+  // BLOC
+  locator.registerFactory(() => GroupMemberBloc(getGroupMemberUsecase: locator()));
+ 
+
+ 
+ 
+
+
+
+
+ //USECASE
+
+    locator.registerLazySingleton(() => GetGroupMemberUsecase( getGroupMemberRepository: locator()));
+
+
+  //Repository* 
+  
+  locator.registerLazySingleton<GetGroupMemberRepository>(
+      () => GetGroupMemberRepositoryImpl(getGroupMemberRemoteDataSource: locator<GetGroupMemberRemoteDataSource>()));
+
+  
+
+  
+
+
+//DATASOURCES
+  locator
+      .registerLazySingleton<GetGroupMemberRemoteDataSource>(() => GetGroupMemberRemoteDataSourceImpl(client: locator()));
 
 
 

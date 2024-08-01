@@ -16,6 +16,7 @@ import 'src/features/direct message/presentation/bloc/chat_list_bloc.dart';
 import 'src/features/direct message/presentation/bloc/private-socket-bloc.dart';
 import 'src/features/group_chat/presentation/bloc/group-socket-bloc.dart';
 import 'src/features/group_chat/presentation/bloc/group_list_bloc.dart';
+import 'src/features/payment/presentation/bloc/group-bloc.dart';
 
 /// ------- For Docs and Updates Check ------
 /// ------------------README.md--------------
@@ -42,13 +43,14 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(create: (_) =>  locator<AuthBloc>()),
               BlocProvider(create: (_) =>  locator<ThemeBloc>()),
-              // BlocProvider(create: (_) =>  locator<GroupChatBloc>()),
               BlocProvider(create: (_) =>  locator<GroupListBloc>()),
               BlocProvider(create: (_) =>  locator<PrivateSocketBloc>()),
               BlocProvider(create: (_) =>  locator<ChatListBloc>()),
               BlocProvider(create: (_) =>  locator<GroupBloc>()),
               BlocProvider(create: (_) =>  locator<SocketBloc>()),
-              BlocProvider(create: (_) =>  locator<SearchGroupBloc>())  
+              BlocProvider(create: (_) =>  locator<SearchGroupBloc>()),
+              BlocProvider(create: (_) =>  locator<GroupMemberBloc>()),
+  
             
             ],
             child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (context, state) {

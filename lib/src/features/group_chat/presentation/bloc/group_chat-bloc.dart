@@ -58,8 +58,8 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
           add(OnNewMessageReceived(messageEntity: MessageEntity(
             messageId: data["_id"], 
             message: data["message"], 
-            messageReceiver: data["receiverId"], 
-            messageSender: data["senderId"]['lastName'], 
+            messageReceiver: data["messageReceiver"], 
+            messageSender: data["messageSender"], 
             replyMessage: data["replyMessage"], 
             replySender: data["replySender"], 
             chatId: data["chatId"], 

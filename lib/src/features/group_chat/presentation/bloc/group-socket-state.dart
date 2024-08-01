@@ -16,7 +16,7 @@ class SocketConnectedState extends SocketState {
 class SocketDisconnectedState extends SocketState {}
 
 class SocketMessageReceivedState extends SocketState {
-  final MessageEntity message;
+  final dynamic message;
 
   SocketMessageReceivedState(this.message);
 }

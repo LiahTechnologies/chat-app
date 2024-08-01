@@ -41,8 +41,10 @@ class OnMessage {
 
   OnMessage(this.repository);
 
-  void call(String event, Function(dynamic) callback) {
-    repository.onMessage(event, callback);
+  Future<void> call(String event, Function(dynamic) callback) async{
+    repository.onMessage(event, (data)async{
+      await callback(data);
+    });
   }
 }
 

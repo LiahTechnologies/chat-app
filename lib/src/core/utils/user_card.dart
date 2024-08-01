@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/constants/style/style.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
@@ -130,7 +129,7 @@ class UserCard extends StatelessWidget {
                                                                                                 mainAxisSize: MainAxisSize.min,
                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                  children: [
-                                                                                                 Text("${messageEntity.messageId}",overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                                                                                 Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
                                                                                                  Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                                                    ],
                                                                                                ),

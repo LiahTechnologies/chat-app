@@ -9,7 +9,7 @@ import 'send_money_details.dart';
 
 class SendMoney extends StatelessWidget {
   const SendMoney(
-      {super.key, this.amount = 25000, this.name = "Erling Haland", required this.groupName});
+      {super.key, this.amount = 25000,required this.name, required this.groupName});
 
   final int amount;
   final String name;
@@ -73,7 +73,7 @@ class SendMoney extends StatelessWidget {
               color: Theme.of(context).cardTheme.color,
               child: Text(
                 "Payment Method",
-                style: Theme.of(context).textTheme.displayMedium,
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),
               ),
             ),
             SizedBox(

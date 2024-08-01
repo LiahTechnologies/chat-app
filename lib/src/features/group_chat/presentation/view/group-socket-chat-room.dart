@@ -96,8 +96,10 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
     final TextEditingController controller = TextEditingController();
 
 late String currentUser;
+late String uid;
 getUid() async{ 
-   currentUser = await HelperFunction.getUserID();
+   uid = await HelperFunction.getUserID();
+   currentUser = await HelperFunction.getUserName();
 }
 
   @override
@@ -117,7 +119,7 @@ getUid() async{
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(
+                    child:const Icon(
                       Icons.arrow_back,
                       color: primaryWhite,
                     )),
@@ -134,14 +136,14 @@ getUid() async{
             title: InkWell(
               onTap: () {},
               child: Container(
-                margin: EdgeInsets.only(right: 9),
+                margin:const EdgeInsets.only(right: 9),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.chatModel.userName,
-                      style: TextStyle(
+                      style:const TextStyle(
                           color: primaryWhite,
                           fontWeight: FontWeight.normal,
                           fontSize: 20),
@@ -159,20 +161,20 @@ getUid() async{
             actions: [
               IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon:const Icon(
                     Icons.videocam,
                     color: primaryWhite,
                   )),
               IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon:const Icon(
                     Icons.call,
                     color: primaryWhite,
                   )),
               CustomPopUpMenu(
                 items: items,
               onSelected: (value){
-                if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,));
+                if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
               },
               
               
@@ -200,9 +202,9 @@ getUid() async{
           else if (state is SocketMessageReceivedState) {
 
             print("CURRENT STATE EMITTED ${state.message}");
-
+              final data = GroupChatModel.fromJson(state.message);
             // setState(() {
-              messages.add(state.message);
+              messages.add(MessageEntity(message: data.message, senderId: data.senderId, receiverId: data.receiverId, messageSender: data.messageSender, replyMessage: data.replyMessage, replySender: data.replySender, dateTime: data.dateTime));
             // });
             return buildMessageList();
 
@@ -212,7 +214,7 @@ getUid() async{
           } 
           
           else {
-            return Center(child: Text('Disconnected'));
+            return const Center(child: Text('Disconnected'));
           }
         },
       ),
@@ -230,7 +232,7 @@ getUid() async{
             itemBuilder: (context, index) {
               return SwipeTo(
                 onLeftSwipe: (v){
-                                      print("THE CURRENT STATE OF isReplyMessage is $isReplyMessage");
+
 
                     setState(() {
                       isReplyMessage=true;
@@ -238,14 +240,14 @@ getUid() async{
                       replyMessage.userName= messages[index].messageSender;
                       replyMessage.messageId= messages[index].messageId!;
                     });
-                    print("THE CURRENT STATE OF isReplyMessage is $isReplyMessage");
+
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal:18.0),
                   child: MessageList(
-                                        messageEntity: messages[index],
-                                        uid: currentUser,
-                                      ),
+                          messageEntity: messages[index],
+                          uid: uid,
+                                    ),
                 ),
               );
             },
@@ -266,7 +268,7 @@ getUid() async{
                           child: Container(
 
                             width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
+                            margin:const EdgeInsets.symmetric(horizontal: 4,vertical: 4),
                             child: Stack(
                               
                               children: [
@@ -276,7 +278,7 @@ getUid() async{
                                       width: MediaQuery.of(context).size.width - 60,
                                       child: Card(
                                           color: AppColor.darkIconColor,
-                                          margin: EdgeInsets.only(
+                                          margin:const EdgeInsets.only(
                                               left: 2, right: 2, bottom: 8),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -313,7 +315,7 @@ getUid() async{
                                                             width: 5,
                                                             height: 40,
                                                                                         
-                                                            decoration: BoxDecoration(
+                                                            decoration:const BoxDecoration(
                                                             color: AppColor.greenColor,
                                                             borderRadius: BorderRadius.only(
                                                             topLeft: Radius.circular(10),
@@ -322,13 +324,13 @@ getUid() async{
                                                                                                     
                                                                                         ),
                                                                                        ),
-                                                                                        Expanded(
-                                                                                          child: Column(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                                                                                                children: [
-                                                                                                                                                                                Text("${replyMessage.userName}",overflow:TextOverflow.ellipsis,),
-                                                                                                                                                                                Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
-                                                                                              ],
+                                                    Expanded(
+                                                            child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                             children: [
+                                                             Text("${replyMessage.userName}",overflow:TextOverflow.ellipsis,),
+                                                            Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                       ],
                                                                                           ),
                                                                                         ),
                                                       ],
@@ -422,11 +424,11 @@ getUid() async{
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName,senderId: currentUser, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
+                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: "12:00pm",senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
                                                                   
                                         socketBloc.add(SendMessageEvent('groupMessage', message));
                                        
-                                        messages.add(message);
+                                        // messages.add(message);
                                                                   
                                                                   
                                         // context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
@@ -446,6 +448,7 @@ getUid() async{
                                                 });                  
                                                                   
                                         controller.clear();
+                                        print("WAITING FOR THE EVENT");
                                                                   
                                        socketBloc.add(OnMessageEvent("OnGroup",(data){
                                                                   

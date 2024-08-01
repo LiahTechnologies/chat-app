@@ -28,10 +28,10 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   Future<LoginResponse> createUser(UserEntity user) async {
 
 
- Directory tempDir = await getTemporaryDirectory();
-      var cookieJar = PersistCookieJar(
-        storage: FileStorage(tempDir.path),
-      );
+//  Directory tempDir = await getTemporaryDirectory();
+//       var cookieJar = PersistCookieJar(
+//         storage: FileStorage(tempDir.path),
+//       );
  
     final data = {
       "firstName": user.firstName,
@@ -43,14 +43,16 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       "selfie":"Selfie",
       "docs":"docs"
     };
+
+    print("SIGNUP PATH ${AppUrls.signup}");
     final response = await http.post(Uri.parse(AppUrls.signup),
         body: json.encode(data), headers: {"Content-Type": "Application/json"});
     
        // Save the cookies from the response
-      var cookies = response.headers['set-cookie'];
-      if (cookies != null) {
-        cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
-      }
+      // var cookies = response.headers['set-cookie'];
+      // if (cookies != null) {
+      //   cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
+      // }
 
     if (response.statusCode == 201){
        final userData =
@@ -128,21 +130,21 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   @override
   Future<LoginResponse> loginUser({required email, required password}) async {
 
-       Directory tempDir = await getTemporaryDirectory();
-      var cookieJar = PersistCookieJar(
-        storage: FileStorage(tempDir.path),
-      );
+      //  Directory tempDir = await getTemporaryDirectory();
+      // var cookieJar = PersistCookieJar(
+      //   storage: FileStorage(tempDir.path),
+      // );
  
-
+    print("LOGIN PATH ${AppUrls.login}");
     final response = await client.post(Uri.parse(AppUrls.login),
         body: json.encode({"email": email, "password": password}),
         headers: {"Content-Type": "Application/json"});
 
           // Save the cookies from the response
-      var cookies = response.headers['set-cookie'];
-      if (cookies != null) {
-        cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
-      }
+      // var cookies = response.headers['set-cookie'];
+      // if (cookies != null) {
+      //   // cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
+      // }
 
 
     if (response.statusCode == 200) {

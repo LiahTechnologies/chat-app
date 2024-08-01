@@ -9,7 +9,7 @@ abstract class SocketsRepository {
   void connect();
   void disconnect();
   void sendMessage(String event, dynamic data);
-  void onMessage(String event, Function(dynamic) callback);
+  Future<void> onMessage(String event, Function(dynamic) callback);
   Future<List<MessageEntity>> fetchInitialMessages(String groupId);
     Future<Either<Failure, bool>> addChat({required String uid, required String receiverId});
 
@@ -36,8 +36,10 @@ class SocketRepositoryImpl implements SocketsRepository {
   }
 
   @override
-  void onMessage(String event, Function(dynamic) callback) {
-    remoteDataSource.onMessage(event, callback);
+  Future<void> onMessage(String event, Function(dynamic) callback) async {
+    remoteDataSource.onMessage(event, (data)async{
+      await callback(data);
+    });
   }
 
   @override

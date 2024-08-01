@@ -146,7 +146,7 @@ class ReplyCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-           Text("${messageEntity.messageId??""}",overflow:TextOverflow.ellipsis,maxLines: 1,softWrap: false,),
+           Text("${messageEntity.replySender??""}",overflow:TextOverflow.ellipsis,maxLines: 1,softWrap: false,),
            Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
             ],
            ),

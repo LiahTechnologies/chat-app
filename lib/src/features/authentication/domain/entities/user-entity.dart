@@ -8,6 +8,7 @@ class UserEntity extends Equatable {
   final String email;
   final String password;
   final String dob;
+  
   final String tel;
   final dynamic selfie;
   final dynamic docs;

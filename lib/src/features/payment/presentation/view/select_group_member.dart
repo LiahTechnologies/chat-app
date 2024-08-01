@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:njadia/src/core/common/constants/style/appAsset.dart';
+import 'package:njadia/src/features/payment/presentation/bloc/group-event.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
 
+import '../bloc/group-bloc.dart';
+import '../bloc/group-state.dart';
 import 'send_money.dart';
 
 class SelectGroupMember extends StatelessWidget {
-  const SelectGroupMember({super.key, required this.groupName});
+  const SelectGroupMember({super.key, required this.groupName, required this.groupId});
   final String groupName;
+  final String groupId;
   @override
   Widget build(BuildContext context) {
+    context.read<GroupMemberBloc>().add(OnFetchMembers(groupId: groupId));
     return Scaffold(
       appBar: AppBar(
         leading:const CustomBackArrow(),
@@ -82,31 +89,44 @@ class SelectGroupMember extends StatelessWidget {
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),
                   ),
                 ),
-                Expanded(
-                    child: ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              NextScreen(context: context, page: SendMoney(groupName: groupName,));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Gael Indira",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
+
+
+
+                BlocBuilder<GroupMemberBloc,GroupMemberState>(
+                  builder: (context,state){
+
+                   if(state is GroupMemberLoading)
+                   return const Center(child: CircularProgressIndicator(),);
+                  
+                  else if (state is GroupMemberLoaded)
+                    return   Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                            itemCount: state.memebrs.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  NextScreen(context: context, page: SendMoney(groupName: groupName,name: "${state.memebrs[index].firstName} ${state.memebrs[index].lastName}",));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical:8.0),
+                                  child: ListTile(
+                                    leading: CircleAvatar(child: Image.asset(AppImages.PERSON),),
+                                    title: Text(
+                                      "${state.memebrs[index].firstName} ${state.memebrs[index].lastName}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
                                   ),
-                                  Divider()
-                                ],
-                              ),
-                            ),
-                          );
-                        }))
+                                ),
+                              );
+                            }));
+
+                        else
+                      return Center(child: Text("No member"),);
+                  }
+                )
               ],
             )),
       ),

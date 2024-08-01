@@ -18,7 +18,6 @@ import 'package:njadia/src/features/home/presentation/view/home.dart';
 
 import 'package:njadia/src/utils/CustomButton.dart';
 
-import 'package:njadia/src/core/common/constants/style/appfont.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/authentication/presentation/widgets/imageRequirement.dart';
 import 'package:njadia/src/features/authentication/presentation/widgets/radioWidget.dart';

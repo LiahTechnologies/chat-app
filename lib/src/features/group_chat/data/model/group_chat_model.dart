@@ -41,13 +41,13 @@ class GroupChatModel extends MessageEntity {
 
   factory GroupChatModel.fromJson(Map<String, dynamic> json) => GroupChatModel(
       messageId: json["_id"],
-      message: json["message"],
-      messageReceiver: json["receiverId"],
-      messageSender: json["senderId"],
-      replyMessage: json["senderId"],
-      replySender: json["receiverId"],
-      dateTime: json["receiverId"],
-      chatId: json['message'],
+      message: json["message"]??"",
+      messageReceiver: json["messageReceiver"],
+      messageSender: json["messageSender"],
+      replyMessage: json["replyMessage"]??"",
+      replySender: json["replySender"]??"",
+      dateTime: json["dataTime"]??"",
+      chatId: json['_id'],
       senderId: json['senderId'],
       receiverId: json['receiverId']
       );

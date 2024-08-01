@@ -1,6 +1,7 @@
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group-socket-bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,7 +14,7 @@ abstract class SocketRemoteDataSource {
   void disconnect();
   void sendMessage(String event, dynamic data);
 
-  void onMessage(String event, Function(dynamic) callback);
+  Future<void> onMessage(String event, Function(dynamic) callback);
   Future<List<GroupChatModel>> fetchInitialMessages(String groupId);
   Future<bool>addChat({required String uid, required String receiverId});
 
@@ -26,7 +27,7 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
   @override
   void connect() async {
     print("THE CONNECTION IS BEING CALLED");
-    socket = IO.io('http://192.168.159.98:5000', <String, dynamic>{
+    socket = IO.io(AppUrls.SOCKET_URL, <String, dynamic>{
       "query":{
           "userId":await HelperFunction.getUserID()
       },
@@ -42,9 +43,9 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
       print('User connected');
     });
 
-    socket.on("groupMessage",(data){
-        print("SERVER RESPONSE $data");
-    });
+    // socket.on("OnGroup",(data){
+    //    SocketBloc.
+    // });
    
 
 
@@ -66,10 +67,16 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
     socket.emit(event, data);
   }
 
+
+
   @override
-  void onMessage(String event, Function(dynamic) callback) {
-    socket.on(event, callback);
+  Future<void> onMessage(String event, Function(dynamic) callback) async{
+    socket.on(event, (data)async{
+      await callback(data);
+    });
   }
+
+
 
   @override
   Future<List<GroupChatModel>> fetchInitialMessages(String groupId) async {
@@ -81,10 +88,10 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
     };
 
     final response = await http.post(Uri.parse("${AppUrls.BASEURL}messages/init"),body: json.encode(data),headers: {"Content-Type": "Application/json"});
-    print("FETCHED MESSAGE STATUS CODE ${json.decode(response.body)}");
+    // print("FETCHED MESSAGE STATUS CODE ${json.decode(response.body)}");
 
     if (response.statusCode == 200) {
-      print("MESSAGES FETCHED SUCCESSFULLY");
+      // print("MESSAGES FETCHED SUCCESSFULLY");
       Iterable messages =  json.decode(response.body);
       List<GroupChatModel> groupChats = List<GroupChatModel>.from(messages.map((e)=>GroupChatModel.fromJson(e)));
 
