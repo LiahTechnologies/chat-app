@@ -61,7 +61,7 @@ class SearchGroupRemoteDataSourceImpl extends SearchGroupRemoteDataSource{
   Future< bool> joinGroup({required String groupId, required String uid}) async{
    try {
      
-     final result = await client.patch(Uri.parse(AppUrls.groupMembers+"/"+groupId),body: json.encode({"userId":uid}), headers: {"content-type":"application/json"});
+     final result = await client.patch(Uri.parse("${AppUrls.joinGroup}$groupId"),body: json.encode({"userId":uid}), headers: {"content-type":"application/json"});
      final status = json.decode(result.body);
      print("USER JOINDE STATUS ${status['message']} UserId $uid");
 

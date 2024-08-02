@@ -18,6 +18,11 @@ import 'package:njadia/src/features/group_chat/domain/usecase/group_chat_usecase
 
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 
+import '../approve-tojoin-group/data/data-source/approve-remote-data-source.dart';
+import '../approve-tojoin-group/data/repository/approve-repository-impl.dart';
+import '../approve-tojoin-group/domain/repository/approval-repository.dart';
+import '../approve-tojoin-group/domain/usecase/approve-usecase.dart';
+import '../approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import '../create_group/data/data_sources/group-remote-datasource.dart';
 import '../create_group/data/repository/group-repositories-impl.dart';
 import '../create_group/domain/repository/group-repository.dart';
@@ -318,19 +323,13 @@ void setUpLocator() {
 
 
 
-// Group Members
+/* ***Group Members*/
 
  
 
   // BLOC
   locator.registerFactory(() => GroupMemberBloc(getGroupMemberUsecase: locator()));
  
-
- 
- 
-
-
-
 
  //USECASE
 
@@ -351,6 +350,31 @@ void setUpLocator() {
   locator
       .registerLazySingleton<GetGroupMemberRemoteDataSource>(() => GetGroupMemberRemoteDataSourceImpl(client: locator()));
 
+
+
+
+/****  Approve requst to Join group***/
+
+
+
+  // BLOC
+  locator.registerFactory(() => ApprovalBloc(approvalsUseCase: locator()));
+ 
+
+ //USECASE
+
+    locator.registerLazySingleton(() => ApprovalsUseCase( approvalRepository: locator()));
+
+
+  //Repository* 
+  
+  locator.registerLazySingleton<ApprovalRepository>(
+      () => ApproveToJoinRepositoryImpl(approveRemoteDataSource: locator<ApproveRemoteDataSource>()));
+
+
+//DATASOURCES
+  locator
+      .registerLazySingleton<ApproveRemoteDataSource>(() => ApproveRemoteDataSourceImpl(client: locator()));
 
 
 }

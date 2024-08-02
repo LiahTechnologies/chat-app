@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         print("STATE MANAGEMENT ERROR");
         emit(AuthFailure(message: failure.message));
       }, (data) {
-        print("THIS IS THE LOGIN RESPONSE DATA $data");
+        print("THIS IS THE LOGIN RESPONSE DATA  Token${data.token}");
         emit(LoggedIn(token: data.token));
       });
     });

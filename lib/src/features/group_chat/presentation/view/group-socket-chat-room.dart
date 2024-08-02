@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/reply-message.dart';
+import 'package:njadia/src/features/approve-tojoin-group/presentation/view/approve-to-join.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/attarachment-widget.dart';
 import 'package:swipe_to/swipe_to.dart';
 import '../../../../core/common/constants/style/color.dart';
@@ -72,10 +73,11 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
       value: "Payment",
     ),
 
-    // PopupMenuItem(
-    //   child: Text("Search"),
-    //   value: "Search",
-    // ),
+    PopupMenuItem(
+      child: Text("Approve to join"),
+      value: "Approve to join",
+    ),
+
     // PopupMenuItem(
     //   child: Text("Mute notifications"),
     //   value: "Mute notifications",
@@ -84,13 +86,19 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
     //   child: Text("Wallpaper"),
     //   value: "wallpaper",
     // ),
+
+    
   ];
+
+
+
 
    ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
 
   bool isReplyMessage = false;
 
   bool showEmoji = false;
+  bool approve= false;
 
   FocusNode focusNode = FocusNode();
     final TextEditingController controller = TextEditingController();
@@ -171,14 +179,32 @@ getUid() async{
                     Icons.call,
                     color: primaryWhite,
                   )),
-              CustomPopUpMenu(
-                items: items,
-              onSelected: (value){
-                if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
-              },
-              
-              
-              )
+
+              approve?
+              Badge(
+                largeSize: 20.0,
+                alignment: Alignment.topCenter,
+                backgroundColor: Colors.red,
+                label: Text("2"),
+                child: CustomPopUpMenu(
+                  items: items,
+                onSelected: (value){
+                  if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+
+                  if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId));
+               
+                },
+                
+                
+                ),
+              ):CustomPopUpMenu(
+                  items: items,
+                onSelected: (value){
+                  if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+                 if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
+
+                
+                }),
             ],
           ),
       body: BlocBuilder<SocketBloc, SocketState>(

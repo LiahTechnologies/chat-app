@@ -11,6 +11,7 @@ import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
 
+import 'src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import 'src/features/authentication/dependencies_injection.dart';
 import 'src/features/direct message/presentation/bloc/chat_list_bloc.dart';
 import 'src/features/direct message/presentation/bloc/private-socket-bloc.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (_) =>  locator<SocketBloc>()),
               BlocProvider(create: (_) =>  locator<SearchGroupBloc>()),
               BlocProvider(create: (_) =>  locator<GroupMemberBloc>()),
+              BlocProvider(create: (_) =>  locator<ApprovalBloc>()),
   
             
             ],

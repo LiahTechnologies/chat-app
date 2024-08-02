@@ -1,7 +1,7 @@
 class AppUrls {
   
-  static const String BASEURL = "http://192.168.0.104:5000/api/";
-  static const String SOCKET_URL ="http://192.168.0.104:5000";
+  static const String BASEURL = "http://192.168.100.7:5000/api/";
+  static const String SOCKET_URL ="http://192.168.100.7:5000";
   static const String signup_file    =   BASEURL+"signup_files";
   static const String signup_details =   BASEURL+"signup_details";
   static const String login =   BASEURL+"auth/login";
@@ -29,6 +29,7 @@ class AppUrls {
   static const String groups = BASEURL+"groups";
   static const String groupAdmin = BASEURL+"groups/admins";
   static const String groupMembers = BASEURL+"groups/members/";
+  static const String joinGroup = BASEURL+"groups/approval/";
 
 
 

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_state.dart';
@@ -122,7 +121,7 @@ class LoginScreen extends StatelessWidget {
                     );
                   }, listener: (BuildContext context, AuthState state) {
                           if (state is LoggedIn) {
-                                print(" THE LOGGIN TOKEN IS ${state.token}");
+                                print(" THE LOGGIN TOKEN IS ${state.token} state is $state");
                                 NextScreen(context: context, page: HomePage());
                               }
 
