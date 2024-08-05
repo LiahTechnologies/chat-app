@@ -2,66 +2,83 @@ import 'package:flutter/material.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/warnings/custombackarrow.dart';
-
+import 'package:contacts_service/contacts_service.dart';
+import 'package:permission_handler/permission_handler.dart'; 
 import '../../../../core/model/chatmodel.dart';
 import '../../../../core/utils/avtar_card.dart';
 import '../../../../core/utils/contact_card.dart';
 import 'create_group.dart';
 
-class CreateGroupPage extends StatefulWidget {
-  const CreateGroupPage({super.key});
+class SelectContactPage extends StatefulWidget {
+  const SelectContactPage({super.key, required this.isCreatGroup});
+  final bool isCreatGroup;
 
   @override
-  State<CreateGroupPage> createState() => _CreateGroupPageState();
+  State<SelectContactPage> createState() => _SelectContactPageState();
 }
 
-class _CreateGroupPageState extends State<CreateGroupPage> {
-  List<ChatModel> contacts = [
-    ChatModel(
-        name: "John Doe",
-        icon: "/",
-        isGroup: false,
-        time: "8:00",
-        status: "Frontend Developer",
-        currentMessage: "this is no school tomorrow"),
-    ChatModel(
-        name: "Flutter Developers",
-        icon: "/",
-        isGroup: true,
-        time: "11:00",
-        status: "Devops engineer",
-        currentMessage: "Hi How are you doing"),
-    ChatModel(
-        name: "Bernard",
-        icon: "/",
-        isGroup: false,
-        time: "2:00",
-        status: "Mobile developer",
-        currentMessage: "Ok Thanks"),
-    ChatModel(
-        name: "John Doe",
-        icon: "/",
-        isGroup: false,
-        time: "8:00",
-        status: "Frontend Developer",
-        currentMessage: "this is no school tomorrow"),
-    ChatModel(
-        name: "Flutter Developers",
-        icon: "/",
-        isGroup: true,
-        time: "11:00",
-        status: "Devops engineer",
-        currentMessage: "Hi How are you doing"),
-    ChatModel(
-        name: "Bernard",
-        icon: "/",
-        isGroup: false,
-        time: "2:00",
-        status: "Mobile developer",
-        currentMessage: "Ok Thanks"),
-  ];
+class _SelectContactPageState extends State<SelectContactPage> {
+ late List<Contact> deviceContact;
+ bool showContact=false;
 
-  List<ChatModel> groups = [];
+@override
+  void initState() {
+    super.initState();
+       
+    _askPermissions();
+     
+   
+  }
+
+
+ Future<void> _askPermissions() async {
+    PermissionStatus permissionStatus = await _getContactPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      
+        getDeviceContact();
+        
+      
+    } else {
+      _handleInvalidPermissions(permissionStatus);
+       
+    }  
+ 
+  }
+
+  Future<PermissionStatus> _getContactPermission() async {
+    PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.permanentlyDenied) {
+      PermissionStatus permissionStatus = await Permission.contacts.request();
+      return permissionStatus;
+    } else {
+      return permission;
+    }
+  }
+
+
+
+  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
+    if (permissionStatus == PermissionStatus.denied) {
+      final snackBar = SnackBar(content: Text('Access to contact data denied'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
+      final snackBar =
+          SnackBar(content: Text('Contact data not available on device'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+
+getDeviceContact() async{
+ Iterable<Contact> contact = await ContactsService.getContacts(); 
+ setState(() {
+   deviceContact=contact.toList();
+   showContact=true;
+ });
+}
+
+  List<Contact> groups = [];
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +110,10 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               )),
         ],
       ),
-      body: Stack(
+      body:showContact? Stack(
         children: [
           ListView.builder(
-              itemCount: contacts.length,
+              itemCount: deviceContact.length,
               itemBuilder: (context, index) {
                 if (index == 0)
                   return Container(
@@ -104,20 +121,23 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                   );
                 return InkWell(
                     onTap: () {
-                      if (contacts[index].isSelected == false) {
+                      if (!groups.contains(deviceContact[index])) {
                         setState(() {
-                          contacts[index].isSelected = true;
-                          groups.add(contacts[index]);
+                          // contacts[index].isSelected = true;
+                          groups.add(deviceContact[index]);
                         });
                       } else {
                         setState(() {
-                          contacts[index].isSelected = false;
-                          groups.remove(contacts[index]);
+                          groups.remove(deviceContact[index]);
+                         
                         });
                       }
+
+
                     },
                     child: ContactCard(
-                      contact: contacts[index],
+                      contact: deviceContact[index],
+                      group: groups,
                     ));
               }),
           if (groups.length > 0)
@@ -127,18 +147,18 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                   height: 75,
                   color: Colors.white,
                   child: ListView.builder(
-                      itemCount: contacts.length,
+                      itemCount: deviceContact.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        if (contacts[index].isSelected == true)
+                        if (groups.contains(deviceContact[index]))
                           return InkWell(
                               onTap: () {
                                 setState(() {
-                                  contacts[index].isSelected = false;
-                                  groups.remove(contacts[index]);
+                                  
+                                  groups.remove(deviceContact[index]);
                                 });
                               },
-                              child: AvtarCard(contact: contacts[index]));
+                              child: AvtarCard(contact: deviceContact[index]));
                         else
                           return Container();
                       }),
@@ -149,14 +169,32 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               ],
             )
         ],
-      ),
+      )
+      :const Center(child:Text("Loading...") ),
+
+      
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         backgroundColor: AppColor.lightButtonColor,
         onPressed: () {
-          nextScreen(context, CreateGroup());
+
+          if(widget.isCreatGroup){
+                    if(groups.length>2)
+                    nextScreen(context, CreateGroup(members: groups,));
+                    else {
+                      final snackBar =
+              SnackBar(content: Text("Members can't less than 2"),backgroundColor: Colors.red,);
+             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+
+          }
+
+
+          if(!widget.isCreatGroup){
+
+          }
         },
-        child:  Text("Next",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),),
+        child: widget.isCreatGroup? Text("Next",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),):Text("Add",style: Theme.of(context).textTheme.displaySmall!.copyWith(color: Colors.white),),
       ),
     );
   }

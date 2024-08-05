@@ -21,11 +21,11 @@ final SearchGroupRemoteDataSource searchGroupRemoteDataSource;
     try {
       
       final result  = await  searchGroupRemoteDataSource.findGroup(groupName: groupName);
-        return Right(result);
+        return result;
 
 
     } on ServerExceptions {
-      throw  ServerFailure("Error Fetching data");
+      throw  Left(ServerFailure("Error Fetching data"));
     }
    
   }
@@ -36,7 +36,7 @@ final SearchGroupRemoteDataSource searchGroupRemoteDataSource;
       final result = await searchGroupRemoteDataSource.hasUserJoined(groupId: groupId);
       return Right(result);
     } on ServerExceptions {
-      throw  ServerFailure("Error Fetching data");
+      throw  Left(ServerFailure("Error Fetching data"));
     }
   }
   

@@ -22,3 +22,5 @@ class OnJoinGroup extends SearchGroupEvent{
 
   OnJoinGroup({required this.uid, required this.groupId});
 }
+
+class OnClosePage extends SearchGroupEvent{}

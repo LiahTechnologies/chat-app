@@ -75,7 +75,7 @@ class GroupCategory extends StatelessWidget {
                     image: AppImages.TWO_PEOPLE_ICON,
                     text: "For me and my age",
                     onTap: () {
-                      NextScreen(context: context, page: CreateGroupPage());
+                      NextScreen(context: context, page:const SelectContactPage(isCreatGroup: true,));
                     }),
                 CustomCardItems(
                     image: AppImages.TWO_PEOPLE_ICON,

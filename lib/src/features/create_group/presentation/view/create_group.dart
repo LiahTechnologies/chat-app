@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,8 @@ import '../blocs/group-event.dart';
 import '../blocs/group-state.dart';
 
 class CreateGroup extends StatefulWidget {
-  const CreateGroup({super.key});
+  const CreateGroup({super.key, required this.members});
+  final List<Contact> members;
 
   @override
   State<CreateGroup> createState() => _CreateGroupState();
@@ -31,16 +33,23 @@ class _CreateGroupState extends State<CreateGroup> {
   String groupLimit = '';
   String groupAmount = '';
 
-  String userUid="";
+  String userTel="";
+  String uid ='';
+   List<String>groupMembers= [];
   
 
   getUid() async {
     
-        userUid = await HelperFunction.getUserID();
-  
+        userTel = await HelperFunction.getUserTel();
+        uid=await HelperFunction.getUserID();
+        groupMembers.add(userTel);
 
-    print("create group uid: $userUid");
+    print("create group uid: $userTel");
   }
+
+    getMebersNumber(){
+      groupMembers.addAll(widget.members.map((e)=>e.phones![0].value!));
+    }
 
 
 
@@ -48,6 +57,8 @@ class _CreateGroupState extends State<CreateGroup> {
   void initState() {
     getUid();
     super.initState();
+    getMebersNumber();
+
   }
 
   @override
@@ -67,31 +78,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-
-                // Align(
-                //   alignment: Alignment.topLeft,
-                //   child: TextButton.icon(
-                //       onPressed: () {
-                //         Get.back();
-                //       },
-                //       icon: Icon(
-                //         Icons.arrow_back_ios,
-                //         size: 11,
-                //         color: Theme.of(context).iconTheme.color
-                //       ),
-                //       label: Text(
-                //         "Back",
-                //         style: Theme.of(context).textTheme.displayMedium,
-                //       )),
-                // ),
-                // Center(child: Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Text("Create your Njangi group", style: Theme.of(context).textTheme.titleMedium),
-                // )),
-
-
-
 
                  SizedBox(
                   height: 5.h,
@@ -196,55 +182,13 @@ class _CreateGroupState extends State<CreateGroup> {
                     return Center(
                       child: CustomButton(
                         onPress: () async {
-                    
-
-                        /*
-                    
-                          if (groupName.isNotEmpty ||
-                              groupAmount.isNotEmpty ||
-                              groupLimit.isNotEmpty)
-                            await contorller
-                                .checkIFGroupExist(groupName)
-                                .then((value) {
-                              value
-                                  ? contorller
-                                      .createNewNjangiGroup(
-                                          groupName: groupName,
-                                          groupLevi: groupAmount,
-                                          groupLimit: groupLimit)
-                                      .then((Value) =>
-                                          Get.toNamed(AppRoutes.HOMEpAGE))
-                                  : showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return CustomWarning(
-                                          text: "Group Already Exist",
-                                        );
-                                      });
-                              groupAmount = groupName = groupLimit = "";
-                            });
-                          else
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return CustomWarning(
-                                    text: "Fields can not be empty",
-                                  );
-                                });
-                    
-                    members[]
-                               */ 
-
-
-                              final groupEntity = GroupEntity(groupName: groupName, groupIcon: "groupIcon", members:  [userUid], levy: groupAmount, admins: [userUid],limit: groupLimit);
+        
+                              final groupEntity = GroupEntity(groupName: groupName, groupIcon: "groupIcon", members:  groupMembers, levy: groupAmount, admins: [uid],limit: groupLimit);
                                 print("THIS IS THE CREATED GROUP ENTITY $groupEntity");
                            context
                                 .read<GroupBloc>()
                                 .add(OnCreateGroup(groupEntity: groupEntity));
-                       
-                     
-
-
+        
                         },
                         text: "CreatE Njangi",
                         icon: null,

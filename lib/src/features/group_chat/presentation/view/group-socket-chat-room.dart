@@ -11,6 +11,7 @@ import '../../../../core/common/constants/style/style.dart';
 import '../../../../core/common/helper_function.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
+import '../../../create_group/presentation/view/select_contact_page.dart';
 import '../../../direct message/domain/entities/chat.dart';
 import '../../../payment/presentation/view/select_group_member.dart';
 import '../bloc/group-socket-bloc.dart';
@@ -78,10 +79,10 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
       value: "Approve to join",
     ),
 
-    // PopupMenuItem(
-    //   child: Text("Mute notifications"),
-    //   value: "Mute notifications",
-    // ),
+    PopupMenuItem(
+      child: Text("Add members"),
+      value: "Add members",
+    ),
     // PopupMenuItem(
     //   child: Text("Wallpaper"),
     //   value: "wallpaper",
@@ -193,6 +194,8 @@ getUid() async{
 
                   if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId));
                
+                  if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
+
                 },
                 
                 
@@ -203,7 +206,7 @@ getUid() async{
                   if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
                  if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
 
-                
+                if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
                 }),
             ],
           ),

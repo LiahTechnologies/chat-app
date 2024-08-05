@@ -48,6 +48,7 @@ class PrivatChatListRemoteDataSourceImpl extends PrivatChatListRemoteDataSource 
      List<UserProfileModel> chatList = List<UserProfileModel>.from(chats.map((data)=>UserProfileModel.fromJson(data)));
 
      print("serilized list ${chatList}");
+     await HelperFunction.saveUserNumberOfChats("${chatList.length}");
       
       return chatList;
     } on ServerExceptions {

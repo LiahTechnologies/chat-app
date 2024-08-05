@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import '../../../group_chat/data/model/group_list_model.dart';
 
 abstract class SearchGroupRemoteDataSource{
-  Future< GroupChatEntity> findGroup({required String groupName});
+  Future<Either<Failure,GroupChatEntity>> findGroup({required String groupName});
   Future<bool> hasUserJoined({required String groupId});
   Future<bool>joinGroup({required String groupId, required String uid});
 }
@@ -27,20 +27,23 @@ class SearchGroupRemoteDataSourceImpl extends SearchGroupRemoteDataSource{
 
 
   @override
-  Future< GroupChatEntity> findGroup({required String groupName}) async{
+  Future< Either<Failure, GroupChatEntity>> findGroup({required String groupName}) async{
     
      try {
 
       final result = await client.get(Uri.parse(AppUrls.groups+"/"+groupName),headers: {"content-type":"application/json"});
 
-       
+       if(result.statusCode!=200)
+        return Left(ServerFailure("error"));
        
         final group=  await GroupModel.fromJson(json.decode(result.body));
         
+        
        
-        return group;
+        return Right(group);
      } on ServerExceptions {
-        throw ServerFailure("Error Fetching data");
+      print("ERROR FETCHING GROUP");
+        throw Left(ServerFailure("Error Fetching data"));
      }
   }
   

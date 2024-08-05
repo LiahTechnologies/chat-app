@@ -76,6 +76,7 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
      List<GroupModel> groupsList = List<GroupModel>.from(groups.map((data)=>GroupModel.fromJson(data)));
 
      print("serilized list ${groupsList[0].id}");
+     await HelperFunction.saveUserNumberOfGroups("${groupsList.length}");
       
       return groupsList;
     } on ServerExceptions {

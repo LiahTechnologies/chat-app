@@ -58,19 +58,23 @@ class LoginResponse extends Login {
   final String uid;
   final String userEmail;
   final String lastName;
-  final String userName;
+  final String firstName;
+  final String tel;
   LoginResponse(
       {required this.token,
       required this.uid,
       required this.userEmail,
       required this.lastName,
-      required this.userName})
+      required this.tel,
+      required this.firstName})
       : super(token: token);
 
   factory LoginResponse.fromjson(Map<String, dynamic> json) => LoginResponse(
       token: json["token"],
       uid: json['userId'],
       userEmail: json['email'],
+      tel:json['tel'],
       lastName: json['lastName'],
-      userName: json['firstName']);
+      firstName: json['firstName']);
+      
 }

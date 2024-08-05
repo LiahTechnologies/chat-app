@@ -11,7 +11,7 @@ class GroupRepositoryImpl extends GroupRepository{
   GroupRepositoryImpl({required this.groupRemoteDataSoucrce});
 
   @override
-  Future<Either<Failure,void>> createGroup(GroupEntity groupEntity) async {
+  Future<Either<Failure,bool>> createGroup(GroupEntity groupEntity) async {
      try {
       print("${groupEntity.groupName} THIS IS THE GROUP NAME");
        final result =  await groupRemoteDataSoucrce.createGroup(groupEntity);

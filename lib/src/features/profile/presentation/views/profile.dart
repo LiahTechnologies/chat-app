@@ -25,24 +25,33 @@ class _ProfileState extends State<Profile> {
 
   String userEmail = "";
   String userName = "";
+  String userTel = "";
+  String numberOfGroups='';
+   String numberOfChats='';
   @override
   void initState() {
     // TODO: implement initState
 
-    HelperFunction.getUserEmail().then((value) {
-      setState(() {
-        userEmail = value;
-      });
-    });
-    HelperFunction.getUserName().then((value) {
-      setState(() {
-        userName = value;
-      });
-      print(" THE CURRENT USER NAME IS : $userName");
-    });
     super.initState();
+    getUserDetails();
   }
 
+getUserDetails() async{
+ 
+    
+
+  numberOfChats= await HelperFunction.getUserNumberOfChats();
+  numberOfGroups= await HelperFunction.getUserNumberOfGroups();
+  userEmail= await HelperFunction.getUserEmail();
+  userName=await HelperFunction.getUserName();
+  userTel =await HelperFunction.getUserTel();
+
+    setState(() {
+      
+    });
+print("THE USER NAME IS $userName");
+
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,12 +105,7 @@ class _ProfileState extends State<Profile> {
                 }
               ),
           IconButton(
-              onPressed: () async {
-                NextScreen(context: context, page: SignUp());
-                // databaseController.login();
-
-                showSnackMessage(context, Colors.green, "LogOut successful");
-              },
+              onPressed:()=> _showAlertDialog(context),
               icon: Icon(
                 Icons.logout,
                 color: Theme.of(context).bottomAppBarTheme.shadowColor,
@@ -179,13 +183,13 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                profileText(number: 23, text: "Njangi groups"),
+                profileText(number: numberOfGroups, text: "Njangi groups"),
                 Container(
                   height: 40,
                   width: 2,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                profileText(number: 23, text: "Age"),
+                profileText(number: numberOfChats, text: "Chats"),
                 Container(
                   height: 40,
                   width: 2,
@@ -193,7 +197,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 Stack(
                   children: [
-                    profileText(number: 672973390, text: "Telephone"),
+                    profileText(number: userTel, text: "Telephone"),
                     Positioned(
                       top: 20.h,
                       left: 79.w,
@@ -293,6 +297,42 @@ class _ProfileState extends State<Profile> {
           ]),
         ),
       ),
+    );
+
+
+
+  }
+
+
+
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout!!',style: TextStyle(color: Colors.red)),
+          content:const Text('if you cantinue, you will need to signin when next, you try to use this app.'),
+          actions: [
+            TextButton(
+              child: Text('cancel',style: TextStyle(color: Colors.black),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+            TextButton(
+              child: Text('Ok',style: TextStyle(color: Colors.red),),
+              onPressed: () {
+               NextScreen(context: context, page: SignUp());
+                // databaseController.login();
+
+                showSnackMessage(context, Colors.green, "LogOut successful");
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

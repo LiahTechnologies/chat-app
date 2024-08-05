@@ -31,6 +31,11 @@ class SearchGroupBloc extends Bloc<SearchGroupEvent, SearchGroupState>{
               final result  = await  searchGroupUsecase.joinGroup(groupId: event.groupId, uid: event.uid);
               result.fold((l)=>emit(ErrorSearchingGroup()), (data)=>emit(UserJoinGroup(status: data)));
           });
+
+            on<OnClosePage>((event, emit)async{
+
+              emit(Empty());
+          });
     }
 
    

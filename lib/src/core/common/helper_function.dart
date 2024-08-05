@@ -8,6 +8,7 @@ class HelperFunction {
    * Keys
    */
 
+  static String _userTelKey = 'TELKEY';
   static String _userLogingKey = 'LOGGINKEY';
   static String _userNameKey = 'USERNAMEKEY';
   static String _userEmailKey = 'USEREMAILKEY';
@@ -15,6 +16,11 @@ class HelperFunction {
   static String _theme = "isDarkMode";
   static String _Token = "_NjadiaToken";
   static String _profilePic = "ProfilePic";
+  static String _userNumberOfGroups = 'UserGroups';
+  static String _userChats = 'UserChats';
+
+  static String _userProfile = 'PROFILE';
+
   /**
    * saving to share preferences
    */
@@ -41,6 +47,7 @@ class HelperFunction {
   }
 
   static Future<bool> saveUserName(String userName) async {
+  print("PREFERCE USER NAME IS $userName");
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return await sharedPreference.setString(_userNameKey, userName);
   }
@@ -48,7 +55,12 @@ class HelperFunction {
 
   static Future<bool> saveUserProfile(String profile) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.setString(_userNameKey, profile);
+    return await sharedPreference.setString(_userProfile, profile);
+  }
+
+  static Future<bool> saveUserTel(String tel) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_userTelKey, tel);
   }
 
   static Future<bool> saveUserEmail(String userEmail) async {
@@ -59,6 +71,18 @@ class HelperFunction {
   static Future<bool> saveUserID(String id) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return await sharedPreference.setString(_userIDKey, id);
+  }
+
+
+
+  static Future<bool> saveUserNumberOfGroups(String number) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_userNumberOfGroups, number);
+  }
+
+    static Future<bool> saveUserNumberOfChats(String number) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_userChats, number);
   }
 
   // getting data
@@ -73,20 +97,36 @@ class HelperFunction {
     return await sharedPreference.getString(_userEmailKey)!;
   }
 
-  static Future<String> getUserName() async {
+   static Future<String> getUserTel() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(_userNameKey)!;
+    return await sharedPreference.getString(_userTelKey)!;
   }
 
 
-   static Future<String> getUserProfile() async {
+  static Future<String> getUserName() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(_profilePic)!;
+    return  sharedPreference.getString(_userNameKey)!;
+  }
+
+
+    static Future<String> getUserProfile() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return  sharedPreference.getString(_profilePic)!;
+  }
+
+   static Future<String> getUserNumberOfGroups() async{
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return  sharedPreference.getString(_userNumberOfGroups)!;
+  }
+
+     static Future<String> getUserNumberOfChats() async{
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return  sharedPreference.getString(_userChats)!;
   }
 
   static Future<String> getUserID() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return await sharedPreference.getString(_userIDKey)!;
+    return  sharedPreference.getString(_userIDKey)!;
   }
   /**
    * Getting data from shared preferences

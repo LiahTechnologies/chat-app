@@ -56,12 +56,13 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
 
     if (response.statusCode == 201){
        final userData =
-            await LoginResponse.fromjson(json.decode(response.body));
+        await LoginResponse.fromjson(json.decode(response.body));
         await HelperFunction.saveUserEmail(userData.userEmail);
-        await HelperFunction.saveUserName("${userData.lastName  +userData.userName}");
+        await HelperFunction.saveUserName(" ${userData.firstName} ${userData.lastName}");
         await HelperFunction.saveUserID(userData.uid);
+        await HelperFunction.saveUserTel(userData.tel);
         await HelperFunction.saveUserProfile(userData.lastName);
-        print("THIS IS THE USER DATA: $userData");
+        // print("THIS IS THE USER DATA: $userData");
 
         return userData;
     }
@@ -150,9 +151,11 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     if (response.statusCode == 200) {
 
       final userData = LoginResponse.fromjson(json.decode(response.body));
+      print("USER LOGING DATA ${userData.firstName}");
       await HelperFunction.saveUserEmail(userData.userEmail);
-      await HelperFunction.saveUserName("${userData.lastName  +userData.userName}");
+      await HelperFunction.saveUserName("${userData.firstName} ${userData.lastName} ");
       await HelperFunction.saveUserID(userData.uid);
+      await HelperFunction.saveUserTel(userData.tel);
       await HelperFunction.saveUserProfile(userData.lastName);
       return userData;
     } else {

@@ -21,6 +21,11 @@ class SearchGroups extends StatefulWidget {
 }
 
 class _SearchGroupsState extends State<SearchGroups> {
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +42,7 @@ class _SearchGroupsState extends State<SearchGroups> {
 
     // user = FirebaseAuth.instance.currentUser;
   }
+
 
   String userName = "";
   // User? user;
@@ -132,12 +138,25 @@ class _SearchGroupsState extends State<SearchGroups> {
                   ),
 
 
+                if(state is ErrorSearchingGroup)
+                  Padding(
+                    padding: const EdgeInsets.only(top:8.0),
+                    child: Center(child: Text("Error Fetching Group, Try to check the Name and Letter Case "),),
+                  ),
               if(state is GroupLoaded)
                   GroupSearcTile( groupPic: state.groupChatEntity.profilePic??"", groupName: state.groupChatEntity.groupName??"",groupId: state.groupChatEntity.id??"" )
                   
             ],
           );
-        }, listener: (BuildContext context, state) {  },
+        }, listener: (BuildContext context, state) {  
+          if(state is ErrorSearchingGroup){
+            print("tHE CURRENT STATE IS ErrorSearchingGroup");
+          }
+
+          if(state is GroupLoading){
+            print("tHE CURRENT STATE IS GroupLoading");
+          }
+        },
       ),
     );
   }
@@ -149,7 +168,7 @@ class _SearchGroupsState extends State<SearchGroups> {
         isLoading = true;
       });
 
-      context.read<SearchGroupBloc>().add(OnGroupFetch(groupName: groupName.text));
+      context.read<SearchGroupBloc>().add(OnGroupFetch(groupName: groupName.text.trim()));
 
     
      

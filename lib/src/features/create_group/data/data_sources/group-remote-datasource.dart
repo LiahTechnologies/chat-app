@@ -11,7 +11,7 @@ import '../../../../core/common/errors/exceptions.dart';
 import '../../../../core/common/errors/failures.dart';
 
 abstract class GroupRemoteDataSoucrce{
-   Future<void> createGroup(GroupEntity groupEntity);
+   Future<bool> createGroup(GroupEntity groupEntity);
 
   Future<List<String>> groupAdmins({required String groupId});
   Future<List<String>> groupMembers({required String groupId});
@@ -35,7 +35,7 @@ class GroupRemoteDataSourceImpl extends GroupRemoteDataSoucrce{
 
    
   @override
-  Future<void> createGroup(GroupEntity groupEntity)  async{
+  Future<bool> createGroup(GroupEntity groupEntity)  async{
    try {
     final data =GroupModel(groupName: groupEntity.groupName, groupIcon: groupEntity.groupIcon, members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit).toJson();
      
@@ -43,8 +43,9 @@ class GroupRemoteDataSourceImpl extends GroupRemoteDataSoucrce{
      final response =  await client.post(Uri.parse(AppUrls.groups),body: json.encode(data),headers: {"Content-Type": "Application/json"});
       print("THE RESPONSE STATUS CODE ${response.statusCode}");
       if(response.statusCode==201){
-        print("Group Created");
+        return true;
       }
+      else return false;
    
 
    } 

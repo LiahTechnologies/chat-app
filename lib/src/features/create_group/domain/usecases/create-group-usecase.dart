@@ -8,10 +8,10 @@ class GroupUsecase {
 
  GroupUsecase({required this.groupRepository});
 
-  Future<Either<Failure,void>> execute(GroupEntity groupEntity)async{
+  Future<Either<Failure,bool>> execute(GroupEntity groupEntity)async{
     try {
      final result = await groupRepository.createGroup(groupEntity);
-     return Right(result);
+     return result;
     } on Failure {
       throw Left(ServerFailure("Error creating group"));
     }

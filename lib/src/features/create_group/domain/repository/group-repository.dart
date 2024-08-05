@@ -4,7 +4,7 @@ import 'package:njadia/src/features/create_group/domain/entities/group-entity.da
 
 abstract  class GroupRepository{
 
-  Future<Either<Failure,void>> createGroup(GroupEntity groupEntity);
+  Future<Either<Failure,bool>> createGroup(GroupEntity groupEntity);
 
   Future<Either<Failure,List<String>>> groupAdmins({required String groupId});
   Future<Either<Failure,List<String>>> groupMembers({required String groupId});

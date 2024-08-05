@@ -1,11 +1,13 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:njadia/src/core/common/chat_model_list_data.dart';
 import 'package:njadia/src/core/model/chatmodel.dart';
 
 import '../common/constants/style/style.dart';
 
 class AvtarCard extends StatelessWidget {
   const AvtarCard({super.key, required this.contact});
-  final ChatModel contact;
+  final Contact contact;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,11 +20,12 @@ class AvtarCard extends StatelessWidget {
               CircleAvatar(
                 backgroundColor: Colors.blueGrey[200],
                 radius: 23,
-                child: Icon(
-                  Icons.group,
-                  color: primaryWhite,
-                  size: 30,
-                ),
+                backgroundImage: MemoryImage(contact.avatar!),
+                // child: Icon(
+                //   Icons.group,
+                //   color: primaryWhite,
+                //   size: 30,
+                // ),
               ),
               Positioned(
                 bottom: 0,
@@ -42,7 +45,7 @@ class AvtarCard extends StatelessWidget {
             height: 2,
           ),
           Text(
-            "${contact.name}",
+            "${contact.givenName??""}   ${contact.familyName??""}",
             style: TextStyle(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           )
