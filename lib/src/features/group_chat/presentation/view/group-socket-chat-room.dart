@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/reply-message.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/view/approve-to-join.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/attarachment-widget.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:swipe_to/swipe_to.dart';
 import '../../../../core/common/constants/style/color.dart';
 import '../../../../core/common/constants/style/style.dart';
 import '../../../../core/common/helper_function.dart';
+import '../../../../core/common/urls.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
 import '../../../create_group/presentation/view/select_contact_page.dart';
@@ -17,6 +21,7 @@ import '../../../payment/presentation/view/select_group_member.dart';
 import '../bloc/group-socket-bloc.dart';
 import '../bloc/group-socket-event.dart';
 import '../bloc/group-socket-state.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 
 class GroupChatRoom extends StatefulWidget {
@@ -30,29 +35,27 @@ class GroupChatRoom extends StatefulWidget {
 class _GroupChatRoomState extends State<GroupChatRoom> {
   late SocketBloc socketBloc;
   List<MessageEntity> messages = [];
-  
+    late IO.Socket socket;
+
 
   @override
   void initState() {
     super.initState();
+    _scrollController=ScrollController();
     socketBloc = BlocProvider.of<SocketBloc>(context);
     socketBloc.add(ConnectSocketEvent());
     socketBloc.add(FetchInitialMessagesEvent(groupId:widget.chatModel.chatId));
+      getUid();
+    connect();
     
-    // socketBloc.onMessage('OnGroup', (data) async{
-    //   final newMessage= await MessageEntity.fromjson(data);
-    //   setState(() {
-       
-    //    print("onGroup Message $newMessage");
-    //     messages.add(newMessage);
-    //   });
-    // });
-    getUid();
+  
   }
 
   @override
   void dispose() {
-    socketBloc.add(DisconnectSocketEvent());
+    // socketBloc.add(DisconnectSocketEvent());
+    _scrollController.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -94,7 +97,7 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
 
 
 
-   ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
+  ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
 
   bool isReplyMessage = false;
 
@@ -103,13 +106,11 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
 
   FocusNode focusNode = FocusNode();
     final TextEditingController controller = TextEditingController();
+   late ScrollController _scrollController;
 
 late String currentUser;
 late String uid;
-getUid() async{ 
-   uid = await HelperFunction.getUserID();
-   currentUser = await HelperFunction.getUserName();
-}
+
 
   @override
   Widget build(BuildContext context) {
@@ -228,17 +229,19 @@ getUid() async{
 
           } 
           
-          else if (state is SocketMessageReceivedState) {
+          // else if (state is SocketMessageReceivedState) {
 
-            print("CURRENT STATE EMITTED ${state.message}");
-              final data = GroupChatModel.fromJson(state.message);
-            // setState(() {
-              messages.add(MessageEntity(message: data.message, senderId: data.senderId, receiverId: data.receiverId, messageSender: data.messageSender, replyMessage: data.replyMessage, replySender: data.replySender, dateTime: data.dateTime));
-            // });
-            return buildMessageList();
+          //   print("CURRENT STATE EMITTED ${state.message}");
+          //     final data = GroupChatModel.fromJson(state.message);
+          //   // setState(() {
+          //     messages.add(MessageEntity(message: data.message, senderId: data.senderId, receiverId: data.receiverId, messageSender: data.messageSender, replyMessage: data.replyMessage, replySender: data.replySender, dateTime: data.dateTime));
+          //   // });
+          //   return buildMessageList();
 
 
-          } else if (state is SocketErrorState) {
+          // } 
+          
+          else if (state is SocketErrorState) {
             return Center(child: Text('Error: ${state.message}'));
           } 
           
@@ -257,6 +260,7 @@ getUid() async{
       children: [
         Expanded(
           child: ListView.builder(
+            controller: _scrollController,
             itemCount: messages.length,
             itemBuilder: (context, index) {
               return SwipeTo(
@@ -457,7 +461,7 @@ getUid() async{
                                                                   
                                         socketBloc.add(SendMessageEvent('groupMessage', message));
                                        
-                                        // messages.add(message);
+                                        messages.add(message);
                                                                   
                                                                   
                                         // context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
@@ -486,7 +490,7 @@ getUid() async{
                                                   }));
                                                                   
                                         // socketBloc.add(OnMessageEvent(events));
-                                                  
+                                            scrollToEndOfList();      
                                         
                                       },
                                     ),
@@ -495,5 +499,55 @@ getUid() async{
                               ],
                             ),
                           ));
+  }
+
+
+
+
+  getUid() async{ 
+   uid = await HelperFunction.getUserID();
+   currentUser = await HelperFunction.getUserName();
+}
+
+
+
+void connect() async {
+    print("THE CONNECTION IS BEING CALLED");
+    socket = IO.io(AppUrls.SOCKET_URL, <String, dynamic>{
+      "query":{
+          "userId":await HelperFunction.getUserID()
+      },
+      'transports': ['websocket'],
+      "autoConnect": false,
+
+
+
+    });
+    socket.connect();
+
+    socket.on('connect', (_) {
+      print('User connected');
+    });
+
+    socket.on("OnGroup",(data) async{
+
+         final  newMessage =await GroupChatModel.fromJson(data);
+         setState(() {
+           messages.add(newMessage);
+           buildMessageList();
+         });
+        
+    });
+   
+
+
+    socket.on('disconnect', (_) {
+      print('User disconnected');
+    });
+  }
+  
+
+  scrollToEndOfList(){
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.easeIn);
   }
 }

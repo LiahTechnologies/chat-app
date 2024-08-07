@@ -40,8 +40,8 @@ class GroupChatModel extends MessageEntity {
             );
 
   factory GroupChatModel.fromJson(Map<String, dynamic> json) => GroupChatModel(
-      messageId: json["_id"],
-      message: json["message"]??"",
+      message: json["message"],
+      messageId: json["_id"],  
       messageReceiver: json["messageReceiver"],
       messageSender: json["messageSender"],
       replyMessage: json["replyMessage"]??"",
@@ -50,6 +50,7 @@ class GroupChatModel extends MessageEntity {
       chatId: json['_id'],
       senderId: json['senderId'],
       receiverId: json['receiverId']
+
       );
 
   Map<String, dynamic> toJson() => {

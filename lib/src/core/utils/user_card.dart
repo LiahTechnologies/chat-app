@@ -124,7 +124,7 @@ class UserCard extends StatelessWidget {
                                                                                                          
                                                                                              ),
                                                                                             ),
-                                                                                             Expanded(
+                                                                                             Flexible(
                                                                                                child: Column(
                                                                                                 mainAxisSize: MainAxisSize.min,
                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,

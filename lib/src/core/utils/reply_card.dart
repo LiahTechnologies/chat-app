@@ -27,6 +27,8 @@ class ReplyCard extends StatelessWidget {
       child: Row(
         
         children: [
+
+
           BlocListener<SocketBloc,SocketState>(
             listener: (BuildContext context, SocketState state) { 
               if(state is  PrivateChatCreated)
@@ -47,9 +49,9 @@ class ReplyCard extends StatelessWidget {
               ),
             ),
           ),
+          
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-135,
-            
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-125,
           
             ),
             child: Card(
@@ -59,118 +61,93 @@ class ReplyCard extends StatelessWidget {
               color: Theme.of(context).colorScheme.tertiary,
               child: Stack(children: [
           
-                    //  if(messageEntity.replyMessage.isNotEmpty)
-                    //                               Positioned(
-                    //                                 bottom: 39,
-                    //                                 child: Container(
-                    //                                   margin: EdgeInsets.only(top: 8),
-                    //                                   height: 45,
-                    //                                   width: MediaQuery.of(context).size.width - 100,
-                    //                                  decoration: BoxDecoration(
-                    //                                    color: Colors.grey[700]!.withOpacity(0.15),
-                    //                                    borderRadius: BorderRadius.circular(15)
-                    //                                  ),
-                    //                                   child: Stack(
-                    //                                     children: [
-                    //                                       // Positioned(
-                    //                                       //   top: -10,
-                    //                                       //   right: -1,
-                    //                                       //   child: IconButton(onPressed: (){
-                    //                                       //       setState(() {
-                    //                                       //         isReplyMessage=false;
-                    //                                       //       });
-                    //                                       //     }, icon: Icon(Icons.close)),),
-                                                          
-                    //                                       Row(
-                    //                                         children: [
-                    //                                             Container(
-                    //                                               margin: const EdgeInsets.only(right: 5),
-                                                          
-                    //                                                                    width: 5,
-                    //                                                                           height: 40,
-                                                                                              
-                    //                                                                           decoration: BoxDecoration(
-                    //                                                                              color: AppColor.greenColor,
-                    //                                                                              borderRadius: BorderRadius.only(
-                    //                                                                              topLeft: Radius.circular(10),
-                    //                                                                              bottomLeft: Radius.circular(10)
-                    //                                                                              )
-                                                                                                          
-                    //                                                                           ),
-                    //                                                                          ),
-                    //                                                                           Expanded(
-                    //                                                                             child: Column(
-                    //                                                                               crossAxisAlignment: CrossAxisAlignment.start,
-                    //                                                                               children: [
-                    //                                                                               Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,softWrap: true,),
-                    //                                                                               Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
-                    //                                                                                 ],
-                    //                                                                             ),
-                    //                                                                           ),
-                    //                                         ],
-                    //                                       ),
-                    //                                     ],
-                    //                                   ),
-                    //                                 ),
-                    //                               ),
-          
-          
 
-            if(messageEntity.replyMessage.isNotEmpty)
-        
-           Positioned(child: Padding(padding: EdgeInsets.only(left: 10, bottom: 10,top: 10),child:  
+              if(messageEntity.replyMessage.isNotEmpty)
+         
+
+           
+           Positioned(
+            
+            child: Padding(padding:const EdgeInsets.only(left: 10, bottom: 35,top: 5),child: 
+
+          
+           
+
             Row(
               mainAxisSize: MainAxisSize.min,
-           children: [
-            Container(
+              
+               children: [
+            
+            
+                         Container(
                                                                  
-            margin: const EdgeInsets.only(right: 5,bottom: 8),
+                         margin: const EdgeInsets.only(right: 5,bottom: 8),
                                                          
-           width: 5,
-           height: 30, 
+                         width: 5,
+                         height: 30,
                                                                                              
-           decoration: BoxDecoration(
-           color: Theme.of(context).appBarTheme.backgroundColor,
-           
-           borderRadius: BorderRadius.only(
-           topLeft: Radius.circular(10),
-           bottomLeft: Radius.circular(10)
-           )
+                        decoration: BoxDecoration(
+                         color: Theme.of(context).appBarTheme.backgroundColor,
+                         borderRadius:const BorderRadius.only(
+                         topLeft: Radius.circular(10),
+                         bottomLeft: Radius.circular(10)
+                         )
                                                                                                          
-          ),
-          ),
-          Expanded(
+                       ),
+                         ),
 
-          child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: [
-           Text("${messageEntity.replySender??""}",overflow:TextOverflow.ellipsis,maxLines: 1,softWrap: false,),
-           Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
-            ],
-           ),
-          ),
-
-
+                         
+            
+                       Flexible(
+                         child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                      Text(messageEntity.replySender,overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                      Text(messageEntity.replyMessage,overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                       ],
+                                         ),
+                       ),
+            
+            
                                                                                              
-          ],
-           )
+                    ],
+                   )
            
            ,)
            
            ),
               
                                                   
-              Padding(
-                padding: const EdgeInsets.only(left:20.0,bottom: 20,right: 5, top: 5),
-                child: Text("${messageEntity.message}",style: TextStyle(fontSize: 16),),
+              Positioned(
+                bottom: 8,
+                left: 12,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical:4.0),
+                  child: Text("${messageEntity.message}",style: TextStyle(fontSize: 16),),
+                ),
               ),
               Positioned(
-                bottom: 2,
+                bottom: 3,
                 right: 10,
                 child: 
-                    Text("${messageEntity.dateTime}",style: TextStyle(fontSize: 11,color: Colors.grey[600]),),
+                    Padding(
+                      padding: const EdgeInsets.only(top:8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text("${messageEntity.dateTime}",style: TextStyle(fontSize: 11,color: Colors.grey[600]),),
+                        
+                          SizedBox(
+                      width: 5,
+                                        ),
+                                        Icon(
+                      Icons.done_all,
+                      size: 20,
+                                        )
+                        ],
+                      ),
+                    ),
                   
               )
             ]),),

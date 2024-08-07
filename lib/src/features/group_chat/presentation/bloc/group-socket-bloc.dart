@@ -46,12 +46,19 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
 
 
     on<OnMessageEvent>((event, emit) async  {
-      await onMessage.call(event.event, (data)   {
-        final newMessage = GroupChatModel.fromJson(data);
-      if(!emit.isDone)
-        emit(SocketMessageReceivedState(newMessage));
+
+
+    //  final result = await onMessage.call(event.event);
+    //          emit(SocketMessageReceivedState(result));
+
+      // await onMessage.call(event.event, (data) async  {
+      //   final newMessage =await GroupChatModel.fromJson(data);
+      //   print("emitted message is $newMessage");
+
+      //   if(!emit.isDone)      
+      //   emit(SocketMessageReceivedState(data));
         
-      });
+      // });
     });
 
 
