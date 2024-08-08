@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:njadia/src/features/direct%20message/domain/usecase/chat_message_usecase..dart';
+import 'package:njadia/src/features/direct%20message/domain/usecase/chat_message_usecase.dart';
 import 'package:njadia/src/features/direct%20message/presentation/bloc/chat_list_event.dart';
 import 'package:njadia/src/features/direct%20message/presentation/bloc/chat_list_state.dart';
 

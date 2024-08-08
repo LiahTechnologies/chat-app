@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
+import 'package:njadia/src/core/utils/currentime.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:swipe_to/swipe_to.dart';
 
 
 import '../../../../core/common/constants/style/style.dart';
+import '../../../../core/common/urls.dart';
 import '../../../../core/model/messagemodel.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
@@ -23,6 +25,7 @@ import '../bloc/private-socket-bloc.dart';
 import '../bloc/private-socket-event.dart';
 import '../bloc/private-socket-state.dart';
 
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 
 
@@ -35,14 +38,18 @@ class PrivateChatRoom extends StatefulWidget {
 }
 
 class _PrivateChatRoomState extends State<PrivateChatRoom> {
-  late PrivateSocketBloc socketBloc;
+  // late PrivateSocketBloc socketBloc;
   List<MessageEntity> messages = [];
+   late IO.Socket socket;
+  late PrivateSocketBloc socketBloc;
 
    ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
 
   bool isReplyMessage = false;
   final TextEditingController controller = TextEditingController();
   bool showEmoji = false;
+
+     late ScrollController _scrollController;
 
 
   FocusNode focusNode = FocusNode();
@@ -81,7 +88,9 @@ class _PrivateChatRoomState extends State<PrivateChatRoom> {
     socketBloc = BlocProvider.of<PrivateSocketBloc>(context);
     socketBloc.add(ConnectSocketEvent());
     socketBloc.add(FetchInitialMessagesEvent(groupId:widget.user.uid));
-    
+   _scrollController=ScrollController();
+    connect();
+
     getUid();
     super.initState();
 
@@ -251,6 +260,9 @@ getUid() async{
           }
         },
       ),
+
+
+      
          /* body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -420,6 +432,7 @@ getUid() async{
       children: [
         Expanded(
           child: ListView.builder(
+            controller: _scrollController,
             itemCount: messages.length,
             itemBuilder: (context, index) {
               return SwipeTo(
@@ -616,7 +629,7 @@ getUid() async{
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.user.uid,messageReceiver: widget.user.firstName,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: DateTime.now().timeZoneName,senderId:currentUser,receiverId:  widget.user.uid);
+                                        final message= GroupChatModel(chatId: widget.user.uid,messageReceiver: widget.user.firstName,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, time: currentTime(),senderId:currentUser,receiverId:  widget.user.uid);
                                                                   
                                         socketBloc.add(SendMessageEvent('privateMessage', message));
                                        
@@ -641,14 +654,10 @@ getUid() async{
                                                                   
                                         controller.clear();
                                                                   
-                                       socketBloc.add(OnMessageEvent("OnGroup",(data){
-                                                                  
-                                                    print("THIS ISE THE RESPONSE $data");
-                                                                  
-                                                  }));
+                                      
                                                                   
                                         // socketBloc.add(OnMessageEvent(events));
-                                                  
+                                              scrollToEndOfList();      
                                         
                                       },
                                     ),
@@ -657,6 +666,49 @@ getUid() async{
                               ],
                             ),
                           ));
+  }
+
+
+
+
+void connect() async {
+    print("THE CONNECTION IS BEING CALLED");
+    socket = IO.io(AppUrls.SOCKET_URL, <String, dynamic>{
+      "query":{
+          "userId":await HelperFunction.getUserID()
+      },
+      'transports': ['websocket'],
+      "autoConnect": false,
+
+
+
+    });
+    socket.connect();
+
+    socket.on('connect', (_) {
+      print('User connected');
+    });
+
+    socket.on("OnGroup",(data) async{
+
+         final  newMessage =await GroupChatModel.fromJson(data);
+         setState(() {
+           messages.add(newMessage);
+           buildMessageList();
+         });
+        scrollToEndOfList(); 
+    });
+   
+
+
+    socket.on('disconnect', (_) {
+      print('User disconnected');
+    });
+  }
+  
+
+  scrollToEndOfList(){
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.easeIn);
   }
 }
 

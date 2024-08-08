@@ -9,7 +9,7 @@ class GroupChatModel extends MessageEntity {
   final String? chatId;
   final String replySender;
   final String replyMessage;
-  final String dateTime;
+  final String time;
   final String senderId;
   final String receiverId;
 
@@ -23,7 +23,7 @@ class GroupChatModel extends MessageEntity {
        this.chatId,
        required this.senderId,
        required this.receiverId,
-      required this.dateTime})
+      required this.time})
       : super(
             messageId: messageId,
             message: message,
@@ -31,7 +31,7 @@ class GroupChatModel extends MessageEntity {
             messageSender: messageSender,
             replyMessage: replyMessage,
             replySender: replySender,
-            dateTime: dateTime,
+            time: time,
             chatId: chatId,
             receiverId: receiverId,
             senderId: senderId
@@ -46,7 +46,7 @@ class GroupChatModel extends MessageEntity {
       messageSender: json["messageSender"],
       replyMessage: json["replyMessage"]??"",
       replySender: json["replySender"]??"",
-      dateTime: json["dataTime"]??"",
+      time: json["time"]??"",
       chatId: json['_id'],
       senderId: json['senderId'],
       receiverId: json['receiverId']
@@ -60,7 +60,7 @@ class GroupChatModel extends MessageEntity {
       "messageSender":messageSender,
       "replyMessage": replyMessage,
       "replySender": replySender,
-      "dateTime": dateTime,
+      "dateTime": time,
       "chatId":chatId,
       "senderId":senderId,
       "receiverId":receiverId

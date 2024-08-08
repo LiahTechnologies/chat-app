@@ -163,7 +163,7 @@ class UserCard extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "${messageEntity.dateTime}",
+                    "${messageEntity.time}",
                     style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                   ),
                   SizedBox(

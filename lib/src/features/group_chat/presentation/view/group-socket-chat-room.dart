@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
+import 'package:njadia/src/core/utils/currentime.dart';
+import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
+import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-state.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/reply-message.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/view/approve-to-join.dart';
@@ -15,6 +18,7 @@ import '../../../../core/common/helper_function.dart';
 import '../../../../core/common/urls.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
+import '../../../approve-tojoin-group/presentation/bloc/approval-event.dart';
 import '../../../create_group/presentation/view/select_contact_page.dart';
 import '../../../direct message/domain/entities/chat.dart';
 import '../../../payment/presentation/view/select_group_member.dart';
@@ -33,10 +37,10 @@ class GroupChatRoom extends StatefulWidget {
 }
 
 class _GroupChatRoomState extends State<GroupChatRoom> {
-  late SocketBloc socketBloc;
+  
   List<MessageEntity> messages = [];
     late IO.Socket socket;
-
+  late SocketBloc socketBloc;
 
   @override
   void initState() {
@@ -114,7 +118,7 @@ late String uid;
 
   @override
   Widget build(BuildContext context) {
-    // context.read<SocketBloc>().add(ConnectSocketEvent());
+  context.read<ApprovalBloc>().add(OnFetchApprovals(groupId: widget.chatModel.chatId));
   
     return Scaffold(
       appBar: AppBar(
@@ -182,33 +186,45 @@ late String uid;
                     color: primaryWhite,
                   )),
 
-              approve?
-              Badge(
-                largeSize: 20.0,
-                alignment: Alignment.topCenter,
-                backgroundColor: Colors.red,
-                label: Text("2"),
-                child: CustomPopUpMenu(
-                  items: items,
-                onSelected: (value){
-                  if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+                BlocBuilder<ApprovalBloc,ApprovalState>(
+                  builder: (context,state) {
 
-                  if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId));
-               
-                  if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
-
-                },
-                
-                
+                    if(state is ApprovalsLoadded){
+                      if(state.approvals.length>0)
+                      return         
+                          Badge(
+                                largeSize: 20.0,
+                                alignment: Alignment.topCenter,
+                                backgroundColor: Colors.red,
+                                label: Text("${state.approvals.length}"),
+                                child: CustomPopUpMenu(
+                                  items: items,
+                                onSelected: (value){
+                                  if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+                                
+                                  if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId));
+                                              
+                                  if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
+                                
+                                },
+                                
+                                
+                                ),
+                                  );
+                    }
+                    return             
+                      CustomPopUpMenu(
+                      items: items,
+                    onSelected: (value){
+                      if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+                     if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
+                    
+                    if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
+                    });
+                    
+                  }
                 ),
-              ):CustomPopUpMenu(
-                  items: items,
-                onSelected: (value){
-                  if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
-                 if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
-
-                if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
-                }),
+              
             ],
           ),
       body: BlocBuilder<SocketBloc, SocketState>(
@@ -293,6 +309,8 @@ late String uid;
       ],
     );
   }
+
+
 
   chatInputWidget(){
     return 
@@ -457,7 +475,7 @@ late String uid;
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, dateTime: "12:00pm",senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
+                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
                                                                   
                                         socketBloc.add(SendMessageEvent('groupMessage', message));
                                        
@@ -481,13 +499,8 @@ late String uid;
                                                 });                  
                                                                   
                                         controller.clear();
-                                        print("WAITING FOR THE EVENT");
                                                                   
-                                       socketBloc.add(OnMessageEvent("OnGroup",(data){
-                                                                  
-                                                    print("THIS ISE THE RESPONSE $data");
-                                                                  
-                                                  }));
+                                     
                                                                   
                                         // socketBloc.add(OnMessageEvent(events));
                                             scrollToEndOfList();      
@@ -536,7 +549,7 @@ void connect() async {
            messages.add(newMessage);
            buildMessageList();
          });
-        
+        scrollToEndOfList(); 
     });
    
 

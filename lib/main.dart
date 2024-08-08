@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/authentication.dart';
@@ -10,6 +11,7 @@ import 'package:njadia/src/features/search-groups/presentation/bloc/search-group
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/utils/theme/theme_bloc.dart';
 import 'package:njadia/src/utils/theme/themes.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import 'src/features/authentication/dependencies_injection.dart';
@@ -24,7 +26,9 @@ import 'src/features/payment/presentation/bloc/group-bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
+  Hive.init(appDocumentDirectory.path);
   setUpLocator();
   runApp(MyApp());
 }

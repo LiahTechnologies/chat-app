@@ -14,7 +14,7 @@ class ChatMessageModel extends MessageEntity {
     required this.time,
      
     required this.chatId
-  }) : super(senderId: sendId, receiverId: recepientId,messageId: messageId, message: message, messageReceiver: recepientId, messageSender: sender, replyMessage: replyMessage, replySender: replySender, chatId: chatId, dateTime: time);
+  }) : super(senderId: sendId, receiverId: recepientId,messageId: messageId, message: message, messageReceiver: recepientId, messageSender: sender, replyMessage: replyMessage, replySender: replySender, chatId: chatId, time: time);
   final String message;
   final String messageId;
   final String sendId;

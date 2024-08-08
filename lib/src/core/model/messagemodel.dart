@@ -9,7 +9,7 @@ class MessageModel extends MessageEntity {
   final String? chatId;
   final String replySender;
   final String replyMessage;
-  final String dateTime;
+  final String time;
   final String senderId;
   final String receiverId;
 
@@ -23,7 +23,7 @@ class MessageModel extends MessageEntity {
       required this.senderId,
       required this.receiverId,
        this.chatId,
-      required this.dateTime})
+      required this.time})
       : super(
             messageId: messageId,
             message: message,
@@ -31,7 +31,7 @@ class MessageModel extends MessageEntity {
             messageSender: messageSender,
             replyMessage: replyMessage,
             replySender: replySender,
-            dateTime: dateTime,
+            time: time,
             chatId: chatId,
             senderId: senderId,
             receiverId: receiverId,
@@ -45,7 +45,7 @@ class MessageModel extends MessageEntity {
       messageSender: json["messageSender"],
       replyMessage: json["replyMessage"],
       replySender: json["replySender"],
-      dateTime: json["dateTime"],
+      time: json["dateTime"],
       chatId: json['chatId'],
       senderId: json['senderId'],
       receiverId: json['receiverId']
@@ -58,7 +58,7 @@ class MessageModel extends MessageEntity {
       "messageSender":messageSender,
       "replyMessage": replyMessage,
       "replySender": replySender,
-      "dateTime": dateTime,
+      "dateTime": time,
       "chatId":chatId,
       "senderId":senderId,
       "receiverId":receiverId

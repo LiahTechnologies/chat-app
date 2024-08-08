@@ -63,7 +63,7 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
             replyMessage: data["replyMessage"], 
             replySender: data["replySender"], 
             chatId: data["chatId"], 
-            dateTime: data["dateTime"],
+            time: data["dateTime"],
             senderId: data['senderId'],
             receiverId: data['receiverId']
           )));
