@@ -1,16 +1,17 @@
-# njadia
+# Njadia
 
-A new Flutter project.
+## Description 
+Njadia is digital online community saving app, where groups can be created to savings a being for each member in the group, based on a ballot. Contributions are being don for each user through their individaul mobile money account. Money is automaically deducted from the account of all the members in the group,except the person who is collecting for that particular period[as decide by the group admins] and sent to the individual who is collecting.
 
-## Getting Started
+During the creation of a group, the admin is required to set, the levy for that particular group. The amount specified by the admin is what will be deducted from the individaul accounts of the members.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Frontend Part
+The frontend of the application is made up of different parts, which includes:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Authentication
+- Private and group chat
+- Searching of groups
+- Approval to join group
+- Levy contribution
+- Profile
