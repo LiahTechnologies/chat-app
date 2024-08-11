@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 
 import 'package:njadia/src/core/common/errors/failures.dart';
+import 'package:njadia/src/core/utils/internet-connection-checkr.dart';
 import 'package:njadia/src/features/direct%20message/data/data_sources/chat-list-remote-data-source.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 
@@ -11,12 +13,16 @@ import '../../domain/repository/chat_repository.dart';
 class ChatListRepositoryImpl extends ChatListRepository {
   final  PrivatChatListRemoteDataSource privatChatListRemoteDataSource; 
   ChatListRepositoryImpl({required this.privatChatListRemoteDataSource});
-
+ 
   @override
   Future<Either<Failure, List<UserProfile>>> fetchChats() async {
+
     try {
+      
       final response = await privatChatListRemoteDataSource.fetchChats();
       return Right(response);
+     
+      
     } on ServerExceptions {
       throw ServerFailure("something went wrong");
     }

@@ -8,6 +8,8 @@ import 'dart:convert';
 
 import '../../../../core/common/errors/exceptions.dart';
 import '../../../../core/common/errors/failures.dart';
+import '../../../../core/utils/internet-connection-checkr.dart';
+import 'local_message/local-socket-data-source.dart';
 
 abstract class SocketRemoteDataSource {
   void connect();
@@ -24,6 +26,11 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
   late IO.Socket socket;
   late http.Client client;
   SocketRemoteDataSourceImpl(this.client);
+    
+    
+    final InternetConnectionCheckerClass checkerClass =InternetConnectionCheckerClass();
+
+
   @override
   void connect() async {
     print("THE CONNECTION IS BEING CALLED");
@@ -62,6 +69,7 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
 
   @override
   void sendMessage(String event, dynamic data) {
+    
     print("THIS IS THE SEND MESSAGE EVENT $data");
     // socket.on(event,(data));
     socket.emit(event, data);
@@ -80,6 +88,13 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
 
   @override
   Future<List<GroupChatModel>> fetchInitialMessages(String groupId) async {
+    
+    final GroupLocalSocketDataSource groupLocalSocketDataSource=GroupLocalSocketDataSource(boxName: groupId);
+    print("THE GROUP IS FUNCTION ITSELF");
+    
+    if(await checkerClass.init()){
+      print("THERE IS INTERNET CONNECTION ");
+
     final currentUser =await HelperFunction.getUserID();
 
     final data = {
@@ -94,11 +109,25 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
       // print("MESSAGES FETCHED SUCCESSFULLY");
       Iterable messages =  json.decode(response.body);
       List<GroupChatModel> groupChats = List<GroupChatModel>.from(messages.map((e)=>GroupChatModel.fromJson(e)));
-
+      await groupLocalSocketDataSource.insertMessage(groupChats);
       return groupChats;
-    } else {
+
+    }
+    else {
       throw Exception('Failed to load messages');
     }
+
+    
+    
+    } else{
+      print("THIS FUNCTION IS BEING CALLED");
+      print("The adata is  ${await groupLocalSocketDataSource.getAllMessages()}");
+        return await groupLocalSocketDataSource.getAllMessages();
+    }
+
+
+    
+    
   }
 
 

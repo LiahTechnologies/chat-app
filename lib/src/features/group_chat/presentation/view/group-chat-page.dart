@@ -59,6 +59,7 @@ class GroupChatPage extends StatelessWidget {
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search,color: Theme.of(context).bottomAppBarTheme.shadowColor)),
           CustomPopUpMenu(items: popItems,onSelected: (v){},)
+       
         ],
       ),
       body: BlocBuilder<GroupListBloc,GroupListState>(

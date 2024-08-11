@@ -15,21 +15,36 @@ import 'package:path_provider/path_provider.dart';
 
 import 'src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import 'src/features/authentication/dependencies_injection.dart';
+import 'src/features/direct message/data/model/user-profile-model.dart';
 import 'src/features/direct message/presentation/bloc/chat_list_bloc.dart';
 import 'src/features/direct message/presentation/bloc/private-socket-bloc.dart';
+import 'src/features/group_chat/data/model/group_chat_model.dart';
+import 'src/features/group_chat/data/model/group_list_model.dart';
 import 'src/features/group_chat/presentation/bloc/group-socket-bloc.dart';
 import 'src/features/group_chat/presentation/bloc/group_list_bloc.dart';
 import 'src/features/payment/presentation/bloc/group-bloc.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 /// ------- For Docs and Updates Check ------
 /// ------------------README.md--------------
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDirectory = await getApplicationDocumentsDirectory();
-
-  Hive.init(appDocumentDirectory.path);
+ 
   setUpLocator();
+
+
+  if (kIsWeb) {
+
+    
+} else {
+   
+   final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<GroupChatModel>(GroupChatModelAdapter());
+  Hive.registerAdapter<GroupModel>(GroupModelAdapter());
+  Hive.registerAdapter<UserProfileModel>(UserProfileModelAdapter());
+}
   runApp(MyApp());
 }
 

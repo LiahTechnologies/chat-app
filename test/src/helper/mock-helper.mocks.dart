@@ -192,20 +192,23 @@ class MockUserRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i6.Future<_i3.LoginResponse> createUser(_i8.UserEntity? user) =>
+  _i6.Future<_i2.Either<_i7.Failure, _i3.LoginResponse>> createUser(
+          _i8.UserEntity? user) =>
       (super.noSuchMethod(
         Invocation.method(
           #createUser,
           [user],
         ),
-        returnValue: _i6.Future<_i3.LoginResponse>.value(_FakeLoginResponse_1(
+        returnValue:
+            _i6.Future<_i2.Either<_i7.Failure, _i3.LoginResponse>>.value(
+                _FakeEither_0<_i7.Failure, _i3.LoginResponse>(
           this,
           Invocation.method(
             #createUser,
             [user],
           ),
         )),
-      ) as _i6.Future<_i3.LoginResponse>);
+      ) as _i6.Future<_i2.Either<_i7.Failure, _i3.LoginResponse>>);
 
   @override
   _i6.Future<_i3.LoginResponse> loginUser({

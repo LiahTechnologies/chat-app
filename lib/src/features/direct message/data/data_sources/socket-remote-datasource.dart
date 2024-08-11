@@ -7,6 +7,8 @@ import 'dart:convert';
 
 import '../../../../core/common/errors/exceptions.dart';
 import '../../../../core/common/errors/failures.dart';
+import '../../../../core/utils/internet-connection-checkr.dart';
+import 'local-data-source/local-socket-data-source.dart';
 
 abstract class PrivateSocketRemoteDataSource {
   void connect();
@@ -23,6 +25,8 @@ class PrivateSocketRemoteDataSourceImpl implements PrivateSocketRemoteDataSource
   late IO.Socket socket;
   late http.Client client;
   PrivateSocketRemoteDataSourceImpl(this.client);
+
+  final InternetConnectionCheckerClass checkerClass =InternetConnectionCheckerClass();
   @override
   void connect() async {
     print("THE CONNECTION IS BEING CALLED");
@@ -73,6 +77,14 @@ class PrivateSocketRemoteDataSourceImpl implements PrivateSocketRemoteDataSource
 
   @override
   Future<List<GroupChatModel>> fetchInitialMessages(String receiverId) async {
+
+      final PrivateLocalSocketDataSource localSocketDataSource = PrivateLocalSocketDataSource(boxName: receiverId);
+
+      // Checking connection
+
+     if(await checkerClass.init()){
+
+  
     final currentUser =await HelperFunction.getUserID();
 
     final data = {
@@ -87,8 +99,19 @@ class PrivateSocketRemoteDataSourceImpl implements PrivateSocketRemoteDataSource
       print("MESSAGES FETCHED SUCCESSFULLY");
       Iterable messages =  json.decode(response.body);
       List<GroupChatModel> groupChats = List<GroupChatModel>.from(messages.map((e)=>GroupChatModel.fromJson(e)));
+      
+
+      // SAVE LOVAL MESSAGES.
+      localSocketDataSource.insertMessage(groupChats);
 
       return groupChats;
+
+    }
+
+     else{
+      return localSocketDataSource.getAllMessages();
+     }
+
     } else {
       throw Exception('Failed to load messages');
     }

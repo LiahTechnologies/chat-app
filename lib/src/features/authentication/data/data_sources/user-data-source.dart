@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
@@ -13,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/common/urls.dart';
 
 abstract class UserRemoteDataSource {
-  Future<LoginResponse> createUser(UserEntity user);
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user);
   Future<LoginResponse> loginUser({required email, required password});
   Future<bool> generateOTP({required String number});
   Future<bool> verifyOTP({required String number, required String OTPCode});
@@ -25,7 +26,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   UserRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<LoginResponse> createUser(UserEntity user) async {
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user) async {
 
 
 //  Directory tempDir = await getTemporaryDirectory();
@@ -62,13 +63,17 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         await HelperFunction.saveUserID(userData.uid);
         await HelperFunction.saveUserTel(userData.tel);
         await HelperFunction.saveUserProfile(userData.lastName);
+        await HelperFunction.saveUserLoggInState(true);
         // print("THIS IS THE USER DATA: $userData");
 
-        return userData;
+        return Right(userData);
     }
+
+    if(response.statusCode==409)
+      return Left(ServerFailure("Email already exist"));
      
     else
-      throw ServerFailure("User was not created");;
+      throw Left(ServerFailure("User was not created"));
   
 
 /*
@@ -157,6 +162,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       await HelperFunction.saveUserID(userData.uid);
       await HelperFunction.saveUserTel(userData.tel);
       await HelperFunction.saveUserProfile(userData.lastName);
+      await HelperFunction.saveUserLoggInState(true);
+
       return userData;
     } else {
       throw ServerExceptions();

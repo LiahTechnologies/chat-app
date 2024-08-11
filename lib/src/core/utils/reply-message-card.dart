@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
+import 'package:njadia/src/core/utils/encryption.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 
 
@@ -104,7 +105,7 @@ class ReplyMessageCard extends StatelessWidget {
                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                      children: [
                                                                                                      Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                                                                     Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                     Text("${EncryptionClass.decryption(messageEntity.replyMessage)}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                                                        ],
                                                                                                    ),
                                                                                                  ),
@@ -124,7 +125,7 @@ class ReplyMessageCard extends StatelessWidget {
                     padding:  EdgeInsets.only(
                         left: 10.0, bottom: 20, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
                     child: Text(
-                      "${messageEntity.message}",
+                      "${EncryptionClass.decryption(messageEntity.message)}",
                       style:const TextStyle(fontSize: 16),
                     ),
                   ),

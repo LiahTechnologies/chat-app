@@ -11,6 +11,9 @@ import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../core/common/services/readjons.dart';
 import '../../../../core/common/urls.dart';
 import '../../../../core/entities/stream_socket.dart';
+import '../../../../core/utils/internet-connection-checkr.dart';
+import '../../../direct message/data/data_sources/local-data-source/local-chat-list-data-source.dart';
+import 'local_message/local-chat-list-data-source.dart';
 
 abstract class GroupListRemoteDataSource {
   Stream<GroupModel> fetchGroup({required String groupId});
@@ -23,6 +26,9 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
   final http.Client client;
   GroupListRemoteDataSourceImpl({required this.client});
   StreamSocket streamSocket = StreamSocket();
+
+      final InternetConnectionCheckerClass checkerClass =InternetConnectionCheckerClass();
+
 
   @override
   Stream<GroupModel> fetchGroup({required String groupId}) async* {
@@ -57,7 +63,16 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
   
   @override
   Future<List<GroupModel>> fetchGroups()async {
+
+   final LocalChatListDataSource listDataSource = LocalChatListDataSource(boxName: "groupList");
+
+
     final currentUser = await HelperFunction.getUserID();
+
+
+    if(await checkerClass.init()){
+
+    
     try {
 
       final response = await client
@@ -77,11 +92,18 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
 
      print("serilized list ${groupsList[0].id}");
      await HelperFunction.saveUserNumberOfGroups("${groupsList.length}");
+
+     await listDataSource.insertGroupList(groupsList);
       
       return groupsList;
     } on ServerExceptions {
       print("STREAMS OF MESSAGES FAILED");
       throw ServerExceptions();
     }
+  }
+  else{
+      return await listDataSource.getAllGroupList();
+  }
+  
   }
 }

@@ -7,6 +7,7 @@ import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/core/utils/currentime.dart';
+import 'package:njadia/src/core/utils/encryption.dart';
 import 'package:njadia/src/features/direct%20message/domain/entities/user-profile.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:swipe_to/swipe_to.dart';
@@ -441,7 +442,7 @@ getUid() async{
 
                     setState(() {
                       isReplyMessage=true;
-                      replyMessage.message= messages[index].message;
+                      replyMessage.message= EncryptionClass.decryption(messages[index].message);
                       replyMessage.userName= messages[index].messageSender;
                       replyMessage.messageId= messages[index].messageId!;
                     });
@@ -629,7 +630,7 @@ getUid() async{
                                         
                                        
                                                                   
-                                        final message= GroupChatModel(chatId: widget.user.uid,messageReceiver: widget.user.firstName,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, time: currentTime(),senderId:currentUser,receiverId:  widget.user.uid);
+                                        final message= GroupChatModel(chatId: widget.user.uid,messageReceiver: widget.user.firstName,  message: EncryptionClass.encryption(controller.text), messageSender: currentUser, replyMessage: EncryptionClass.decryption(replyMessage.message), replySender: replyMessage.userName, time: currentTime(),senderId:currentUser,receiverId:  widget.user.uid);
                                                                   
                                         socketBloc.add(SendMessageEvent('privateMessage', message));
                                        

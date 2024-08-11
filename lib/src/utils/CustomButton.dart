@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../core/common/constants/style/color.dart';
+import 'device-height-and-width.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(
@@ -35,8 +36,9 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
-      width: width == 0 ? 150.w : width,
+      width: width == 0 ? deviceWidth(context)/2.5: width,
       height: height == 0 ? 40.h : height,
       decoration: BoxDecoration(
           color: isActive! ? AppColor.lightButtonColor : Colors.grey.withOpacity(0.3),
@@ -50,7 +52,7 @@ class CustomButton extends StatelessWidget {
           Center(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor&&isActive!? Colors.white:Theme.of(context).iconTheme.color,  )
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(color:textColor&&isActive!? Colors.white:Theme.of(context).iconTheme.color,fontSize: 12  )
             ),
           ),
           if (icon != null)

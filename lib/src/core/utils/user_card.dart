@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:njadia/src/core/common/constants/style/style.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
+import 'package:njadia/src/core/utils/encryption.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({super.key, required this.messageEntity});
@@ -130,7 +131,7 @@ class UserCard extends StatelessWidget {
                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                  children: [
                                                                                                  Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                                                                 Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                 Text("${EncryptionClass.decryption(messageEntity.replyMessage)}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                                                    ],
                                                                                                ),
                                                                                              ),
@@ -150,7 +151,7 @@ class UserCard extends StatelessWidget {
                 padding:  EdgeInsets.only(
                     left: 10.0, bottom: 20, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
                 child: Text(
-                  "${messageEntity.message}",
+                  "${EncryptionClass.decryption(messageEntity.message)}",
                   style:const TextStyle(fontSize: 16),
                 ),
               ),

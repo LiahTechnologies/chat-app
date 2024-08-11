@@ -1,10 +1,18 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
+part 'group_list_model.g.dart';
 
+
+@HiveType(typeId: 2)
 class GroupModel extends GroupChatEntity {
+  @HiveField(1)
   final String? id;
+  @HiveField(2)
   final String? groupName;
+  @HiveField(3)
   final String? profilePic;
+  @HiveField(4)
   final String? unreadMessage;
   // final List<MessageEntity> messages;
 

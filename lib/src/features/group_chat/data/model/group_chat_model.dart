@@ -1,16 +1,31 @@
+import 'package:hive/hive.dart';
+import 'package:njadia/src/features/group_chat/data/data_source/group-chat-model-ids.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
+part 'group_chat_model.g.dart';
+
+@HiveType(typeId: GroupChatTypeId.hiveType)
 class GroupChatModel extends MessageEntity {
+  @HiveField(GroupChatFieldId.messageId)
   final String? messageId;
+  @HiveField(GroupChatFieldId.message)
   final String message;
+  @HiveField(GroupChatFieldId.messageSender)
   final String messageSender;
+  @HiveField(GroupChatFieldId.messageReceiver)
   final String? messageReceiver;
+   @HiveField(GroupChatFieldId.chatId)
   final String? chatId;
+   @HiveField(GroupChatFieldId.replySender)
   final String replySender;
+  @HiveField(GroupChatFieldId.replyMessage)
   final String replyMessage;
+   @HiveField(GroupChatFieldId.time)
   final String time;
+  @HiveField(GroupChatFieldId.senderId)
   final String senderId;
+   @HiveField(GroupChatFieldId.receiverId)
   final String receiverId;
 
   const GroupChatModel(

@@ -8,6 +8,9 @@ import 'package:njadia/src/features/direct%20message/data/model/user-profile-mod
 import 'package:njadia/src/features/direct%20message/domain/entities/message.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../core/utils/internet-connection-checkr.dart';
+import 'local-data-source/local-chat-list-data-source.dart';
+
 
 abstract class PrivatChatListRemoteDataSource {
    Future<List<UserProfileModel>> fetchChats();
@@ -19,6 +22,8 @@ class PrivatChatListRemoteDataSourceImpl extends PrivatChatListRemoteDataSource 
   final http.Client client;
   PrivatChatListRemoteDataSourceImpl({required this.client});
   
+    final InternetConnectionCheckerClass checkerClass =InternetConnectionCheckerClass();
+  final PrivateLocalChatListDataSource privateLocalChatListDataSource = PrivateLocalChatListDataSource(boxName: "chatList");
 
   @override
   Future<bool> deleteChat({required String receiverId}) {
@@ -29,6 +34,10 @@ class PrivatChatListRemoteDataSourceImpl extends PrivatChatListRemoteDataSource 
   @override
   Future<List<UserProfileModel>> fetchChats()async {
     final currentUser = await HelperFunction.getUserID();
+
+    if(await checkerClass.init()){
+
+    
     try {
 
       final response = await client
@@ -49,11 +58,17 @@ class PrivatChatListRemoteDataSourceImpl extends PrivatChatListRemoteDataSource 
 
      print("serilized list ${chatList}");
      await HelperFunction.saveUserNumberOfChats("${chatList.length}");
+     await privateLocalChatListDataSource.addChatList(chatList);
       
       return chatList;
     } on ServerExceptions {
       print("STREAMS OF MESSAGES FAILED");
       throw ServerExceptions();
     }
+      }else{
+          return await privateLocalChatListDataSource.getAllUsers();
+      }
+  
   }
+  
 }

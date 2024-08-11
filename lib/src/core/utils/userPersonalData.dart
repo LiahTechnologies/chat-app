@@ -1,6 +1,6 @@
 
 import 'package:hive_flutter/hive_flutter.dart';
-// 'userPersonalData.g.dart';
+part 'userPersonalData.g.dart';
 @HiveType(typeId: 1)
 class UserPersonalData{
   @HiveField(0)

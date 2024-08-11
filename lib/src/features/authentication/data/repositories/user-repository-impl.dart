@@ -29,7 +29,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user}) async {
     try {
       final response = await userRemoteDataSource.createUser(user);
-      return Right(response);
+      return response;
     } on ServerExceptions {
       throw ServerFailure("Something happened while creating a user");
     }
