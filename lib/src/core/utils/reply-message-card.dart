@@ -105,7 +105,7 @@ class ReplyMessageCard extends StatelessWidget {
                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                      children: [
                                                                                                      Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                                                                     Text("${EncryptionClass.decryption(messageEntity.replyMessage)}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                     Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                                                        ],
                                                                                                    ),
                                                                                                  ),
@@ -125,7 +125,7 @@ class ReplyMessageCard extends StatelessWidget {
                     padding:  EdgeInsets.only(
                         left: 10.0, bottom: 20, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
                     child: Text(
-                      "${EncryptionClass.decryption(messageEntity.message)}",
+                      "${messageEntity.message}",
                       style:const TextStyle(fontSize: 16),
                     ),
                   ),

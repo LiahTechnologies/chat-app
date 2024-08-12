@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
+import 'package:njadia/src/core/utils/encryption.dart';
 import 'package:njadia/src/features/group_chat/data/data_source/group-chat-model-ids.dart';
-import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
-
+// import 'package:encrypt/encrypt.dart';
 part 'group_chat_model.g.dart';
 
 @HiveType(typeId: GroupChatTypeId.hiveType)
@@ -59,7 +59,7 @@ class GroupChatModel extends MessageEntity {
       messageId: json["_id"],  
       messageReceiver: json["messageReceiver"],
       messageSender: json["messageSender"],
-      replyMessage: json["replyMessage"]??"",
+      replyMessage:json["replyMessage"]??"",
       replySender: json["replySender"]??"",
       time: json["time"]??"",
       chatId: json['_id'],
@@ -75,7 +75,7 @@ class GroupChatModel extends MessageEntity {
       "messageSender":messageSender,
       "replyMessage": replyMessage,
       "replySender": replySender,
-      "dateTime": time,
+      "time": time,
       "chatId":chatId,
       "senderId":senderId,
       "receiverId":receiverId

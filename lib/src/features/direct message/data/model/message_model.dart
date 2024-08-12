@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 
 import '../../domain/entities/message.dart';

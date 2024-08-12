@@ -14,7 +14,7 @@ class UserCard extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 165,
+          maxWidth: MediaQuery.of(context).size.width - 145,
         ),
         child: Card(
           elevation: 1,
@@ -131,7 +131,7 @@ class UserCard extends StatelessWidget {
                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                  children: [
                                                                                                  Text("${messageEntity.replySender}",overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                                                                 Text("${EncryptionClass.decryption(messageEntity.replyMessage)}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                                                 Text("${messageEntity.replyMessage}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                                                    ],
                                                                                                ),
                                                                                              ),
@@ -149,9 +149,9 @@ class UserCard extends StatelessWidget {
               // bottom: 4,
               child: Padding(
                 padding:  EdgeInsets.only(
-                    left: 10.0, bottom: 20, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
+                    left: 45.0, bottom: 25, right: 5, top:messageEntity.replyMessage.isNotEmpty? 45:10),
                 child: Text(
-                  "${EncryptionClass.decryption(messageEntity.message)}",
+                  "${messageEntity.message}",
                   style:const TextStyle(fontSize: 16),
                 ),
               ),
@@ -160,21 +160,25 @@ class UserCard extends StatelessWidget {
 
             Positioned(
               bottom: 8,
-              right: 10,
-              child: Row(
-                children: [
-                  Text(
-                    "${messageEntity.time}",
-                    style: TextStyle(fontSize: 11, color: Colors.grey[600]),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Icon(
-                    Icons.done_all,
-                    size: 20,
-                  )
-                ],
+              right: 3,
+              child: Expanded(
+                // width: 67,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "${messageEntity.time}",
+                      style: TextStyle(fontSize: 11, color: Colors.grey[100]),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.done,
+                      size: 20,
+                    )
+                  ],
+                ),
               ),
             ),
 

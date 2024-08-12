@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
@@ -16,10 +17,10 @@ import '../../../direct message/data/data_sources/local-data-source/local-chat-l
 import 'local_message/local-chat-list-data-source.dart';
 
 abstract class GroupListRemoteDataSource {
-  Stream<GroupModel> fetchGroup({required String groupId});
+  Stream<List<GroupModel>> fetchGroup();
    Future<List<GroupModel>> fetchGroups();
 
-  Future<bool> deleteGroups({required String groupId});
+  Future<bool> deleteGroups({required List<String> groups});
 }
 
 class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
@@ -31,24 +32,115 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
 
 
   @override
-  Stream<GroupModel> fetchGroup({required String groupId}) async* {
+ Stream<List<GroupModel>>fetchGroup() async* {
     try {
-      print("STREAMS OF MESSAGES BEING CALLED");
 
-      // final response = await client
-      //     .post(Uri.parse(AppUrls.BASEURL), body: {"userId": groupId});
+      print("STREAM FETCHING");
 
-      final groupJson = await readJson('lib/src/core/common/services/groups.json');
+         final currentUser = await HelperFunction.getUserID();
 
-              // print("\n\n\nTHIS IS THE REMOTE DATA $groupJson");
-
+        final response= await client.send(http.Request('GET',Uri.parse(AppUrls.userGroups+currentUser)));
+        print("Looping STREAM RESULT");
 
 
-      final message = await GroupModel.fromJson(groupJson['groups'][0]);
-      print("\n\n\nTHIS IS THE REMOTE DATA $message");
 
 
-      yield message;
+/*
+
+       List<GroupModel> users = [];
+
+    await for (var chunk in response.stream.transform(utf8.decoder)) {
+      // Split the chunk into lines if necessary
+      final lines = chunk.split('\n');
+       print("Looping STREAM RESULT 3");
+      for (String line in lines) {
+         print("Looping STREAM RESULT 5");
+        if (line.isNotEmpty) {
+          final Map<String, dynamic> jsonMap = jsonDecode(line);
+           print("Looping STREAM RESULT 4 $jsonMap");
+
+
+            if (jsonMap.containsKey('_id')) {
+              final GroupModel user = GroupModel.fromJson(jsonMap);
+              users.add(user);
+
+              // Optionally yield the list of users as they are accumulated
+              yield users;
+            }
+          // Extract and yield the user list
+          
+
+          print("Looping STREAM RESULT 4 $users");
+          // Optionally yield the accumulated list of users
+          yield users;
+        }
+      }
+    }
+*/
+
+
+
+
+
+
+
+
+
+
+
+    List<GroupModel> users = [];
+
+    await for (var chunk in response.stream.transform(utf8.decoder)) {
+      // Split the chunk into lines
+      final lines = chunk.split('\n');
+
+      for (String line in lines) {
+        if (line.isNotEmpty) {
+           print("hmmm STREAM RESULT 4");
+          try {
+            final Map<String, dynamic> jsonMap = jsonDecode(line);
+
+            if (jsonMap.containsKey('_id')) {
+               print("USER STREAM RESULT 4 $jsonMap");
+              final user = GroupModel.fromJson(jsonMap);
+               print("USER STREAM RESULT 4 $user");
+              users.add(user);
+
+                print("Looping STREAM RESULT 4 $users");
+              // Optionally yield the list of users as they are accumulated
+              yield users;
+            }
+          } catch (e) {
+            print('Error decoding JSON: $e');
+          }
+        }
+      }
+    }
+
+
+
+
+
+
+
+    //  List<GroupModel> groupsList =[];
+    //   await for (var data in response.stream.transform(utf8.decoder).transform(LineSplitter())) {
+    //     print("THIS IS THE ANSWERS $data");
+     
+    //   final List<GroupModel> jsonList = jsonDecode(data) as List<GroupModel>;
+     
+    //     if (data.isNotEmpty) {
+
+    //    groupsList =  jsonList.map((json) => GroupModel.fromJson(json)).toList();
+    //       groupsList.add(GroupModel.fromJson(jsonDecode(line)));
+    //       print("GROUP LIST $groupsList");
+    //     }
+      
+
+    //   print("THIS ARE THE FETCHED GROUPS $groupsList");
+    //   yield groupsList;
+    // }
+    
     } on ServerExceptions {
       print("STREAMS OF MESSAGES FAILED");
       throw ServerExceptions();
@@ -56,9 +148,19 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteGroups({required String groupId}) {
-    // TODO: implement deleteGroups
-    throw UnimplementedError();
+  Future<bool> deleteGroups({required List<String> groups}) async{
+    print("THIS IS THE GROUP TO BE DELETED $groups");
+
+    final uid = await HelperFunction.getUserID();
+    print("User Id $uid  ${AppUrls.userChats}groups/$uid");
+    final response = await client.delete(Uri.parse("${AppUrls.userChatList}groups/$uid"),body: json.encode({"groups":groups}),headers: {"content-type":"application/json"});
+
+    if(response.statusCode==200)
+    return true;
+    else 
+    return false;
+
+
   }
   
   @override
@@ -74,6 +176,7 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
 
     
     try {
+      print("FETCH USER GROUPS");
 
       final response = await client
           .get(Uri.parse(AppUrls.userGroups+currentUser), headers: {"content-type":"application/json"});

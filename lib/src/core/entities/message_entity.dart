@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // part 'message_entity.g.dart';
-
+import 'package:encrypt/encrypt.dart';
 
 
 class MessageEntity extends Equatable {

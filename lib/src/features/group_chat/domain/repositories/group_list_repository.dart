@@ -6,8 +6,8 @@ import 'package:njadia/src/core/entities/message_entity.dart';
 
 abstract class GroupListRepository {
 
-  Stream<GroupChatEntity> fetchGroups(String groupId);
+  Stream<List<GroupChatEntity>> fetchGroups();
   Future<Either<Failure,List<GroupChatEntity>>> fetchchatgroups();
 
-  Future<Either<Failure,bool>> deleteGroup(String groupId);
+  Future<Either<Failure,bool>> deleteGroup(List<String> groups);
 }

@@ -70,3 +70,5 @@ class ErrorLoadingGroupList extends GroupListState{
   final String error;
   ErrorLoadingGroupList(this.error);
 }
+
+class GroupDeleted extends GroupListState{}

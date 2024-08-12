@@ -12,9 +12,11 @@ class GroupListUsecase {
   final GroupListRepository groupListRepository;
   const GroupListUsecase({required this.groupListRepository});
 
-  Stream<GroupChatEntity> execute(String groupId) =>groupListRepository.fetchGroups(groupId);
+  Stream<List<GroupChatEntity>> execute() =>groupListRepository.fetchGroups();
   
   Future<Either<Failure,List<GroupChatEntity>>> fetch() =>groupListRepository.fetchchatgroups();
+  Future<Either<Failure,bool>> deleteGroup(List<String>groups) =>groupListRepository.deleteGroup(groups);
+
 
   
 }

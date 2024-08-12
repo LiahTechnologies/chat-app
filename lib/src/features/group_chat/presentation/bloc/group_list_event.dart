@@ -25,9 +25,11 @@ class OnFetchGroups extends GroupListEvent {}
 
 
 class OnGroupDelete extends GroupListEvent {
-   final String error;
-  OnGroupDelete({required this.error});
+   final List<String> groups;
+  OnGroupDelete({required this.groups});
 
    @override
-  List<Object?> get props => [error];
+  List<Object?> get props => [groups];
 }
+
+

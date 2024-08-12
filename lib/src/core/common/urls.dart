@@ -34,7 +34,7 @@ class AppUrls {
 
 
   // User Groups and Chats
-  static const String userGroups = BASEURL+"users/groups/";
+  static const String  userGroups = BASEURL+"user-chats/groups/";
    static const String userChats = BASEURL+"user-chats/chats/";
    static const String userChatList = BASEURL+"user-chats/";
 

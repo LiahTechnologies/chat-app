@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 

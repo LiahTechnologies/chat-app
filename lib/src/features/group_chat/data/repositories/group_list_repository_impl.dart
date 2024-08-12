@@ -10,19 +10,23 @@ class GroupListRepositoryImpl extends GroupListRepository {
 
   GroupListRepositoryImpl({required this.groupListRemoteDataSource});
   @override
-  Future<Either<Failure, bool>> deleteGroup(String groupId) {
-    // TODO: implement deleteGroup
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> deleteGroup(List<String> groups) async{
+    try {
+      final reuslt = await groupListRemoteDataSource.deleteGroups(groups: groups);
+      return Right(reuslt);
+    } catch (e) {
+      throw Left(ServerFailure("Error deleting groups"));
+    }
   }
 
 
 
 
   @override
-  Stream<GroupChatEntity> fetchGroups(String groupId) {
+  Stream<List<GroupChatEntity>> fetchGroups() {
     try {
       print("REACHING REPOSITORY IMPLEMENTATION");
-      return groupListRemoteDataSource.fetchGroup(groupId: groupId);
+      return groupListRemoteDataSource.fetchGroup();
     } on ServerExceptions {
       throw ServerFailure("Failed");
     }

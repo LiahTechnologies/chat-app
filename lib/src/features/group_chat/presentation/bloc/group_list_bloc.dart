@@ -24,17 +24,31 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
     // });
     // on<GroupListEvent>(_handleLoadGroupsList);
 
+  on<OnGroupDelete>((event,emit)async{
+    final result = await groupListUsecase.deleteGroup(event.groups);
+    result.fold((l)=>emit(ErrorLoadingGroupList("Error")), (data)=>emit(GroupDeleted()));
+  });
 
 
-     on<OnFetchGroup>(_handleFetchGroup);
+  on<OnFetchGroup>(_handleFetchGroup);
 
   on<OnFetchGroups>((event,emit)async{
+
+      // try {
+      //   await for (var users in groupListUsecase.execute()) {
+      //     emit(GroupListLoaded(users));
+      //   }
+      // } catch (e) {
+      //   emit(ErrorLoadingGroupList("Error Loading groups"));
+      // }
 
     final result = await groupListUsecase.fetch();
     result.fold((l)=>emit(ErrorLoadingGroupList("Error Loading groups")), (data)=>emit(GroupListLoaded(data)));
   });
 
   }
+
+  
 
   // Stream<GroupChatEntity> _handleLoadGroupsList(
 

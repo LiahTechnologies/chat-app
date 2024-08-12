@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/core/utils/currentime.dart';
+import 'package:njadia/src/core/utils/encryption.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-state.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
@@ -26,7 +27,7 @@ import '../bloc/group-socket-bloc.dart';
 import '../bloc/group-socket-event.dart';
 import '../bloc/group-socket-state.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class GroupChatRoom extends StatefulWidget {
 
@@ -37,7 +38,7 @@ class GroupChatRoom extends StatefulWidget {
 }
 
 class _GroupChatRoomState extends State<GroupChatRoom> {
-  
+ late MessageEntity replyMessage;
   List<MessageEntity> messages = [];
     late IO.Socket socket;
   late SocketBloc socketBloc;
@@ -101,7 +102,7 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
 
 
 
-  ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
+  // ReplyMessage replyMessage = ReplyMessage(userName: "", message: "",messageId: "");
 
   bool isReplyMessage = false;
 
@@ -114,7 +115,7 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
 
 late String currentUser;
 late String uid;
-
+var encryptedText;
 
   @override
   Widget build(BuildContext context) {
@@ -227,44 +228,48 @@ late String uid;
               
             ],
           ),
-      body: BlocBuilder<SocketBloc, SocketState>(
-        builder: (context, state) {
-
-          if (state is SocketConnectingState) {
-            return const Center(child: CircularProgressIndicator());
-          } 
-          
-          else if (state is SocketConnectedState) {
-
-            return  buildMessageList();
-          
-          } 
-          else if (state is InitialMessagesFetchedState) {
-            messages = state.messages;
-            return buildMessageList();
-
-          } 
-          
-          // else if (state is SocketMessageReceivedState) {
-
-          //   print("CURRENT STATE EMITTED ${state.message}");
-          //     final data = GroupChatModel.fromJson(state.message);
-          //   // setState(() {
-          //     messages.add(MessageEntity(message: data.message, senderId: data.senderId, receiverId: data.receiverId, messageSender: data.messageSender, replyMessage: data.replyMessage, replySender: data.replySender, dateTime: data.dateTime));
-          //   // });
-          //   return buildMessageList();
-
-
-          // } 
-          
-          else if (state is SocketErrorState) {
-            return Center(child: Text('Error: ${state.message}'));
-          } 
-          
-          else {
-            return const Center(child: Text('Disconnected'));
-          }
-        },
+      body: PageStorage(
+        bucket: PageStorageBucket(),
+        key: PageStorageKey(1),
+        child: BlocBuilder<SocketBloc, SocketState>(
+          builder: (context, state) {
+        
+            if (state is SocketConnectingState) {
+              return const Center(child: CircularProgressIndicator());
+            } 
+            
+            else if (state is SocketConnectedState) {
+        
+              return  buildMessageList();
+            
+            } 
+            else if (state is InitialMessagesFetchedState) {
+              messages = state.messages;
+              return buildMessageList();
+        
+            } 
+            
+            // else if (state is SocketMessageReceivedState) {
+        
+            //   print("CURRENT STATE EMITTED ${state.message}");
+            //     final data = GroupChatModel.fromJson(state.message);
+            //   // setState(() {
+            //     messages.add(MessageEntity(message: data.message, senderId: data.senderId, receiverId: data.receiverId, messageSender: data.messageSender, replyMessage: data.replyMessage, replySender: data.replySender, dateTime: data.dateTime));
+            //   // });
+            //   return buildMessageList();
+        
+        
+            // } 
+            
+            else if (state is SocketErrorState) {
+              return Center(child: Text('Error: ${state.message}'));
+            } 
+            
+            else {
+              return const Center(child: Text('Disconnected'));
+            }
+          },
+        ),
       ),
     );
   }
@@ -281,22 +286,35 @@ late String uid;
             itemBuilder: (context, index) {
               return SwipeTo(
                 onLeftSwipe: (v){
-
-
-                    setState(() {
-                      isReplyMessage=true;
-                      replyMessage.message= messages[index].message;
-                      replyMessage.userName= messages[index].messageSender;
-                      replyMessage.messageId= messages[index].messageId!;
-                    });
-
+                  setState(() {
+                    isReplyMessage=true;
+                    replyMessage= messages[index];
+                  });
                 },
+                // onLeftSwipe: (v){
+
+
+                //     setState(() {
+                //       isReplyMessage=true;
+                //       replyMessage.message= messages[index].message;
+                //       replyMessage.userName= messages[index].messageSender;
+                //       replyMessage.messageId= messages[index].messageId!;
+                //     });
+
+                // },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal:18.0),
-                  child: MessageList(
-                          messageEntity: messages[index],
-                          uid: uid,
-                                    ),
+                  child: InkWell(
+                    onLongPress: (){
+                      showBottomSheet(context: context, builder: (context)=>Container(height: 270,width: 130,child: Card(color: Colors.white,
+                        elevation: 4,
+                      ),));
+                    },
+                    child: MessageList(
+                            messageEntity: messages[index],
+                            uid: uid,
+                                      ),
+                  ),
                 ),
               );
             },
@@ -314,204 +332,201 @@ late String uid;
 
   chatInputWidget(){
     return 
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-
-                            width: MediaQuery.of(context).size.width,
-                            margin:const EdgeInsets.symmetric(horizontal: 4,vertical: 4),
-                            child: Stack(
-                              
-                              children: [
-                                Positioned(
+                      PageStorage(
+                        key: PageStorageKey(2),
+                        bucket: PageStorageBucket(),
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                        
+                              width: MediaQuery.of(context).size.width,
+                              margin:const EdgeInsets.symmetric(horizontal: 4,vertical: 4),
+                              child: Stack(
                                 
-                                  child: SizedBox(
-                                      width: MediaQuery.of(context).size.width - 60,
-                                      child: Card(
-                                          color: AppColor.darkIconColor,
-                                          margin:const EdgeInsets.only(
-                                              left: 2, right: 2, bottom: 8),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25)),
-                                          child: Column(
-                                           
-                                            children: [
-                                      if(isReplyMessage)
-
-                                              Container(
-                                                margin: EdgeInsets.only(top: 8),
-                                                height: 45,
-                                                width: MediaQuery.of(context).size.width - 100,
-                                               decoration: BoxDecoration(
-                                                 color: Colors.grey[700]!.withOpacity(0.15),
-                                                 borderRadius: BorderRadius.circular(15)
-                                               ),
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      top: -10,
-                                                      right: -1,
-                                                      child: IconButton(onPressed: (){
-                                                          setState(() {
-                                                            isReplyMessage=false;
-                                                          });
-                                                        }, icon: Icon(Icons.close)),),
-                                                    
-                                                    Row(
-                                                      children: [
-                                                          Container(
-                                                            margin: const EdgeInsets.only(right: 5),
-                                                    
-                                                            width: 5,
-                                                            height: 40,
-                                                                                        
-                                                            decoration:const BoxDecoration(
-                                                            color: AppColor.greenColor,
-                                                            borderRadius: BorderRadius.only(
-                                                            topLeft: Radius.circular(10),
-                                                            bottomLeft: Radius.circular(10)
-                                                                                           )
-                                                                                                    
-                                                                                        ),
-                                                                                       ),
-                                                    Expanded(
-                                                            child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                             children: [
-                                                             Text("${replyMessage.userName}",overflow:TextOverflow.ellipsis,),
-                                                            Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
-                                                                       ],
+                                children: [
+                                  Positioned(
+                                  
+                                    child: SizedBox(
+                                        width: MediaQuery.of(context).size.width - 60,
+                                        child: Card(
+                                            color: AppColor.darkIconColor,
+                                            margin:const EdgeInsets.only(
+                                                left: 2, right: 2, bottom: 8),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25)),
+                                            child: Column(
+                                             
+                                              children: [
+                                        if(isReplyMessage)
+                        
+                                                Container(
+                                                  margin: EdgeInsets.only(top: 8),
+                                                  height: 45,
+                                                  width: MediaQuery.of(context).size.width - 100,
+                                                 decoration: BoxDecoration(
+                                                   color: Colors.grey[700]!.withOpacity(0.15),
+                                                   borderRadius: BorderRadius.circular(15)
+                                                 ),
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned(
+                                                        top: -10,
+                                                        right: -1,
+                                                        child: IconButton(onPressed: (){
+                                                            setState(() {
+                                                              isReplyMessage=false;
+                                                            });
+                                                          }, icon: Icon(Icons.close)),),
+                                                      
+                                                      Row(
+                                                        children: [
+                                                            Container(
+                                                              margin: const EdgeInsets.only(right: 5),
+                                                      
+                                                              width: 5,
+                                                              height: 40,
+                                                                                          
+                                                              decoration:const BoxDecoration(
+                                                              color: AppColor.greenColor,
+                                                              borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(10),
+                                                              bottomLeft: Radius.circular(10)
+                                                                                             )
+                                                                                                      
                                                                                           ),
-                                                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                                                         ),
+                                                      Expanded(
+                                                              child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                               children: [
+                                                               Text("${replyMessage.messageSender}",overflow:TextOverflow.ellipsis,),
+                                                              Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                                         ],
+                                                                                            ),
+                                                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                                            
-                                                            
-                                                            
-                                                            
-                                              TextFormField(
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
-                                                controller: controller,
-                                                onChanged: (v) {
-                                                  setState(() {
-                                                    controller.text = v;
-                                                  });
-                                                },
-                                                maxLines: 4,
-                                                minLines: 1,
-                                                keyboardType: TextInputType.multiline,
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    prefixIcon: IconButton(
-                                                      icon: Icon(Icons.emoji_emotions),
-                                                      onPressed: () {
-                                                        focusNode.unfocus();
-                                                        focusNode.canRequestFocus =
-                                                            false;
-                                                            
-                                                        setState(() {
-                                                          showEmoji = !showEmoji;
-                                                        });
-                                                      },
-                                                    ),
-                                                    suffixIcon: Row(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              showModalBottomSheet(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  context: context,
-                                                                  builder: (context) =>
-                                                                      Attarachment());
-                                                            },
-                                                            icon:const Icon(
-                                                                Icons.attach_file)),
-                                                        IconButton(
-                                                            onPressed: () {},
-                                                            icon:
-                                                                Icon(Icons.camera_alt))
-                                                      ],
-                                                    ),
-                                                    contentPadding: EdgeInsets.all(10),
-                                                    hintText: "Type a message",
-                                                    hintStyle: Theme.of(context)
-                                                        .textTheme
-                                                        .displayMedium),
-                                              ),
-                                            ],
-                                          ))),
-                                ),
-                            
-                            
-                                Positioned(
-                                 
-                                  right: 1,
-                                  bottom: 8,
-                                  // padding: const EdgeInsets.only(
-                                  //     bottom: 8.0, right: 2),
-                                  child: CircleAvatar(
-                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                                    radius: 22,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        
-                                        controller.text.isEmpty
-                                            ? Icons.mic
-                                            : Icons.send,
-                                            color: Colors.white,
-                                        // color: Theme.of(context).iconTheme.color,
-                                      ),
-                                      onPressed: () {
-                                        
-                                        
-                                       
-                                                                  
-                                        final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage: replyMessage.message, replySender: replyMessage.userName, time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
-                                                                  
-                                        socketBloc.add(SendMessageEvent('groupMessage', message));
-                                       
-                                        messages.add(message);
-                                                                  
-                                                                  
-                                        // context.read<GroupChatBloc>().add(OnSentGroupMessage(message:message, groupId:widget.chatModel.chatId  ));
-                                      //   socket.emit("newGroupMessage",
-                                      //    message
+                                                              
+                                                              
+                                                              
+                                                              
+                                                TextFormField(
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium,
+                                                  controller: controller,
+                                                  onChanged: (v) {
+                                                    setState(() {
+                                                      controller.text = v;
+                                                    });
+                                                  },
+                                                  maxLines: 4,
+                                                  minLines: 1,
                                                   
-                                      //   );
-                                      // socket.on("newGroupMessage",(data){
-                                      //       print("LIVE MESSAGE  $data");
-                                      // });
-                                                                  
-                                                setState(() {
-                                                  isReplyMessage=false;
-                                                  replyMessage.message="";
-                                                  replyMessage.userName="";
-                                                  replyMessage.messageId="";
-                                                });                  
-                                                                  
-                                        controller.clear();
-                                                                  
-                                     
-                                                                  
-                                        // socketBloc.add(OnMessageEvent(events));
-                                            scrollToEndOfList();      
-                                        
-                                      },
-                                    ),
+                                                  keyboardType: TextInputType.multiline,
+                                                  decoration: InputDecoration(
+                                                  
+                                                      border: InputBorder.none,
+                                                      prefixIcon: IconButton(
+                                                        icon: Icon(Icons.emoji_emotions),
+                                                        onPressed: () {
+                                                          focusNode.unfocus();
+                                                          focusNode.canRequestFocus =
+                                                              false;
+                                                              
+                                                          setState(() {
+                                                            showEmoji = !showEmoji;
+                                                          });
+                                                        },
+                                                      ),
+                                                      suffixIcon: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                showModalBottomSheet(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    context: context,
+                                                                    builder: (context) =>
+                                                                        Attarachment());
+                                                              },
+                                                              icon:const Icon(
+                                                                  Icons.attach_file)),
+                                                          IconButton(
+                                                              onPressed: () {},
+                                                              icon:
+                                                                  Icon(Icons.camera_alt))
+                                                        ],
+                                                      ),
+                                                      contentPadding: EdgeInsets.all(10),
+                                                      hintText: "Type a message",
+                                                      hintStyle: Theme.of(context)
+                                                          .textTheme
+                                                          .displayMedium),
+                                                ),
+                                              ],
+                                            ))),
                                   ),
-                                )
-                              ],
-                            ),
-                          ));
+                              
+                              
+                                  Positioned(
+                                   
+                                    right: 1,
+                                    bottom: 8,
+                                    // padding: const EdgeInsets.only(
+                                    //     bottom: 8.0, right: 2),
+                                    child: CircleAvatar(
+                                      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                                      radius: 22,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          
+                                          controller.text.isEmpty
+                                              ? Icons.mic
+                                              : Icons.send,
+                                              color: Colors.white,
+                                          // color: Theme.of(context).iconTheme.color,
+                                        ),
+                                        onPressed: () {
+                                          
+                                          // encryptedText =encryptedText==null?"":encryptedText is encrypt.Encrypted?encryptedText.base64:encryptedText;
+                                          
+                                        //  print(" THIS IS THE ENCRYPTED TEXT: ${EncryptionClass.encryption(controller.text)}");
+                                                                    
+                                          final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage:isReplyMessage? replyMessage.message:"", replySender: isReplyMessage?replyMessage.messageSender:"", time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
+                                            print("tHIS IS THE MESSAGE $message");                        
+                                          socketBloc.add(SendMessageEvent('groupMessage', message));
+                                        //  print("THIS EVENT IS BEING CALLED");
+                                          messages.add(message);
+                                                                                                        
+                                                  setState(() {
+                                                    isReplyMessage=false;
+                                                    
+                                                    
+                                                  });                  
+                        
+                                            print("CLEARING THE MESSAGE");             
+                                          controller.clear();
+                                                                    
+                                       
+                                                                    
+                                          // socketBloc.add(OnMessageEvent(events));
+                                              scrollToEndOfList();      
+                                          
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )),
+                      );
   }
 
 
