@@ -1,16 +1,17 @@
 import 'dart:core';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icon.dart';
 
 class SeeChatProfile extends StatelessWidget {
-  const SeeChatProfile({super.key, required this.profileImag, required this.chat, required this.videoCall});
+   SeeChatProfile({super.key, required this.profileImag, required this.chat, required this.videoCall});
   final String profileImag;
   final VoidCallback chat;
   final VoidCallback videoCall;
   // fina void Function vh;
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,4 +43,6 @@ class SeeChatProfile extends StatelessWidget {
       )),
     ]));
   }
+
+ 
 }

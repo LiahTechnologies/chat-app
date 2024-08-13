@@ -179,7 +179,7 @@ getDeviceContact() async{
         onPressed: () {
 
           if(widget.isCreatGroup){
-                    if(groups.length>2)
+                    if(groups.length>=0)
                     nextScreen(context, CreateGroup(members: groups,));
                     else {
                       final snackBar =

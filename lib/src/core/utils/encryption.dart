@@ -94,15 +94,17 @@
 
 
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:encrypt/encrypt.dart';
 
 class EncryptionClass{
 
   static final key = encrypt.Key.fromLength(32);
   static final iv = encrypt.IV.fromLength(16);
-  static final encrypter = encrypt.Encrypter(encrypt.AES(key));
+  static final encrypter = encrypt.Encrypter(encrypt.AES(key,mode:encrypt.AESMode.cbc));
+  // static final encrypter = Encrypter(AES(key, mode: AESMode.cbc, padding: "PKCS7"));
 
 
-    static  String  encryption(text){
+    static  String  encryption(String text){
       final encryptedText = encrypter.encrypt(text,iv: iv);
 
       return encryptedText.base64;
@@ -110,7 +112,7 @@ class EncryptionClass{
     }
 
 
-    static String decryption(text){
-        return encrypter.decrypt(text,iv: iv);
+    static String decryption(String text){
+        return encrypter.decrypt64(text,iv: iv);
     }
 }

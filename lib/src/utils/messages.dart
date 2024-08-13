@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:njadia/src/core/utils/user_card.dart';
 
@@ -15,6 +14,17 @@ class MessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Messagelist Widget $messageEntity");
+  //   BubbleSpecialOne(
+  //   text: 'Hi, How are you? ',
+  //   isSender: false,
+  //   color: Colors.purple.shade100,
+  //   textStyle: TextStyle(
+  //     fontSize: 20,
+  //     color: Colors.purple,
+  //     fontStyle: FontStyle.italic,
+  //     fontWeight: FontWeight.bold,
+  //   ),
+  // ),
     return messageEntity.senderId==uid?UserCard(messageEntity: messageEntity,):ReplyMessageCard(messageEntity: messageEntity,);
   }
 }

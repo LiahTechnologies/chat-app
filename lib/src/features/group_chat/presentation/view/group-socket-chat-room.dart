@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,9 +43,11 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
   List<MessageEntity> messages = [];
     late IO.Socket socket;
   late SocketBloc socketBloc;
+  final audio = AudioPlayer();
 
   @override
   void initState() {
+     audioPlayer();
     super.initState();
     _scrollController=ScrollController();
     socketBloc = BlocProvider.of<SocketBloc>(context);
@@ -291,17 +294,7 @@ var encryptedText;
                     replyMessage= messages[index];
                   });
                 },
-                // onLeftSwipe: (v){
-
-
-                //     setState(() {
-                //       isReplyMessage=true;
-                //       replyMessage.message= messages[index].message;
-                //       replyMessage.userName= messages[index].messageSender;
-                //       replyMessage.messageId= messages[index].messageId!;
-                //     });
-
-                // },
+             
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal:18.0),
                   child: InkWell(
@@ -495,10 +488,8 @@ var encryptedText;
                                         ),
                                         onPressed: () {
                                           
-                                          // encryptedText =encryptedText==null?"":encryptedText is encrypt.Encrypted?encryptedText.base64:encryptedText;
-                                          
-                                        //  print(" THIS IS THE ENCRYPTED TEXT: ${EncryptionClass.encryption(controller.text)}");
-                                                                    
+                                           final encryptedText = EncryptionClass.encryption(controller.text);
+                                           print("THE ENCRYPTED TEXT IS $encryptedText");                    
                                           final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage:isReplyMessage? replyMessage.message:"", replySender: isReplyMessage?replyMessage.messageSender:"", time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
                                             print("tHIS IS THE MESSAGE $message");                        
                                           socketBloc.add(SendMessageEvent('groupMessage', message));
@@ -510,7 +501,7 @@ var encryptedText;
                                                     
                                                     
                                                   });                  
-                        
+                                            audioPlayer();
                                             print("CLEARING THE MESSAGE");             
                                           controller.clear();
                                                                     
@@ -563,6 +554,7 @@ void connect() async {
          setState(() {
            messages.add(newMessage);
            buildMessageList();
+           audioPlayer();
          });
         scrollToEndOfList(); 
     });
@@ -577,5 +569,11 @@ void connect() async {
 
   scrollToEndOfList(){
     _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 100), curve: Curves.easeIn);
+  }
+
+
+   Future<void> audioPlayer()async{
+
+    await audio.play(AssetSource("assets/sounds/message-sound.mp3"));
   }
 }
