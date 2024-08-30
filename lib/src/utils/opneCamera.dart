@@ -13,7 +13,7 @@ Future<File> openCamera({method}) async {
   final XFile? image = await picker.pickImage(source: source);
 
   File cameraImage = File(image!.path);
-  return cameraImage;
+  return  cameraImage;
 
   
 }

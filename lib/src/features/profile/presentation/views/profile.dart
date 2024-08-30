@@ -323,10 +323,17 @@ print("THE USER NAME IS $userName");
 
             TextButton(
               child: Text('Ok',style: TextStyle(color: Colors.red),),
-              onPressed: () {
-               NextScreen(context: context, page: SignUp());
-                // databaseController.login();
-
+              onPressed: () async{
+             
+               await HelperFunction.saveUserLoggInState(false);
+               await HelperFunction.saveUserEmail("");
+               await HelperFunction.saveUserName("");
+               await HelperFunction.saveUserNumberOfChats("");
+               await HelperFunction.saveUserNumberOfGroups("");
+               await HelperFunction.saveUserTel("");
+               await HelperFunction.saveUserProfile("");
+               await HelperFunction.saveUserID("");
+                NextScreen(context: context, page: SignUp());
                 showSnackMessage(context, Colors.green, "LogOut successful");
               },
             ),

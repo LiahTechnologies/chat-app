@@ -30,7 +30,7 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
   });
 
 
-  on<OnFetchGroup>(_handleFetchGroup);
+  // on<OnFetchGroup>(_handleFetchGroup);
 
   on<OnFetchGroups>((event,emit)async{
 
@@ -44,9 +44,33 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
 
     final result = await groupListUsecase.fetch();
     result.fold((l)=>emit(ErrorLoadingGroupList("Error Loading groups")), (data)=>emit(GroupListLoaded(data)));
+
   });
 
+
+
+  on<OnFetchLastMessage>((event,emit)async{
+
+
+          final message = await groupListUsecase.fetchLastMessage(groupId: event.groupId!);
+          message.fold((l)=>emit(NoGroupMEsssage("")), (data)=>emit(GroupChatLastMessage(data)));
+
+      });
+
+
+
+
+  
+  on<OnGroupSearch>((event,emit){
+        emit(SearchGroup());
+  });
+
+
+
+
   }
+
+
 
   
 
@@ -61,7 +85,7 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
   //   return result;GroupListEvent
   // }
 
-
+/*
   Stream<GroupListState>_handleFetchGroup(OnFetchGroup event, Emitter<GroupListState>emit)async*{
 
 
@@ -70,7 +94,7 @@ class GroupListBloc extends Bloc<GroupListEvent, GroupListState> {
       //     final result =  await groupListUsecase.fetch(event.groupId);
           
       //     yield GroupListLoaded(result); 
-  }
+  }*/
 
 
   

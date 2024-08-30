@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/common/urls.dart';
 
 abstract class UserRemoteDataSource {
-  Future<Either<Failure,LoginResponse>> createUser(UserEntity user);
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user,File selfie, File docs);
   Future<LoginResponse> loginUser({required email, required password});
   Future<bool> generateOTP({required String number});
   Future<bool> verifyOTP({required String number, required String OTPCode});
@@ -26,7 +26,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   UserRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<Either<Failure,LoginResponse>> createUser(UserEntity user) async {
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user, File selfie, File docs) async {
 
 
 //  Directory tempDir = await getTemporaryDirectory();
@@ -34,20 +34,20 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
 //         storage: FileStorage(tempDir.path),
 //       );
  
-    final data = {
-      "firstName": user.firstName,
-      "lastName": user.lastName,
-      "email": user.email,
-      "password": user.password,
-      "tel": user.tel,
-      "dob": user.dob,
-      "selfie":"Selfie",
-      "docs":"docs"
-    };
+    // final data = {
+    //   "firstName": user.firstName,
+    //   "lastName": user.lastName,
+    //   "email": user.email,
+    //   "password": user.password,
+    //   "tel": user.tel,
+    //   "dob": user.dob,
+    //   "selfie":"Selfie",
+    //   "docs":"docs"
+    // };
 
-    print("SIGNUP PATH ${AppUrls.signup}");
-    final response = await http.post(Uri.parse(AppUrls.signup),
-        body: json.encode(data), headers: {"Content-Type": "Application/json"});
+    // print("SIGNUP PATH ${AppUrls.signup}");
+    // final response = await http.post(Uri.parse(AppUrls.signup),
+    //     body: json.encode(data), headers: {"Content-Type": "Application/json"});
     
        // Save the cookies from the response
       // var cookies = response.headers['set-cookie'];
@@ -55,50 +55,53 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       //   cookieJar.saveFromResponse(Uri.parse(AppUrls.signup), [Cookie.fromSetCookieValue(cookies)]);
       // }
 
-    if (response.statusCode == 201){
-       final userData =
-        await LoginResponse.fromjson(json.decode(response.body));
-        await HelperFunction.saveUserEmail(userData.userEmail);
-        await HelperFunction.saveUserName(" ${userData.firstName} ${userData.lastName}");
-        await HelperFunction.saveUserID(userData.uid);
-        await HelperFunction.saveUserTel(userData.tel);
-        await HelperFunction.saveUserProfile(userData.lastName);
-        await HelperFunction.saveUserLoggInState(true);
-        // print("THIS IS THE USER DATA: $userData");
+    // if (response.statusCode == 201){
+    //    final userData =
+    //     await LoginResponse.fromjson(json.decode(response.body));
+    //     await HelperFunction.saveUserEmail(userData.userEmail);
+        // await HelperFunction.saveUserName(" ${userData.firstName} ${userData.lastName}");
+    //     await HelperFunction.saveUserID(userData.uid);
+    //     await HelperFunction.saveUserTel(userData.tel);
+    //     await HelperFunction.saveUserProfile(userData.lastName);
+    //     await HelperFunction.saveUserLoggInState(true);
+    //     // print("THIS IS THE USER DATA: $userData");
 
-        return Right(userData);
-    }
+    //     return Right(userData);
+    // }
 
-    if(response.statusCode==409)
-      return Left(ServerFailure("Email already exist"));
+    // if(response.statusCode==409)
+    //   return Left(ServerFailure("Email already exist"));
      
-    else
-      throw Left(ServerFailure("User was not created"));
+    // else
+    //   throw Left(ServerFailure("User was not created"));
   
 
-/*
 
-    var length = await user.selfie.length;
+
+    // var length = await user.selfie.length;
 
     var request = http.MultipartRequest(
       "POST",
-      Uri.parse(AppUrls.signup),
+      Uri.parse(AppUrls.uploadSignupFile),
     );
 
     var multipartFile =
-        await http.MultipartFile.fromPath("selfie", user.selfie.path);
+        await http.MultipartFile.fromPath("selfie", selfie.path);
     var multipartFileDocs =
-        await http.MultipartFile.fromPath("docs", user.docs.path);
+        await http.MultipartFile.fromPath("docs", docs.path);
 
     request.files.add(multipartFile);
     request.files.add(multipartFileDocs);
+    request.fields.addAll({"folder":"signup"});
 
     var endpointResponse = await request.send();
 
     var response = await http.Response.fromStream(endpointResponse);
     final result = jsonDecode(response.body) as Map<String, dynamic>;
 
-    if (endpointResponse.statusCode == 200) {
+    print("THIS IS THE RESPONSE FROM $result");
+
+    if (endpointResponse.statusCode >= 200) {
       print("FILE UPLOADED ${result['selfie'].toString()}");
       final data = {
         "firstName": user.firstName,
@@ -115,22 +118,22 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
           body: json.encode(data),
           headers: {"Content-Type": "Application/json"});
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final userData =
-            await LoginResponse.fromjson(json.decode(response.body));
+        await LoginResponse.fromjson(json.decode(response.body));
         await HelperFunction.saveUserEmail(userData.userEmail);
-        await HelperFunction.saveUserName(userData.userName);
+        await HelperFunction.saveUserName(" ${userData.firstName} ${userData.lastName}");
         await HelperFunction.saveUserID(userData.uid);
-        await HelperFunction.saveUserProfile(userData.profilePic);
+        // await HelperFunction.saveUserProfile(userData.profilePic);
 
-        return userData;
+        return Right(userData);
       } else
         throw ServerExceptions();
     } else
       throw ServerFailure("User was not created");
 
 
-      */
+      
   }
 
   @override

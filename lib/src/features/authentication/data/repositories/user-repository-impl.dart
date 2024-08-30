@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
@@ -26,9 +28,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user}) async {
+  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user, required File selfie, required File docs}) async {
     try {
-      final response = await userRemoteDataSource.createUser(user);
+      final response = await userRemoteDataSource.createUser(user,selfie,docs);
       return response;
     } on ServerExceptions {
       throw ServerFailure("Something happened while creating a user");
@@ -54,4 +56,6 @@ class UserRepositoryImpl extends UserRepository {
       throw ServerFailure("Something happened while creating a user");
     }
   }
+  
+ 
 }

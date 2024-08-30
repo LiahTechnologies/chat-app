@@ -1,24 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/exceptions.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_list_model.dart';
-import 'package:njadia/src/core/entities/message_entity.dart';
 import 'package:http/http.dart' as http;
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:socket_io_client/socket_io_client.dart';
-import '../../../../core/common/services/readjons.dart';
+
 import '../../../../core/common/urls.dart';
 import '../../../../core/entities/stream_socket.dart';
 import '../../../../core/utils/internet-connection-checkr.dart';
-import '../../../direct message/data/data_sources/local-data-source/local-chat-list-data-source.dart';
+import '../model/group_chat_model.dart';
 import 'local_message/local-chat-list-data-source.dart';
 
 abstract class GroupListRemoteDataSource {
   Stream<List<GroupModel>> fetchGroup();
-   Future<List<GroupModel>> fetchGroups();
+  Future<List<GroupModel>> fetchGroups();
+  Future<GroupChatModel> fetchGroupLastChatMessage({required String groupId});
 
   Future<bool> deleteGroups({required List<String> groups});
 }
@@ -29,6 +26,7 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
   StreamSocket streamSocket = StreamSocket();
 
       final InternetConnectionCheckerClass checkerClass =InternetConnectionCheckerClass();
+      final LocalChatListDataSource localListDataSource = LocalChatListDataSource(boxName: "groupList");
 
 
   @override
@@ -155,8 +153,11 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
     print("User Id $uid  ${AppUrls.userChats}groups/$uid");
     final response = await client.delete(Uri.parse("${AppUrls.userChatList}groups/$uid"),body: json.encode({"groups":groups}),headers: {"content-type":"application/json"});
 
-    if(response.statusCode==200)
-    return true;
+    if(response.statusCode==200){
+          localListDataSource.deleteGroup(groups);
+         return true;
+    }
+   
     else 
     return false;
 
@@ -166,7 +167,6 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
   @override
   Future<List<GroupModel>> fetchGroups()async {
 
-   final LocalChatListDataSource listDataSource = LocalChatListDataSource(boxName: "groupList");
 
 
     final currentUser = await HelperFunction.getUserID();
@@ -196,7 +196,7 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
      print("serilized list ${groupsList[0].id}");
      await HelperFunction.saveUserNumberOfGroups("${groupsList.length}");
 
-     await listDataSource.insertGroupList(groupsList);
+     await localListDataSource.insertGroupList(groupsList);
       
       return groupsList;
     } on ServerExceptions {
@@ -205,8 +205,17 @@ class GroupListRemoteDataSourceImpl extends GroupListRemoteDataSource {
     }
   }
   else{
-      return await listDataSource.getAllGroupList();
+      return await localListDataSource.getAllGroupList();
   }
   
+  }
+  
+  @override
+  Future<GroupChatModel> fetchGroupLastChatMessage({required String groupId})async {
+     final currentUser = await HelperFunction.getUserID();
+    final result =  await client.post(Uri.parse(AppUrls.groupChatLastMessage),body: json.encode({"uid":currentUser,"groupId":groupId}),headers: {"content-type":"application/json"});
+    final data = GroupChatModel.fromJson(json.decode(result.body));
+
+    return data;
   }
 }

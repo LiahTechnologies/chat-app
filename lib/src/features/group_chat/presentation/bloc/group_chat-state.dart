@@ -12,6 +12,7 @@ class GroupChatEmpty extends GroupChatState {}
 
 class GroupChatLoading extends GroupChatState {}
 class GroupChatSent extends GroupChatState {}
+// class GroupBallotsGenerated extends GroupChatState {}
 
 class GroupChatLoaded extends GroupChatState {
   final List<MessageEntity> messages;

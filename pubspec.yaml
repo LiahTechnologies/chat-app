@@ -67,7 +67,6 @@ dependencies:
   flutter_bloc: ^8.1.4
   socket_io_client: ^2.0.3+1
   hive_flutter: ^1.1.0
-  sqflite: ^2.3.3+1
   cookie_jar: ^4.0.8
 
   # webcrypto: ^0.5.2
@@ -90,6 +89,7 @@ dependencies:
 
   flutter_chat_bubble: ^2.0.2
   audioplayers: ^6.0.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

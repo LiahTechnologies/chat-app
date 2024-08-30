@@ -38,3 +38,9 @@ class OnAddChat extends SocketEvent{
 
   OnAddChat({required this.uid, required this.receiverId});
 }
+
+// class OnGenerateBallotsNumbers extends SocketEvent {
+//   final String groupId;
+
+//   OnGenerateBallotsNumbers({required this.groupId});
+// }

@@ -39,9 +39,9 @@ class GroupLocalSocketDataSource{
   }
 
 //delete
-  Future<void> deleteMessage(int index) async { 
+  Future<void> deleteMessage({required String messageId}) async { 
     var box = await _box;
-    await box.deleteAt(index);
+    await box.delete(messageId);
   }
 
 

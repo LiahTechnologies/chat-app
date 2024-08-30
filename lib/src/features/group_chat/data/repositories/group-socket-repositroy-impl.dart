@@ -12,6 +12,9 @@ abstract class SocketsRepository {
   Future<void> onMessage(String event, Function(dynamic) callback);
   Future<List<MessageEntity>> fetchInitialMessages(String groupId);
     Future<Either<Failure, bool>> addChat({required String uid, required String receiverId});
+      Future<Either<Failure, bool>> generateBallots({required String groupId});
+      Future<Either<Failure, List<String>>> fetchBallots({required String groupId,required String uid});
+
 
 }
 
@@ -58,4 +61,29 @@ class SocketRepositoryImpl implements SocketsRepository {
       throw Left(ServerFailure("Error adding chat")); 
    }
   }
+  
+
+  @override
+  Future<Either<Failure, bool>> generateBallots({required String groupId}) async{
+    try {
+      final result = await remoteDataSource.generateBallots(groupId: groupId);
+      return Right(result);
+      
+    } on ServerExceptions {
+        throw Left(ServerFailure(""));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<String>>> fetchBallots({required String groupId, required String uid})async {
+    try {
+      final result = await remoteDataSource.fetchBallots(groupId: groupId, uid: uid);
+      return Right(result);
+      
+    }on ServerExceptions {
+        throw Left(ServerFailure(""));
+    }
+  }
+  
+  
 }

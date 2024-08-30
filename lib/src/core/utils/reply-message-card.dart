@@ -16,8 +16,9 @@ import '../../features/group_chat/presentation/widgets/create-privat-chat-popup.
 import '../entities/message_entity.dart';
 
 class ReplyMessageCard extends StatelessWidget {
-  const ReplyMessageCard({super.key, required this.messageEntity});
+  const ReplyMessageCard({super.key, required this.messageEntity,required this.previousMessageSenderId});
   final MessageEntity messageEntity;
+   final String previousMessageSenderId;
   @override
   Widget build(BuildContext context) {
 
@@ -51,7 +52,9 @@ class ReplyMessageCard extends StatelessWidget {
     
         ChatBubble(
           backGroundColor: Colors.grey[400],
-         clipper: ChatBubbleClipper9(type: BubbleType.receiverBubble),
+         clipper: previousMessageSenderId==messageEntity.senderId? ChatBubbleClipper5(type: BubbleType.receiverBubble):ChatBubbleClipper9(type: BubbleType.receiverBubble),
+
+        //  clipper: ChatBubbleClipper9(type: BubbleType.receiverBubble),
 
           alignment: Alignment.centerLeft,
           child: Container(

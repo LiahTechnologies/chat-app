@@ -36,6 +36,7 @@ class SendMessage {
   }
 }
 
+
 class OnMessage {
   final SocketsRepository repository;
 
@@ -66,3 +67,12 @@ class AddChatUseCase{
     Future<Either<Failure, bool>> addChat({required String uid, required String receiverId}) async=> await repository.addChat(uid: uid, receiverId: receiverId) ;
 
 }
+
+
+// class GenerateBallotNumbersUsecase{
+//     final SocketsRepository repository;
+
+//   GenerateBallotNumbersUsecase(this.repository);
+//   Future<Either<Failure, bool>> generateBallots({required String groupId}) async=> await repository.generateBallots(groupId: groupId);
+
+// }

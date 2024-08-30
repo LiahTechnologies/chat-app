@@ -37,7 +37,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<OnCreateGroup>((event, emit) async{
   
         try {
-          final response = await groupUsecase!.execute(event.groupEntity);
+          final response = await groupUsecase!.execute(event.groupEntity,event.profilePic);
           response.fold((left)=>emit(Error()), (data)=>emit(GroupCreated()));
         } catch (e) {
           

@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/authentication/data/model/user_docs_response.dart';
 
 class HelperFunction {
+
+  
   /**
    * Keys
    */

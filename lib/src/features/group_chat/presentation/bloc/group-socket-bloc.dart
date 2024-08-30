@@ -16,6 +16,7 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
   final OnMessage onMessage;
   final FetchInitialMessages fetchInitialMessages;
   final AddChatUseCase addChatUseCase;
+  // final GenerateBallotNumbersUsecase generateBallotNumbersUsecase;
 
   SocketBloc({
     required this.addChatUseCase,
@@ -24,6 +25,7 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     required this.sendMessage,
     required this.onMessage,
     required this.fetchInitialMessages,
+    // required this.generateBallotNumbersUsecase
   }) : super(SocketInitialState()) {
     on<ConnectSocketEvent>((event, emit)  {
       emit(SocketConnectingState());
@@ -80,6 +82,20 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     final result = await addChatUseCase.repository.addChat(uid: event.uid, receiverId: event.receiverId);
     result.fold((l)=>emit(SocketErrorState("Error adding chats")), (data)=>emit(PrivateChatCreated(data)));
   });
+
+
+    // on<OnGenerateBallotsNumbers>((event, emit) async {
+    //   try {
+    //     print("BALLOT EVENT");
+    //     final result = await generateBallotNumbersUsecase.generateBallots(groupId: event.groupId);
+    //     result.fold((l)=>emit(SocketErrorState( "Error")), (data)=>emit(GroupBallotsGenerated()));
+
+    //   } catch (e) {
+    //     emit(SocketErrorState("Error Sending Message"));
+    //   }
+    // });
+
+
   }
 
 

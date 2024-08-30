@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:njadia/src/core/common/urls.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
@@ -11,7 +11,7 @@ import '../../../../core/common/errors/exceptions.dart';
 import '../../../../core/common/errors/failures.dart';
 
 abstract class GroupRemoteDataSoucrce{
-   Future<bool> createGroup(GroupEntity groupEntity);
+   Future<bool> createGroup(GroupEntity groupEntity, File profilePic);
 
   Future<List<String>> groupAdmins({required String groupId});
   Future<List<String>> groupMembers({required String groupId});
@@ -35,20 +35,59 @@ class GroupRemoteDataSourceImpl extends GroupRemoteDataSoucrce{
 
    
   @override
-  Future<bool> createGroup(GroupEntity groupEntity)  async{
+  Future<bool> createGroup(GroupEntity groupEntity, File profilePic)  async{
    try {
-    final data =GroupModel(groupName: groupEntity.groupName, groupIcon: groupEntity.groupIcon, members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit).toJson();
      
-      print("${data}    ${AppUrls.groups}");
-     final response =  await client.post(Uri.parse(AppUrls.groups),body: json.encode(data),headers: {"Content-Type": "Application/json"});
-      print("THE RESPONSE STATUS CODE ${response.statusCode}");
-      if(response.statusCode==201){
-        return true;
-      }
-      else return false;
+  
+  print("MAKING HTTP REQUEST TO CREATE GROUP");
+
+    var request = http.MultipartRequest(
+      "POST",
+      Uri.parse(AppUrls.uploadSinglFile),
+    );
+
+    var multipartFile =
+        await http.MultipartFile.fromPath("file", profilePic.path);
+  
+    print("REQUEST STILL PENDING ");
+    request.files.add(multipartFile);
+    request.fields.addAll({"folder":"profile"});
+
+   print("REQUEST STILL PENDING $request");
+
+    var endpointResponse = await request.send();
    
+   print("Request has been sent");
+    var response = await http.Response.fromStream(endpointResponse);
+    final result = jsonDecode(response.body) as Map<String, dynamic>;
+
+    print("FILE UPLOAD RESPONSE $result");
+
+    if (endpointResponse.statusCode == 200) {
+        print("CREATING GROUP WITH PROFILE PICS");
+
+        final data =GroupModel(groupName: groupEntity.groupName, groupIcon: groupEntity.groupIcon, members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit,profilePic: result['file']).toJson();
+
+        final response =  await client.post(Uri.parse(AppUrls.groups),body: json.encode(data),headers: {"Content-Type": "Application/json"});
+
+        if(response.statusCode==201){
+                  print("CREATING GROUP WITH PROFILE PICS 201");
+
+            return true;
+        }
+
+
+      else
+          throw ServerExceptions();
+
+
+    } else
+      throw ServerFailure("User was not created");
+
 
    } 
+
+
    on ServerExceptions {
      throw ServerExceptions();
    }

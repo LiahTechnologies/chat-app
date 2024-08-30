@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/create_group/data/data_sources/group-remote-datasource.dart';
@@ -11,10 +13,10 @@ class GroupRepositoryImpl extends GroupRepository{
   GroupRepositoryImpl({required this.groupRemoteDataSoucrce});
 
   @override
-  Future<Either<Failure,bool>> createGroup(GroupEntity groupEntity) async {
+  Future<Either<Failure,bool>> createGroup(GroupEntity groupEntity, File profilePic) async {
      try {
       print("${groupEntity.groupName} THIS IS THE GROUP NAME");
-       final result =  await groupRemoteDataSoucrce.createGroup(groupEntity);
+       final result =  await groupRemoteDataSoucrce.createGroup(groupEntity,profilePic);
       return Right(result);
      } on ServerExceptions {
        throw Left(ServerExceptions);

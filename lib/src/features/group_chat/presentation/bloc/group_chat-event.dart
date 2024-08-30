@@ -42,6 +42,8 @@ class OnNewMessageReceived extends GroupChatEvent {
   List<Object?> get props => [messageEntity];
 }
 
+
+
 class OnDeleteGroupChat extends GroupChatEvent {
   final MessageEntity messageEntity;
   final String groupId;
@@ -52,6 +54,12 @@ class OnDeleteGroupChat extends GroupChatEvent {
 }
 
 class OnGroupChatError extends GroupChatEvent {}
+
+// class OnGenerateBallots extends GroupChatEvent {
+//   final String groupId;
+
+//   OnGenerateBallots({required this.groupId});
+// }
 
 
 

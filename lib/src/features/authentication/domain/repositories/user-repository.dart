@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:njadia/src/core/common/errors/failures.dart';
 import 'package:njadia/src/features/authentication/data/model/user_docs_response.dart';
@@ -5,7 +7,7 @@ import 'package:njadia/src/features/authentication/data/model/user_docs_response
 import '../entities/user-entity.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user});
+  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user, required File selfie,required File docs});
 
   Future<Either<Failure,LoginResponse>> loginUser({required String email, required String password});
 

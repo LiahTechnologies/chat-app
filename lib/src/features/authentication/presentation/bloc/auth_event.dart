@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:njadia/src/features/authentication/domain/entities/user-entity.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_state.dart';
@@ -22,7 +24,9 @@ class OnLogin extends AuthEvent {
 class OnSignUp extends AuthEvent {
   final UserEntity userEntity;
 
-  const OnSignUp({required this.userEntity});
+  final File? selfie;
+  final File? docs;
+  const OnSignUp({required this.userEntity, required this.selfie, required this.docs});
 
   @override
   List<Object?> get props => [userEntity];

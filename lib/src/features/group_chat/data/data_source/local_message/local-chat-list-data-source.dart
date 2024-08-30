@@ -46,10 +46,13 @@ class LocalChatListDataSource{
   }
 
 //delete
-  Future<void> deleteGroup(int index) async { 
+  Future<void> deleteGroup(List<String> groupList) async { 
     var box = await _box;
-    await box.deleteAt(index);
-  }
+
+    for(final group in groupList){
+      await box.delete(group);    }
+    
+    }
 
 
 }

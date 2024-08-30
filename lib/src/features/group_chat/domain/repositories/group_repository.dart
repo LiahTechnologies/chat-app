@@ -16,4 +16,8 @@ abstract class GroupChatRepository {
   Future<Either<Failure,bool>> deleteMessage(MessageEntity messageEntity,String groupId);
 
   Future<Either<Failure, bool>> addChat({required String uid, required String receiverId});
+  // Future<Either<Failure, bool>> generateBallots({required String groupId});
+  // Future<Either<Failure, List<String>>> fetchBallots({required String groupId,required String uid});
+  
+
 }

@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:njadia/src/features/create_group/domain/entities/group-entity.dart';
 import 'package:njadia/src/features/create_group/presentation/blocs/group-state.dart';
 
 class GroupModel extends GroupEntity{
+   final String? profilePic;
    final String groupName;
    final String  groupIcon;
    final List<String> members;
@@ -10,7 +13,7 @@ class GroupModel extends GroupEntity{
    final String levy;
    final String limit;
 
-  GroupModel({required this.groupName, required this.groupIcon, required this.members, required this.admins, required this.levy, required this.limit}) : super(groupName: groupName, groupIcon:groupIcon, members: members, levy:levy, admins: admins, limit: limit); 
+  GroupModel({ this.profilePic,required this.groupName, required this.groupIcon, required this.members, required this.admins, required this.levy, required this.limit}) : super(groupName: groupName, groupIcon:groupIcon, members: members, levy:levy, admins: admins, limit: limit); 
 
 
 
@@ -21,7 +24,8 @@ class GroupModel extends GroupEntity{
     members: json['members'], 
     admins: json['admins'], 
     levy: json['levy'], 
-    limit: json['limit']
+    limit: json['limit'],
+    profilePic: json['profilePic']
     
     );
 
@@ -33,7 +37,9 @@ class GroupModel extends GroupEntity{
       "groupMembers":members,
       "groupAdmins":admins,
       "groupLevy":levy,
-      "limit":limit
+      "limit":limit,
+      "profilePic":profilePic
+      
   };
 
 

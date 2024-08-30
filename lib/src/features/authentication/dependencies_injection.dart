@@ -5,6 +5,11 @@ import 'package:njadia/src/features/authentication/domain/repositories/user-repo
 import 'package:njadia/src/features/authentication/domain/usecases/user-usecase.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:njadia/src/features/ballots/data/data-source/ballot-remote-datasource.dart';
+import 'package:njadia/src/features/ballots/data/repository/ballot-repository-impl.dart';
+import 'package:njadia/src/features/ballots/domain/repository/ballot-repository.dart';
+import 'package:njadia/src/features/ballots/domain/usecases/ballots-usecase.dart';
+import 'package:njadia/src/features/ballots/presentation/bloc/ballot-bloc.dart';
 import 'package:njadia/src/features/create_group/domain/usecases/create-group-usecase.dart';
 import 'package:njadia/src/features/create_group/presentation/blocs/group-bloc.dart';
 import 'package:njadia/src/features/direct%20message/data/data_sources/chat-list-remote-data-source.dart';
@@ -63,48 +68,45 @@ void setUpLocator() {
  locator.registerFactory(() => PrivateSocketService());
 
 
-/******AUTHENTICATION*****/
+/****************************AUTHENTICATION**********************************/
 
 
-  
+          
 
-  //BLOC
-  locator.registerFactory(() => AuthBloc(userUsecase:locator()));
-  locator.registerFactory(() => ThemeBloc());
+          //BLOC
+          locator.registerFactory(() => AuthBloc(userUsecase:locator()));
+          locator.registerFactory(() => ThemeBloc());
 
- 
- 
-
-
-
-
- //USECASE
-
-    locator.registerLazySingleton(() => UserUsecase(userRepository: locator()));
-
-
-  //Repository* 
-  
-  locator.registerLazySingleton<UserRepository>(
-      () => UserRepositoryImpl(userRemoteDataSource: locator<UserRemoteDataSource>()));
-
-  
-
-  
-
-
-//DATASOURCES
-  locator
-      .registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl(client: locator()));
+        
+        
 
 
 
 
-  // http.client
-  locator.registerLazySingleton(() => http.Client());
+        //USECASE
+
+            locator.registerLazySingleton(() => UserUsecase(userRepository: locator()));
+
+
+          //Repository* 
+          
+          locator.registerLazySingleton<UserRepository>(
+              () => UserRepositoryImpl(userRemoteDataSource: locator<UserRemoteDataSource>()));
+
+          
+
+          
+
+
+        //DATASOURCES
+          locator
+              .registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl(client: locator()));
 
 
 
+
+          // http.client
+          locator.registerLazySingleton(() => http.Client());
 
 
 
@@ -117,43 +119,49 @@ void setUpLocator() {
 
 
 
-/******GROUP CHATS******/
-
-//  locator.registerFactory(() => GroupChatBloc(locator(), locator(),));
- locator.registerFactory(() => GroupListBloc(groupListUsecase: locator()));
-
-
-//USECASES 
- locator.registerLazySingleton(() => GroupChatUsecase(groupRepository: locator()));
- locator.registerLazySingleton(() => GroupListUsecase(groupListRepository: locator()));
 
 
 
 
-
-
-//REPOSITORY
-  
- locator.registerLazySingleton<GroupChatRepository>(
-      () => GroupChatRepositoryImpl(groupChatRemoteDataSource: locator<GroupChatRemoteDataSource>()));
-
- locator.registerLazySingleton<GroupListRepository>(
-      () => GroupListRepositoryImpl(groupListRemoteDataSource: locator<GroupListRemoteDataSource>()));
-
-
-//DATASOURCE
-
- locator
-      .registerLazySingleton<GroupChatRemoteDataSource>(() => GroupChatRemoteDataSourceImpl(client: locator()));
-
-
-// locator
-//       .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
+/************************GROUP CHATS*****************************/
 
 
 
- locator
-      .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
+          //  locator.registerFactory(() => GroupChatBloc(locator(), locator(),));
+          locator.registerFactory(() => GroupListBloc(groupListUsecase: locator()));
+
+
+          //USECASES 
+          //  locator.registerLazySingleton(() => GroupChatUsecase(groupRepository: locator()));
+          locator.registerLazySingleton(() => GroupListUsecase(groupListRepository: locator()));
+
+
+
+
+
+
+          //REPOSITORY
+            
+          //  locator.registerLazySingleton<GroupChatRepository>(
+          //       () => GroupChatRepositoryImpl(groupChatRemoteDataSource: locator<GroupChatRemoteDataSource>()));
+
+          locator.registerLazySingleton<GroupListRepository>(
+                () => GroupListRepositoryImpl(groupListRemoteDataSource: locator<GroupListRemoteDataSource>()));
+
+
+          //DATASOURCE
+
+          //  locator
+          //       .registerLazySingleton<GroupChatRemoteDataSource>(() => GroupChatRemoteDataSourceImpl(client: locator()));
+
+
+          // locator
+          //       .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
+
+
+
+          locator
+                .registerLazySingleton<GroupListRemoteDataSource>(() => GroupListRemoteDataSourceImpl(client: locator()));
 
 
 
@@ -165,47 +173,48 @@ void setUpLocator() {
 
 
 
-/******GROUP CHATS******/
+/********************************GROUP CHATS*************************/
 
- locator.registerFactory(() => ChatListBloc( chatListUsecase: locator(),));
-  locator.registerFactory(() => PrivateSocketBloc(  connectSocket:  locator(), disconnectSocket:  locator(), sendMessage:  locator(), onMessage:  locator(), fetchInitialMessages:  locator(),));
 
 
-//USECASES 
- locator.registerLazySingleton(() => ChatListUsecase( chatRepository: locator()));
+            locator.registerFactory(() => ChatListBloc( chatListUsecase: locator(),));
+              locator.registerFactory(() => PrivateSocketBloc(  connectSocket:  locator(), disconnectSocket:  locator(), sendMessage:  locator(), onMessage:  locator(), fetchInitialMessages:  locator(),));
 
- locator.registerLazySingleton(() => PrivateConnectSocket( locator()));
- locator.registerLazySingleton(() => DisconnectPrivateSocket( locator()));
- locator.registerLazySingleton(() => SendPrivateMessage( locator()));
 
- locator.registerLazySingleton(() => OnPrivateMessage( locator()));
- locator.registerLazySingleton(() => FetchInitialPrivateMessages( locator()));
-  
+            //USECASES 
+            locator.registerLazySingleton(() => ChatListUsecase( chatRepository: locator()));
+              
+            locator.registerLazySingleton(() => PrivateConnectSocket( locator()));
+            locator.registerLazySingleton(() => DisconnectPrivateSocket( locator()));
+            locator.registerLazySingleton(() => SendPrivateMessage( locator()));
 
+            locator.registerLazySingleton(() => OnPrivateMessage( locator()));
+            locator.registerLazySingleton(() => FetchInitialPrivateMessages( locator()));
+              
 
 
 
 
-//REPOSITORY
-  
- locator.registerLazySingleton<ChatListRepository>(
-      () => ChatListRepositoryImpl( privatChatListRemoteDataSource:  locator<PrivatChatListRemoteDataSource>(),));
- 
- locator.registerLazySingleton<PrivateSocketsRepository>(
-      () => PrivateSocketRepositoryImpl( locator<PrivateSocketRemoteDataSource>()));
- 
 
-//DATASOURCE
+            //REPOSITORY
+              
+            locator.registerLazySingleton<ChatListRepository>(
+                  () => ChatListRepositoryImpl( privatChatListRemoteDataSource:  locator<PrivatChatListRemoteDataSource>(),));
+            
+            locator.registerLazySingleton<PrivateSocketsRepository>(
+                  () => PrivateSocketRepositoryImpl( locator<PrivateSocketRemoteDataSource>()));
+            
 
- locator
-      .registerLazySingleton<PrivatChatListRemoteDataSource>(() => PrivatChatListRemoteDataSourceImpl(client: locator()));
+            //DATASOURCE
 
+            locator
+                  .registerLazySingleton<PrivatChatListRemoteDataSource>(() => PrivatChatListRemoteDataSourceImpl(client: locator()));
 
 
 
- locator
-      .registerLazySingleton<PrivateSocketRemoteDataSource>(() => PrivateSocketRemoteDataSourceImpl(locator()));
 
+            locator
+                  .registerLazySingleton<PrivateSocketRemoteDataSource>(() => PrivateSocketRemoteDataSourceImpl(locator()));
 
 
 
@@ -214,167 +223,186 @@ void setUpLocator() {
 
 
 
-/// CREATE GROUP
 
+/**************************CREATE GROUP***********/
 
-// Bloc
- locator.registerFactory(() => GroupBloc(groupUsecase: locator()));
 
+              // Bloc
+              locator.registerFactory(() => GroupBloc(groupUsecase: locator()));
 
 
-//USECASES 
- locator.registerLazySingleton(() => GroupUsecase(groupRepository: locator()));
 
+              //USECASES 
+              locator.registerLazySingleton(() => GroupUsecase(groupRepository: locator()));
 
 
 
-//REPOSITORY
-  
- locator.registerLazySingleton<GroupRepository>(
-      () => GroupRepositoryImpl(groupRemoteDataSoucrce: locator<GroupRemoteDataSoucrce>()));
 
+              //REPOSITORY
+                
+              locator.registerLazySingleton<GroupRepository>(
+                    () => GroupRepositoryImpl(groupRemoteDataSoucrce: locator<GroupRemoteDataSoucrce>()));
 
 
 
-//DATASOURCE
 
- locator
-      .registerLazySingleton<GroupRemoteDataSoucrce>(() => GroupRemoteDataSourceImpl(client: locator()));
+            //DATASOURCE
 
+            locator
+                  .registerLazySingleton<GroupRemoteDataSoucrce>(() => GroupRemoteDataSourceImpl(client: locator()));
 
 
 
 
 
 
-/// THIS IS THE SOCKET PART
 
-// Bloc
- locator.registerFactory(() => SocketBloc(connectSocket: locator(),disconnectSocket:locator(),sendMessage: locator(),onMessage: locator(),fetchInitialMessages: locator(),addChatUseCase: locator()));
-  // locator.registerFactory(() => ThemeBloc());
+/************ THIS IS THE SOCKET PART********** */ 
 
+            // Bloc
+            locator.registerFactory(() => SocketBloc(connectSocket: locator(),disconnectSocket:locator(),sendMessage: locator(),onMessage: locator(),fetchInitialMessages: locator(),addChatUseCase: locator()));
+              // locator.registerFactory(() => ThemeBloc());
 
-//USECASES 
- locator.registerLazySingleton(() => ConnectSocket( locator()));
- locator.registerLazySingleton(() => DisconnectSocket( locator()));
- locator.registerLazySingleton(() => SendMessage( locator()));
 
- locator.registerLazySingleton(() => OnMessage( locator()));
- locator.registerLazySingleton(() => FetchInitialMessages( locator()));
-  locator.registerLazySingleton(() => AddChatUseCase( locator()));
-  
+            //USECASES 
+            locator.registerLazySingleton(() => ConnectSocket( locator()));
+            locator.registerLazySingleton(() => DisconnectSocket( locator()));
+            locator.registerLazySingleton(() => SendMessage( locator()));
+            // locator.registerLazySingleton(() => GenerateBallotNumbersUsecase( locator()));
 
+            locator.registerLazySingleton(() => OnMessage( locator()));
+            locator.registerLazySingleton(() => FetchInitialMessages( locator()));
+              locator.registerLazySingleton(() => AddChatUseCase( locator()));
+              
 
 
 
-//REPOSITORY
-  
-  
- locator.registerLazySingleton<SocketsRepository>(
-      () => SocketRepositoryImpl( locator<SocketRemoteDataSource>()));
 
+            //REPOSITORY
+              
+              
+            locator.registerLazySingleton<SocketsRepository>(
+                  () => SocketRepositoryImpl( locator<SocketRemoteDataSource>()));
 
 
 
-//DATASOURCE
 
- locator
-      .registerLazySingleton<SocketRemoteDataSource>(() => SocketRemoteDataSourceImpl(locator()));
+            //DATASOURCE
 
+            locator
+                  .registerLazySingleton<SocketRemoteDataSource>(() => SocketRemoteDataSourceImpl(locator()));
 
 
 
-/******SEARCH GROUPS*****/
 
+/*********************************SEARCH GROUPS*****************************/
 
-  
 
-  // BLOC
-  locator.registerFactory(() => SearchGroupBloc(locator()));
- 
+            
 
- 
- 
+            // BLOC
+            locator.registerFactory(() => SearchGroupBloc(locator()));
 
+          //USECASE
 
+              locator.registerLazySingleton(() => SearchGroupUsecase( searchGroupRepository: locator()));
 
+            //Repository* 
+            
+            locator.registerLazySingleton<SearchGroupRepository>(
+                () => searchGroupRepositoryImpl(searchGroupRemoteDataSource: locator<SearchGroupRemoteDataSource>()));
 
- //USECASE
+          //DATASOURCES
+            locator
+                .registerLazySingleton<SearchGroupRemoteDataSource>(() => SearchGroupRemoteDataSourceImpl(client: locator()));
 
-    locator.registerLazySingleton(() => SearchGroupUsecase( searchGroupRepository: locator()));
 
 
-  //Repository* 
-  
-  locator.registerLazySingleton<SearchGroupRepository>(
-      () => searchGroupRepositoryImpl(searchGroupRemoteDataSource: locator<SearchGroupRemoteDataSource>()));
 
-  
 
-  
 
-
-//DATASOURCES
-  locator
-      .registerLazySingleton<SearchGroupRemoteDataSource>(() => SearchGroupRemoteDataSourceImpl(client: locator()));
-
-
-
-
-
-
-/* ***Group Members*/
+/* *************************Group Members***************************************/
 
  
 
-  // BLOC
-  locator.registerFactory(() => GroupMemberBloc(getGroupMemberUsecase: locator()));
- 
+            // BLOC
+            locator.registerFactory(() => GroupMemberBloc(getGroupMemberUsecase: locator()));
+          
 
- //USECASE
+          //USECASE
 
-    locator.registerLazySingleton(() => GetGroupMemberUsecase( getGroupMemberRepository: locator()));
-
-
-  //Repository* 
-  
-  locator.registerLazySingleton<GetGroupMemberRepository>(
-      () => GetGroupMemberRepositoryImpl(getGroupMemberRemoteDataSource: locator<GetGroupMemberRemoteDataSource>()));
-
-  
-
-  
+              locator.registerLazySingleton(() => GetGroupMemberUsecase( getGroupMemberRepository: locator()));
 
 
-//DATASOURCES
-  locator
-      .registerLazySingleton<GetGroupMemberRemoteDataSource>(() => GetGroupMemberRemoteDataSourceImpl(client: locator()));
+            //Repository* 
+            
+            locator.registerLazySingleton<GetGroupMemberRepository>(
+                () => GetGroupMemberRepositoryImpl(getGroupMemberRemoteDataSource: locator<GetGroupMemberRemoteDataSource>()));
+
+            
+
+            
 
 
-
-
-/****  Approve requst to Join group***/
+          //DATASOURCES
+            locator
+                .registerLazySingleton<GetGroupMemberRemoteDataSource>(() => GetGroupMemberRemoteDataSourceImpl(client: locator()));
 
 
 
-  // BLOC
-  locator.registerFactory(() => ApprovalBloc(approvalsUseCase: locator()));
- 
 
- //USECASE
-
-    locator.registerLazySingleton(() => ApprovalsUseCase( approvalRepository: locator()));
+/****************** Approve requst to Join group*******************/
 
 
-  //Repository* 
-  
-  locator.registerLazySingleton<ApprovalRepository>(
-      () => ApproveToJoinRepositoryImpl(approveRemoteDataSource: locator<ApproveRemoteDataSource>()));
+
+            // BLOC
+            locator.registerFactory(() => ApprovalBloc(approvalsUseCase: locator()));
+          
+
+          //USECASE
+
+              locator.registerLazySingleton(() => ApprovalsUseCase( approvalRepository: locator()));
 
 
-//DATASOURCES
-  locator
-      .registerLazySingleton<ApproveRemoteDataSource>(() => ApproveRemoteDataSourceImpl(client: locator()));
+            //Repository* 
+            
+            locator.registerLazySingleton<ApprovalRepository>(
+                () => ApproveToJoinRepositoryImpl(approveRemoteDataSource: locator<ApproveRemoteDataSource>()));
+
+
+          //DATASOURCES
+            locator
+                .registerLazySingleton<ApproveRemoteDataSource>(() => ApproveRemoteDataSourceImpl(client: locator()));
+
+
+
+
+/********************BALLOTS ************************************/ 
+
+
+
+
+            // BLOC
+            locator.registerFactory(() => BallotBloc(ballotUsecase: locator()));
+          
+
+          //USECASE
+
+              locator.registerLazySingleton(() => BallotUsecase( ballotRepository: locator()));
+
+
+            //Repository* 
+            
+            locator.registerLazySingleton<BallotRepository>(
+                () => BallotRepositoryImpl(ballotRemoteDataSource: locator<BallotRemoteDataSource>()));
+
+
+          //DATASOURCES
+            locator
+                .registerLazySingleton<BallotRemoteDataSource>(() => BallotRemoteDataSourceImpl(client: locator()));
+
+
+
 
 
 }

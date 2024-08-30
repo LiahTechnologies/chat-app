@@ -8,6 +8,7 @@ abstract class GroupListRepository {
 
   Stream<List<GroupChatEntity>> fetchGroups();
   Future<Either<Failure,List<GroupChatEntity>>> fetchchatgroups();
+  Future<Either<Failure,MessageEntity>> fetchLastGroupChatMessage({required String groupId});
 
   Future<Either<Failure,bool>> deleteGroup(List<String> groups);
 }

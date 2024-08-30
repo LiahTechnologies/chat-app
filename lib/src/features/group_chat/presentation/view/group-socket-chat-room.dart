@@ -7,12 +7,13 @@ import 'package:njadia/src/core/utils/currentime.dart';
 import 'package:njadia/src/core/utils/encryption.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-bloc.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/bloc/approval-state.dart';
+import 'package:njadia/src/features/ballots/presentation/bloc/ballot-bloc.dart';
+import 'package:njadia/src/features/ballots/presentation/bloc/ballot-state.dart';
 import 'package:njadia/src/features/group_chat/data/model/group_chat_model.dart';
-import 'package:njadia/src/features/group_chat/domain/entities/reply-message.dart';
 import 'package:njadia/src/features/approve-tojoin-group/presentation/view/approve-to-join.dart';
+import 'package:njadia/src/features/group_chat/presentation/bloc/group_chat-event.dart';
+import 'package:njadia/src/features/ballots/presentation/view/ballot-room.dart';
 import 'package:njadia/src/features/group_chat/presentation/widgets/attarachment-widget.dart';
-import 'package:socket_io_client/socket_io_client.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:swipe_to/swipe_to.dart';
 import '../../../../core/common/constants/style/color.dart';
 import '../../../../core/common/constants/style/style.dart';
@@ -21,6 +22,7 @@ import '../../../../core/common/urls.dart';
 import '../../../../core/utils/custom_popup_menu.dart';
 import '../../../../utils/messages.dart';
 import '../../../approve-tojoin-group/presentation/bloc/approval-event.dart';
+import '../../../ballots/presentation/bloc/ballot-event.dart';
 import '../../../create_group/presentation/view/select_contact_page.dart';
 import '../../../direct message/domain/entities/chat.dart';
 import '../../../payment/presentation/view/select_group_member.dart';
@@ -29,6 +31,7 @@ import '../bloc/group-socket-event.dart';
 import '../bloc/group-socket-state.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:encrypt/encrypt.dart' as encrypt;
+
 
 class GroupChatRoom extends StatefulWidget {
 
@@ -77,7 +80,7 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
     ),
     PopupMenuItem(
       child: Text("Generate ballot numbers"),
-      value: "Generate ballot numbers",
+      value: "ballot numbers",
     ),
 
     PopupMenuItem(
@@ -94,10 +97,10 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
       child: Text("Add members"),
       value: "Add members",
     ),
-    // PopupMenuItem(
-    //   child: Text("Wallpaper"),
-    //   value: "wallpaper",
-    // ),
+    PopupMenuItem(
+      child: Text("Ballot room"),
+      value: "ballot room",
+    ),
 
     
   ];
@@ -119,6 +122,7 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
 late String currentUser;
 late String uid;
 var encryptedText;
+
 
   @override
   Widget build(BuildContext context) {
@@ -204,27 +208,50 @@ var encryptedText;
                                 child: CustomPopUpMenu(
                                   items: items,
                                 onSelected: (value){
+
+
                                   if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
                                 
                                   if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId));
                                               
                                   if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
+
+                                  if(value=="ballot numbers"){
+                                                                            context.read<BallotBloc>().add(OnGenerateBallots(groupId: widget.chatModel.chatId));
+
+                                  }
                                 
-                                },
+                                  if(value=="ballot room") nextScreen(context, BallotRoom(groupId:widget.chatModel.chatId, uid: uid));
                                 
-                                
+                                }
                                 ),
                                   );
                     }
                     return             
-                      CustomPopUpMenu(
-                      items: items,
-                    onSelected: (value){
-                      if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
-                     if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
+                      BlocBuilder<BallotBloc,BallotState>(
+                        builder: (context,state) {
+                          return CustomPopUpMenu(
+                          items: items,
+                                              onSelected: (value){
+                          if(value=="Payment")nextScreen(context, SelectGroupMember(groupName: widget.chatModel.userName,groupId: widget.chatModel.chatId,));
+                        if(value=="Approve to join")nextScreen(context, ApproveToJoin(groupId: widget.chatModel.chatId,));
+                                              
+                        if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
+                          
+                          
+                        if(value=="ballot numbers")
+                           context.read<BallotBloc>().add(OnGenerateBallots(groupId:widget.chatModel.chatId ));
+
+
+                          if(value=="ballot room") nextScreen(context, BallotRoom(groupId:widget.chatModel.chatId, uid: uid));                  
+                          
+                                    
+                                  
+                                              });
+                        }
+                      );
+
                     
-                    if(value =="Add members") nextScreen(context,const SelectContactPage(isCreatGroup: false,));
-                    });
                     
                   }
                 ),
@@ -296,7 +323,7 @@ var encryptedText;
                 },
              
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:18.0),
+                  padding:  EdgeInsets.symmetric(horizontal:18.0, vertical:5),
                   child: InkWell(
                     onLongPress: (){
                       showBottomSheet(context: context, builder: (context)=>Container(height: 270,width: 130,child: Card(color: Colors.white,
@@ -306,6 +333,7 @@ var encryptedText;
                     child: MessageList(
                             messageEntity: messages[index],
                             uid: uid,
+                            previousMessageSenderId:  index<=0?"":messages[index-1].senderId,
                                       ),
                   ),
                 ),
@@ -394,7 +422,7 @@ var encryptedText;
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                children: [
                                                                Text("${replyMessage.messageSender}",overflow:TextOverflow.ellipsis,),
-                                                              Text("${replyMessage.message}",overflow:TextOverflow.ellipsis,maxLines: 1,)
+                                                              Text("${EncryptionClass.decryption(replyMessage.message)}",overflow:TextOverflow.ellipsis,maxLines: 1,)
                                                                          ],
                                                                                             ),
                                                                                           ),
@@ -490,7 +518,7 @@ var encryptedText;
                                           
                                            final encryptedText = EncryptionClass.encryption(controller.text);
                                            print("THE ENCRYPTED TEXT IS $encryptedText");                    
-                                          final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: controller.text, messageSender: currentUser, replyMessage:isReplyMessage? replyMessage.message:"", replySender: isReplyMessage?replyMessage.messageSender:"", time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
+                                          final message= GroupChatModel(chatId: widget.chatModel.chatId,  message: EncryptionClass.encryption(controller.text), messageSender: currentUser, replyMessage:isReplyMessage? replyMessage.message:"", replySender: isReplyMessage?replyMessage.messageSender:"", time: currentTime(),senderId: uid, receiverId: widget.chatModel.chatId, messageReceiver: widget.chatModel.userName);
                                             print("tHIS IS THE MESSAGE $message");                        
                                           socketBloc.add(SendMessageEvent('groupMessage', message));
                                         //  print("THIS EVENT IS BEING CALLED");

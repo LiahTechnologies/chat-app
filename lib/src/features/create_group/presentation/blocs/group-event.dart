@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 import '../../../authentication/domain/entities/user-entity.dart';
@@ -10,8 +12,8 @@ class GroupEvent extends Equatable {
 }
 class OnCreateGroup extends GroupEvent{
   final GroupEntity groupEntity;
-
-  OnCreateGroup({required this.groupEntity});
+  final File profilePic;
+  OnCreateGroup({required this.groupEntity,required this.profilePic});
 
   @override
   List<Object?> get props=>[groupEntity];

@@ -5,6 +5,8 @@ import 'package:njadia/src/features/group_chat/data/data_source/group_list_remot
 import 'package:njadia/src/features/group_chat/domain/entities/group_chat_entity.dart';
 import 'package:njadia/src/features/group_chat/domain/repositories/group_list_repository.dart';
 
+import '../../../../core/entities/message_entity.dart';
+
 class GroupListRepositoryImpl extends GroupListRepository {
   final GroupListRemoteDataSource groupListRemoteDataSource;
 
@@ -45,6 +47,12 @@ class GroupListRepositoryImpl extends GroupListRepository {
     } on ServerExceptions{
       throw Left(ServerFailure("Error fetching groups"));
     }}
+    
+      @override
+      Future<Either<Failure, MessageEntity>> fetchLastGroupChatMessage({required String groupId}) {
+    // TODO: implement fetchLastGroupChatMessage
+    throw UnimplementedError();
+      }
   
   
 }

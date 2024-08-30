@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/authentication.dart';
+import 'package:njadia/src/features/ballots/presentation/bloc/ballot-bloc.dart';
 import 'package:njadia/src/features/create_group/presentation/blocs/group-bloc.dart';
 import 'package:njadia/src/features/search-groups/presentation/bloc/search-group-bloc.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (_) =>  locator<PrivateSocketBloc>()),
               BlocProvider(create: (_) =>  locator<ChatListBloc>()),
               BlocProvider(create: (_) =>  locator<GroupBloc>()),
+              BlocProvider(create: (_) =>  locator<BallotBloc>()),
               BlocProvider(create: (_) =>  locator<SocketBloc>()),
               BlocProvider(create: (_) =>  locator<SearchGroupBloc>()),
               BlocProvider(create: (_) =>  locator<GroupMemberBloc>()),

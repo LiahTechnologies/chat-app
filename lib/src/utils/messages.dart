@@ -5,10 +5,11 @@ import 'package:njadia/src/core/utils/user_card.dart';
 import '../core/utils/reply-message-card.dart';
 
 class MessageList extends StatelessWidget {
-  const MessageList({super.key, required this.messageEntity, required this.uid});
+  const MessageList({super.key, required this.messageEntity, required this.uid, required this.previousMessageSenderId});
 
   final MessageEntity messageEntity;
   final String uid;
+  final String previousMessageSenderId;
 
 // late String uid;
   @override
@@ -25,6 +26,6 @@ class MessageList extends StatelessWidget {
   //     fontWeight: FontWeight.bold,
   //   ),
   // ),
-    return messageEntity.senderId==uid?UserCard(messageEntity: messageEntity,):ReplyMessageCard(messageEntity: messageEntity,);
+    return messageEntity.senderId==uid?UserCard(messageEntity: messageEntity, previousMessageSenderId: previousMessageSenderId,):ReplyMessageCard(messageEntity: messageEntity,previousMessageSenderId: previousMessageSenderId,);
   }
 }

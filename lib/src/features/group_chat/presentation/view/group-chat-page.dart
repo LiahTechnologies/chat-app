@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
-import 'package:njadia/src/core/common/constants/style/style.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/utils/custom_popup_menu.dart';
 
-import '../../../../core/model/chatmodel.dart';
 import '../../../../core/utils/custom_card.dart';
 import '../../../direct message/domain/entities/chat.dart';
 import '../../../create_group/presentation/view/group_template_option.dart';
+import '../../domain/entities/group_chat_entity.dart';
 import '../bloc/group_list_bloc.dart';
 import '../bloc/group_list_event.dart';
 import '../bloc/group_list_state.dart';
-import 'chatroom.dart';
 import 'group-socket-chat-room.dart';
 
 class GroupChatPage extends StatefulWidget {
@@ -33,7 +31,8 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
   List<String>selectGroups=[];
 
-  late List<Chat> chats ;
+  // late List<Chat> chats ;
+  late List<GroupChatEntity> groups;
 
   getUserId() async{
     final uid = await HelperFunction.getUserID();
@@ -102,12 +101,30 @@ class _GroupChatPageState extends State<GroupChatPage> {
       body: BlocConsumer<GroupListBloc,GroupListState>(
         builder: (context,state) {
 
+          if(state is SearchGroup)
+              groups.firstWhere((group)=>group.groupName=="");
+              
          
           if(state is GroupListLoaded){
             // print("groups ${state.groups[0].id}");
+
+                 groups= state.groups;
+              
+
             return ListView.builder(
               itemCount: state.groups.length,
-              itemBuilder: (context, index) => InkWell(
+              itemBuilder: (context, index) 
+              
+              {
+
+                
+                // context.read<GroupListBloc>().add(OnFetchLastMessage(groupId: state.groups[index].id));
+
+
+// if(state is GroupChatLastMessage)  
+              
+               return InkWell(
+                
                 onLongPress: (){
                     
                     // selectGroups.contains(state.groups[index].id);
@@ -115,30 +132,53 @@ class _GroupChatPageState extends State<GroupChatPage> {
                       isSelcetGroups=true;
                     });
                 },
-                child: ListTile(
-                  trailing: isSelcetGroups? Checkbox(onChanged: (v){
+                child: isSelcetGroups?
+                
+                
+                ListTile(
+                  trailing: Checkbox(onChanged: (v){
                     setState(() {
                       if(!selectGroups.contains(state.groups[index].id))
                       selectGroups.add(state.groups[index].id!);
                       else selectGroups.remove(state.groups[index].id);
                     });
-                  },value: selectGroups.contains(state.groups[index].id),side:const BorderSide(color: Colors.black,width: 2),activeColor: Colors.black,checkColor: Colors.white,):Text(""),
-                  title: CustomCard(
+                  },value: selectGroups.contains(state.groups[index].id),side:const BorderSide(color: Colors.black,width: 2),activeColor: Colors.black,checkColor: Colors.white,),
+                  title: 
+                  CustomCard(
                       onTap: (){
                             print("groups index ${state.groups[index].id}");
                       
                         Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),)
+                              context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: ""),)
                               
                               // GroupChatRoom(chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),
                             // )
                             ));
                       },
+
+                      // if(state is GroupChatLastMessage )
                    
-                        chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),
+                        chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "" ),
                       ),
-                ),
-              ));
+                ):CustomCard(
+                      onTap: (){
+                            print("groups index ${state.groups[index].id}");
+                      
+                        Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => GroupChatRoom(chatModel: Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: ""),)
+                              
+                              // GroupChatRoom(chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "jjjl"),
+                            // )
+                            ));
+                      },
+
+                      // if(state is GroupChatLastMessage )
+                   
+                        chatModel:  Chat(chatId: state.groups[index].id??"",  profilePic: state.groups[index].profilePic??"", time: "12:00pm", userName: state.groups[index].groupName??"", isGroup: true, lastMessage: "" ),
+                      ),
+              );}
+              
+              );
           }
 
           return Center(

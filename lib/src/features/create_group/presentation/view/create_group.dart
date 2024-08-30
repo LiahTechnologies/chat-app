@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +63,9 @@ class _CreateGroupState extends State<CreateGroup> {
 
   }
 
+  late File profilePic = File("");
+  bool isProfileSet = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,14 +109,21 @@ class _CreateGroupState extends State<CreateGroup> {
                               borderRadius: BorderRadius.circular(20),
                               child: CircleAvatar(
                                 radius: 50.w,
-                                backgroundImage: AssetImage(AppImages.PERSON),
+                                backgroundImage: !isProfileSet?AssetImage(AppImages.PERSON):FileImage(profilePic) as ImageProvider,
                               ))),
                       Positioned(
                         right: 25.w,
                         top: 3.h,
                         child: GestureDetector(
-                          onTap: () {
-                            openCamera(method: "gallery");
+                          onTap: () async{
+                           
+                             
+                                profilePic =  await openCamera(method: "gallery");
+                            setState(() {
+                              isProfileSet= true;
+                             });
+
+                            
                           },
                           child: Container(
                             width: 35.w,
@@ -187,7 +199,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                 print("THIS IS THE CREATED GROUP ENTITY $groupEntity");
                            context
                                 .read<GroupBloc>()
-                                .add(OnCreateGroup(groupEntity: groupEntity));
+                                .add(OnCreateGroup(groupEntity: groupEntity,profilePic: profilePic));
         
                         },
                         text: "CreatE Njangi",

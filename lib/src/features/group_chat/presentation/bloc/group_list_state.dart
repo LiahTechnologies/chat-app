@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/entities/message_entity.dart';
 import '../../domain/entities/group_chat_entity.dart';
 
 /*******GROUP LIST****** */
@@ -58,7 +59,11 @@ class GroupListState {
 
 class EmptyGroupList extends GroupListState{}
 
+
+
 class GroupListLoading extends GroupListState{}
+
+
 
 class GroupListLoaded extends GroupListState{
 
@@ -66,9 +71,29 @@ class GroupListLoaded extends GroupListState{
   GroupListLoaded(this.groups);
 }
 
+
+
+class GroupChatLastMessage extends GroupListState{
+
+  late MessageEntity message;
+  GroupChatLastMessage(this.message);
+}
+
+
+
+class NoGroupMEsssage extends GroupListState{
+
+  late String message;
+  NoGroupMEsssage(this.message);
+}
+
+
+
 class ErrorLoadingGroupList extends GroupListState{
   final String error;
   ErrorLoadingGroupList(this.error);
 }
 
 class GroupDeleted extends GroupListState{}
+
+class SearchGroup extends GroupListState{}

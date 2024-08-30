@@ -66,8 +66,8 @@ class _SignUpState extends State<SignUp> {
   bool isFaceDetectorChecking = false;
   String isSmiling = '';
   String headRotation = '';
-  File? selectedCameraImage;
-  File? selectedCameraImageDocs;
+  File? selectedCameraImage =File("");
+  File? selectedCameraImageDocs =File("");
 
   // booleans
 
@@ -901,7 +901,7 @@ class _SignUpState extends State<SignUp> {
                                 color: AppColor.lightButtonColor,
                                 borderRadius: BorderRadius.circular(15)),
                             child: MaterialButton(
-                              onPressed: () {
+                              onPressed: ()async {
                                 openCamera("Camera", "selfie");
                                 Future.delayed(const Duration(seconds: 5), () {
                                   pagecontroller.nextPage(
@@ -1138,6 +1138,7 @@ class _SignUpState extends State<SignUp> {
                           child: MaterialButton(
                             onPressed: () => {
                               openCamera("Camera", "id"),
+
                               Future.delayed(Duration(seconds: 2), () {
                                 pagecontroller.nextPage(
                                     duration: const Duration(seconds: 1),
@@ -1272,6 +1273,8 @@ class _SignUpState extends State<SignUp> {
                                     // })
                             
                                     context.read<AuthBloc>().add(OnSignUp(
+                                          selfie:selectedCameraImage !,
+                                          docs: selectedCameraImageDocs!,
                                         userEntity: UserEntity(
                                             firstName: firstName.text,
                                             lastName: lastName.text,
@@ -1280,7 +1283,9 @@ class _SignUpState extends State<SignUp> {
                                             dob: dateOfBirth.text,
                                             tel: phoneNumber.text,
                                             selfie: "selectedCameraImage!",
-                                            docs: "selectedCameraImageDocs!"))),
+                                            docs: "selectedCameraImageDocs!"
+                                            
+                                            ))),
                             
                                    
                                   },

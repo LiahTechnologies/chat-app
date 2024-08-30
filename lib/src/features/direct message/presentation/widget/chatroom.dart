@@ -453,6 +453,7 @@ getUid() async{
                   child: MessageList(
                                         messageEntity: messages[index],
                                         uid: currentUser,
+                                        previousMessageSenderId: messages[index<=0?index:index-1].senderId,
                                       ),
                 ),
               );

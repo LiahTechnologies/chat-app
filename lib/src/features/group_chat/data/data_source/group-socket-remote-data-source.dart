@@ -19,6 +19,10 @@ abstract class SocketRemoteDataSource {
   Future<void> onMessage(String event, Function(dynamic) callback);
   Future<List<GroupChatModel>> fetchInitialMessages(String groupId);
   Future<bool>addChat({required String uid, required String receiverId});
+  Future<bool> generateBallots({required String groupId});
+Future<List<String>> fetchBallots({required String groupId,required String uid});
+
+
 
 }
 
@@ -144,6 +148,41 @@ class SocketRemoteDataSourceImpl implements SocketRemoteDataSource {
    } on ServerExceptions {
       throw ServerFailure("error adding chats");
    }
+  }
+  
+
+  @override
+  Future<bool> generateBallots({required String groupId}) async{
+    try {
+      final response = await client.post(Uri.parse(AppUrls.ballots),body: json.encode({"groupId":groupId}),headers: {"content-type":"application/json"});
+      if (response.statusCode==200)
+           return true;
+      else return false;
+
+    } on ServerExceptions {
+       throw ServerFailure("Error ");
+    }
+  }
+  
+
+
+  
+  @override
+  Future<List<String>> fetchBallots({required String groupId, required String uid})async {
+    try {
+      
+      final data = {
+        "groupId":groupId,
+        "uid":uid
+      };
+
+      final result = await client.post(Uri.parse(AppUrls.ballots),body: json.encode(data),headers: {"content-type":"application/json"});
+      
+        return json.decode(result.body) as List<String>;
+
+    } on ServerExceptions {
+       throw ServerFailure("Error ");
+    }
   }
 }
 

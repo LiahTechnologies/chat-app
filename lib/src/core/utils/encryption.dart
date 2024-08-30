@@ -91,6 +91,42 @@
 //   return decryptedMessage;
 // }
 
+/**
+ * 
+ * 
+ * 
+ 
+import 'package:encrypt/encrypt.dart';
+import 'package:pointycastle/asymmetric/api.dart';
+
+String privateKeyString="key goes here";
+String publicKeyString="key goes here";
+
+//create a instance of RSA key praser    
+RSAKeyParser keyParser = RSAKeyParser();
+
+//and parse those string keys
+RSAAsymmetricKey privateKeyParser = keyParser.parse(privateKeyString);
+RSAAsymmetricKey publicKeyParser =keyParser.parse(publicKeyString);
+
+final publicKey = RSAPublicKey(publicKeyParser.modulus!, publicKeyParser.exponent!);
+final privKey;
+
+if (privateKeyParser is RSAPrivateKey) {
+
+privKey = RSAPrivateKey(privateKeyParser.modulus!,privateKeyParser.exponent!, privateKeyParser.p,privateKeyParser.q);
+final plainText = 'hello world';
+
+final encrypter = Encrypter(RSA(publicKey: publicKey, privateKey:privKey));
+
+final encrypted = encrypter.encrypt(plainText);
+final decrypted = encrypter.decrypt(encrypted);
+
+}
+
+
+ */
+
 
 
 import 'package:encrypt/encrypt.dart' as encrypt;
@@ -98,8 +134,8 @@ import 'package:encrypt/encrypt.dart';
 
 class EncryptionClass{
 
-  static final key = encrypt.Key.fromLength(32);
-  static final iv = encrypt.IV.fromLength(16);
+  static final key = encrypt.Key.fromUtf8('4f1aaae66406e358');
+  static final iv = encrypt.IV.fromUtf8('df1e180949793972');
   static final encrypter = encrypt.Encrypter(encrypt.AES(key,mode:encrypt.AESMode.cbc));
   // static final encrypter = Encrypter(AES(key, mode: AESMode.cbc, padding: "PKCS7"));
 

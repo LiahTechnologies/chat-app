@@ -45,3 +45,5 @@ class PrivateChatCreated extends SocketState{
   PrivateChatCreated(this.status);
 
 }
+
+class GroupBallotsGenerated extends SocketState {}

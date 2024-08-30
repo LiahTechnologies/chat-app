@@ -39,7 +39,7 @@ class CustomButton extends StatelessWidget {
     
     return Container(
       width: width == 0 ? deviceWidth(context)/2.5: width,
-      height: height == 0 ? 40.h : height,
+      height: height == 0 ? 40 : height,
       decoration: BoxDecoration(
           color: isActive! ? AppColor.lightButtonColor : Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(borderRadius),
