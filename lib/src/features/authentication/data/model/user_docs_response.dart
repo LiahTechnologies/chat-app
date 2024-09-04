@@ -22,16 +22,18 @@ class UserModel extends UserEntity {
     required this.dob,
     required this.tel,
   }) : super(
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            dob: '',
-            tel: '',
+              
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            dob: dob,
+            tel: tel,
             selfie: selfie,
             docs: docs);
 
   factory UserModel.fromjson(Map<String, dynamic> json) => UserModel(
+      // profilePic: json['profilePic'],
       docs: json["docs"],
       selfie: json["selfie"],
       firstName: json['firstName'],
@@ -60,12 +62,14 @@ class LoginResponse extends Login {
   final String lastName;
   final String firstName;
   final String tel;
+  final String profilePic;
   LoginResponse(
       {required this.token,
       required this.uid,
       required this.userEmail,
       required this.lastName,
       required this.tel,
+      required this.profilePic,
       required this.firstName})
       : super(token: token);
 
@@ -73,8 +77,10 @@ class LoginResponse extends Login {
       token: json["token"],
       uid: json['userId'],
       userEmail: json['email'],
+      profilePic: json['profilePic'],
       tel:json['tel'],
       lastName: json['lastName'],
       firstName: json['firstName']);
+
       
 }

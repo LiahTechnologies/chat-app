@@ -4,8 +4,10 @@ import 'package:njadia/src/core/common/constants/style/color.dart';
 import 'package:njadia/src/features/ballots/presentation/bloc/ballot-bloc.dart';
 import 'package:njadia/src/features/ballots/presentation/bloc/ballot-event.dart';
 import 'package:njadia/src/features/ballots/presentation/bloc/ballot-state.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../../core/common/helper_function.dart';
+import '../../../../core/common/urls.dart';
 
 class BallotRoom extends StatefulWidget {
   const BallotRoom({super.key,required this.groupId, required this.uid});
@@ -20,10 +22,19 @@ class _BallotRoomState extends State<BallotRoom> {
  String seletedNumber ='-1';
  int selectedIndex = -1;
 
- final List<String>  ballotNumbers = ["2","4","1","3","5","7","11","20"];
-
+  List<String>  ballotNumbers = [];
+ late IO.Socket socket;
  
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    connect();
+    getBallot();
+  }
 
+  late HelperFunction helperFunction;
+  
   @override
   Widget build(BuildContext context) {
 
@@ -62,14 +73,35 @@ class _BallotRoomState extends State<BallotRoom> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                 // const  SizedBox(height: 10,),
-                    Text("Tap on one of the bottons, an the number will be your ballot number",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),),
+                  
+                   
                   
                   
                 const  SizedBox(height: 30,),
                
                   BlocBuilder<BallotBloc,BallotState>(
                     builder: (context,state) {
-                      if(state is BallotsLoaded)
+
+                    
+
+
+                      if(state is BallotError)
+                      Text("Tap on one of the bottons, an the number will be your ballot number",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),);
+
+                      if(state is BallotError){
+                        return Column(
+                          children: [
+                                                    Text("Your selected ballot number is:",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),),
+
+                            Center(child: Text("$seletedNumber",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white)),),
+                          ],
+                        );
+                      }
+                     
+                      if(state is BallotsLoaded){ 
+                        // setState(() {
+                          ballotNumbers= state.ballots;
+                        // });
                       return GridView.builder(
                         shrinkWrap: true,
                         itemCount: ballotNumbers.length,
@@ -87,12 +119,24 @@ class _BallotRoomState extends State<BallotRoom> {
                                     setState(() {
                                 seletedNumber=ballotNumbers[index];
                                 selectedIndex= index;
+                                
                               });
+
+                              helperFunction=HelperFunction(groupBallot: widget.groupId);
+
+                                final data={
+                                  "groupId":widget.groupId,
+                                  "uid":widget.uid,
+                                  "value":seletedNumber
+                                };
+                              helperFunction.saveUserBallotNumber(seletedNumber);
+
+                              socket.emit("selectballote",data);
                               }
                             
-                            },child:seletedNumber=='-1'?Text(""): selectedIndex==index? Text("$seletedNumber"):Text(""),));
+                            },child:seletedNumber=='-1'?Text(""): selectedIndex==index? Text("$seletedNumber"):Text(""),));}
 
-                    return const Text("Loading...");
+                    return selectedIndex==-1?   Text("Loading...",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),):Center(child: Text(" $seletedNumber",style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white),));
                     }
                   ),
                 ],
@@ -102,5 +146,46 @@ class _BallotRoomState extends State<BallotRoom> {
         ],
       ),
     );
+
   }
+
+
+ getBallot() async{
+  seletedNumber = await  helperFunction.getUserBallotNumber();
+   
+}
+void connect()  {
+    print("THE CONNECTION IS BEING CALLED");
+    socket = IO.io(AppUrls.SOCKET_URL, <String, dynamic>{
+      "query":{
+          "userId":widget.uid
+      },
+      'transports': ['websocket'],
+      "autoConnect": false,
+
+
+
+    });
+    socket.connect();
+
+    socket.on('connect', (_) {
+      print('BALLOT USER CONNECTED');
+    });
+
+    socket.on("ballots",(data) async{
+      
+       setState(() {
+         ballotNumbers= data;
+       });
+        
+    });
+   
+
+
+    socket.on('disconnect', (_) {
+      print('User disconnected');
+    });
+  }
+  
+  
 }

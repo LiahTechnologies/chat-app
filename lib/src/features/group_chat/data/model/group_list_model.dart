@@ -33,7 +33,7 @@ class GroupModel extends GroupChatEntity {
   factory GroupModel.fromJson(Map<String, dynamic> json) => GroupModel(
         groupName: json["groupName"],
         id: json["_id"],
-        profilePic: json["profilePic"],
+        profilePic: json["groupIcon"],
         unreadMessage: json["unreadMessage"],
         // messages: json["messages"]
       );

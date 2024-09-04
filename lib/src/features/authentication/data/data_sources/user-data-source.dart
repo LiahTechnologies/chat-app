@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/common/urls.dart';
 
 abstract class UserRemoteDataSource {
-  Future<Either<Failure,LoginResponse>> createUser(UserEntity user,File selfie, File docs);
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user,File selfie, File docs, File profilePic);
   Future<LoginResponse> loginUser({required email, required password});
   Future<bool> generateOTP({required String number});
   Future<bool> verifyOTP({required String number, required String OTPCode});
@@ -26,7 +26,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   UserRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<Either<Failure,LoginResponse>> createUser(UserEntity user, File selfie, File docs) async {
+  Future<Either<Failure,LoginResponse>> createUser(UserEntity user, File selfie, File docs, File profilePic) async {
 
 
 //  Directory tempDir = await getTemporaryDirectory();
@@ -89,9 +89,12 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         await http.MultipartFile.fromPath("selfie", selfie.path);
     var multipartFileDocs =
         await http.MultipartFile.fromPath("docs", docs.path);
+    var multipartProfile =
+        await http.MultipartFile.fromPath("profilePic", profilePic.path);
 
     request.files.add(multipartFile);
     request.files.add(multipartFileDocs);
+    request.files.add(multipartProfile);
     request.fields.addAll({"folder":"signup"});
 
     var endpointResponse = await request.send();
@@ -111,7 +114,8 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
         "tel": user.tel,
         "dob": user.dob,
         "selfie": result['selfie'],
-        "docs": result['docs']
+        "docs": result['docs'],
+        "profilePic":result['profilePic']
       };
 
       final response = await http.post(Uri.parse(AppUrls.signup),
@@ -121,10 +125,13 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       if (response.statusCode == 201) {
         final userData =
         await LoginResponse.fromjson(json.decode(response.body));
-        await HelperFunction.saveUserEmail(userData.userEmail);
-        await HelperFunction.saveUserName(" ${userData.firstName} ${userData.lastName}");
-        await HelperFunction.saveUserID(userData.uid);
-        // await HelperFunction.saveUserProfile(userData.profilePic);
+      await HelperFunction.saveUserEmail(userData.userEmail);
+      await HelperFunction.saveUserName("${userData.firstName} ${userData.lastName} ");
+      await HelperFunction.saveUserID(userData.uid);
+      await HelperFunction.saveUserTel(userData.tel);
+      await HelperFunction.saveUserProfilePic(userData.profilePic);
+      await HelperFunction.saveUserProfile(userData.lastName);
+      await HelperFunction.saveUserLoggInState(true);
 
         return Right(userData);
       } else
@@ -164,6 +171,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
       await HelperFunction.saveUserName("${userData.firstName} ${userData.lastName} ");
       await HelperFunction.saveUserID(userData.uid);
       await HelperFunction.saveUserTel(userData.tel);
+      await HelperFunction.saveUserProfilePic(userData.profilePic);
       await HelperFunction.saveUserProfile(userData.lastName);
       await HelperFunction.saveUserLoggInState(true);
 

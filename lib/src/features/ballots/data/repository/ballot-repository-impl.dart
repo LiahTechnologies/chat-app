@@ -15,7 +15,7 @@ class BallotRepositoryImpl extends BallotRepository{
     try {
       
       final result = await ballotRemoteDataSource.fetchBallots(groupId: groupId, uid: uid);
-      return Right(result);
+      return result;
     } on ServerExceptions {
       throw Left(ServerFailure("Error"));
     }

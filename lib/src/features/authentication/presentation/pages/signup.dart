@@ -29,6 +29,7 @@ import 'package:njadia/src/warnings/warning.dart';
 import '../../../../core/common/constants/style/appAsset.dart';
 import '../../../../utils/CustomDots.dart';
 import '../../../../utils/customButtomWithCustomICons.dart';
+import '../../../../utils/opneCamera.dart';
 import '../widgets/otp.dart';
 
 class SignUp extends StatefulWidget {
@@ -68,12 +69,14 @@ class _SignUpState extends State<SignUp> {
   String headRotation = '';
   File? selectedCameraImage =File("");
   File? selectedCameraImageDocs =File("");
+  File? selectedProfile =File("");
 
   // booleans
 
   bool isSelfie = false;
   bool isDocument = false;
   bool isFaceDetected = false;
+  bool isProfile= false;
 
 // SELECT GENDER
   String selectedGender = "None";
@@ -579,18 +582,63 @@ class _SignUpState extends State<SignUp> {
                         height: 100.h,
                         width: double.infinity,
                         child: Stack(children: [
-                          Positioned(
-                            child: Container(
-                              margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: 50.h,
-                                  backgroundImage: const AssetImage(
-                                      "assets/images/Ellipse 34.png"),
-                                ),
-                              ),
-                            ),
-                          ),
+
+
+                          // Positioned(
+                          //   child: Container(
+                          //     margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                          //     child: Center(
+                          //       child: CircleAvatar(
+                          //         radius: 50.h,
+                          //         backgroundImage: const AssetImage(
+                          //             "assets/images/Ellipse 34.png"),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+
+
+
+                  Align(
+                    alignment: Alignment.center,
+                    child: CircleAvatar(
+                      radius: 48,
+                        backgroundImage: !isProfile?const  AssetImage(
+                      AppImages.PERSON,
+                      
+                    ):FileImage(selectedProfile!)as ImageProvider
+                    
+                    ),
+                  ),
+                  Positioned(
+                    top: 20.h,
+                    right: 110.w,
+                    child: InkWell(
+                      onTap: ()async{
+                          selectedProfile = await openCamera();
+                          setState(() {
+                            isProfile=true;
+                          });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white),
+                        child: Container(
+                            height: 22.h,
+                            width: 22.w,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: AppColor.lightButtonColor),
+                            child:const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 15,
+                            )),
+                      ),
+                    ),
+                  )
                           // Positioned(
                           //     top: 90.h,
                           //     left: 60.w,
@@ -902,12 +950,15 @@ class _SignUpState extends State<SignUp> {
                                 borderRadius: BorderRadius.circular(15)),
                             child: MaterialButton(
                               onPressed: ()async {
-                                openCamera("Camera", "selfie");
-                                Future.delayed(const Duration(seconds: 5), () {
+                              selectedCameraImage =await openCamera();
+                              setState(() {
+                                isSelfie=true;
+                              });
+                                // Future.delayed(const Duration(seconds: 1), () {
                                   pagecontroller.nextPage(
                                       duration: const Duration(seconds: 1),
                                       curve: Curves.easeInOut);
-                                });
+                                // });
                               },
                               child: Text("Open the camera",
                                   style: Theme.of(context)
@@ -954,8 +1005,11 @@ class _SignUpState extends State<SignUp> {
                       Align(
                         alignment: Alignment.topLeft,
                         child: TextButton.icon(
-                            onPressed: () {
-                              openCamera("Camera", "id");
+                            onPressed: ()async {
+                             selectedCameraImage= await openCamera();
+                             setState(() {
+                               isSelfie=true;
+                             });
                             },
                             icon: const Icon(
                               Icons.replay_outlined,
@@ -1136,14 +1190,17 @@ class _SignUpState extends State<SignUp> {
                               color: AppColor.lightButtonColor,
                               borderRadius: BorderRadius.circular(15)),
                           child: MaterialButton(
-                            onPressed: () => {
-                              openCamera("Camera", "id"),
+                            onPressed: ()  async{
+                             selectedCameraImageDocs= await openCamera();
 
-                              Future.delayed(Duration(seconds: 2), () {
+                              setState(() {
+                                isDocument=true;
+                              });
+                              // Future.delayed(Duration(seconds: 1), () {
                                 pagecontroller.nextPage(
                                     duration: const Duration(seconds: 1),
                                     curve: Curves.easeInOut);
-                              }),
+                              // });
                             },
                             child: Text("Continue",
                                 style: Theme.of(context)
@@ -1188,8 +1245,11 @@ class _SignUpState extends State<SignUp> {
                       Align(
                         alignment: Alignment.topLeft,
                         child: TextButton.icon(
-                            onPressed: () {
-                              openCamera("Gallery", 'id');
+                            onPressed: ()  async{
+                             selectedCameraImageDocs= await openCamera();
+                             setState(() {
+                               isDocument=true;
+                             });
                             },
                             icon: const Icon(
                               Icons.replay_outlined,
@@ -1217,7 +1277,7 @@ class _SignUpState extends State<SignUp> {
                                     .textTheme
                                     .displayMedium!
                                     .copyWith(color: Colors.white)),
-                          ),
+                          ), 
                         ),
                       )
                     ],
@@ -1258,23 +1318,10 @@ class _SignUpState extends State<SignUp> {
                    deviceOrientation(context)==Orientation.portrait? Alignment.bottomCenter:Alignment.bottomRight,
                           child: CustomButton(
                               onPress: () => {
-                                    // BackendApi.registration(
-                                    //         firstName: firstName.text,
-                                    //         lastName: lastName.text,
-                                    //         email: email,
-                                    //         password: password,
-                                    //         phone_number: phoneNumber.text,
-                                    //         date_of_birth: dateOfBirth.text,
-                                    //         image: selectedCameraImage!,
-                                    //         imageDocs: selectedCameraImageDocs!)
-                                    //     .then((value) {
-                                    //   if (value == true)
-                                    //     Get.toNamed(AppRoutes.HOMEpAGE);
-                                    // })
-                            
                                     context.read<AuthBloc>().add(OnSignUp(
                                           selfie:selectedCameraImage !,
                                           docs: selectedCameraImageDocs!,
+                                          profilePic: selectedProfile!,
                                         userEntity: UserEntity(
                                             firstName: firstName.text,
                                             lastName: lastName.text,
@@ -1336,7 +1383,8 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Future<void> openCamera(method, type) async {
+/*
+ Future<void> openCameraSig(method, type) async {
     final ImagePicker picker = ImagePicker();
     var source;
     method == "Camera"
@@ -1347,14 +1395,21 @@ class _SignUpState extends State<SignUp> {
 
     File cameraImage = File(image!.path);
 
+    // final image_ = FirebaseVisionImage.fromFile(cameraImage);
+    // final faceDetector = FirebaseVision.instance.faceDetector();
+
+    // List<Face> face = await faceDetector.processImage(image_);
+
     setState(() {
       type == "selfie"
           ? selectedCameraImage = cameraImage
           : selectedCameraImageDocs = cameraImage;
+
+      type == "selfie" ? isSelfie = true : isDocument = true;
     });
 
-    type == "selfie" ? isSelfie = true : isDocument = true;
-
-    // if (type == "selfie") _detectFaces(image: cameraImage);
+    // if (type == "selfie") getFaceDetection(cameraImage);
   }
+*/
+
 }

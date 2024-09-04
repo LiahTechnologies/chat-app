@@ -28,9 +28,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user, required File selfie, required File docs}) async {
+  Future<Either<Failure, LoginResponse>> registerUser({required UserEntity user, required File selfie, required File docs, required File profilePic}) async {
     try {
-      final response = await userRemoteDataSource.createUser(user,selfie,docs);
+      final response = await userRemoteDataSource.createUser(user,selfie,docs,profilePic);
       return response;
     } on ServerExceptions {
       throw ServerFailure("Something happened while creating a user");

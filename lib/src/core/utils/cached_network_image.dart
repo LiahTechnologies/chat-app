@@ -6,8 +6,17 @@ import 'package:flutter/material.dart';
 cachedNetworkImage({required String url})=>
  
   CachedNetworkImage(
-       imageUrl: url,
-       progressIndicatorBuilder: (context, url, downloadProgress) => 
-               CircularProgressIndicator(value: downloadProgress.progress),
-       errorWidget: (context, url, error) => Icon(Icons.error),
-    );
+  imageUrl: url,
+  imageBuilder: (context, imageProvider) => Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      image: DecorationImage(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          colorFilter:
+              ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+    ),
+  ),
+  placeholder: (context, url) => CircularProgressIndicator(),
+  errorWidget: (context, url, error) => Icon(Icons.error),
+);

@@ -66,7 +66,7 @@ class GroupRemoteDataSourceImpl extends GroupRemoteDataSoucrce{
     if (endpointResponse.statusCode == 200) {
         print("CREATING GROUP WITH PROFILE PICS");
 
-        final data =GroupModel(groupName: groupEntity.groupName, groupIcon: groupEntity.groupIcon, members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit,profilePic: result['file']).toJson();
+        final data =GroupModel(groupName: groupEntity.groupName, groupIcon: result['file'], members: groupEntity.members, admins: groupEntity.admins, levy: groupEntity.levy,limit: groupEntity.limit,profilePic: result['file']).toJson();
 
         final response =  await client.post(Uri.parse(AppUrls.groups),body: json.encode(data),headers: {"Content-Type": "Application/json"});
 

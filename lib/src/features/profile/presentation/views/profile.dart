@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:njadia/src/core/common/helper_function.dart';
 import 'package:njadia/src/core/common/constants/style/appAsset.dart';
 import 'package:njadia/src/core/common/constants/style/color.dart';
+import 'package:njadia/src/core/utils/cached_network_image.dart';
 import 'package:njadia/src/features/authentication/presentation/pages/signup.dart';
 import 'package:njadia/src/utils/naviagtion.dart';
 import 'package:njadia/src/utils/opneCamera.dart';
@@ -28,6 +29,9 @@ class _ProfileState extends State<Profile> {
   String userTel = "";
   String numberOfGroups='';
    String numberOfChats='';
+   String profilePic ="";
+   bool isProfileSet = false;
+   bool changProfile=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -37,19 +41,17 @@ class _ProfileState extends State<Profile> {
   }
 
 getUserDetails() async{
- 
-    
-
   numberOfChats= await HelperFunction.getUserNumberOfChats();
   numberOfGroups= await HelperFunction.getUserNumberOfGroups();
   userEmail= await HelperFunction.getUserEmail();
   userName=await HelperFunction.getUserName();
   userTel =await HelperFunction.getUserTel();
+  profilePic = await HelperFunction.getUserProfilePic();
 
     setState(() {
-      
+      isProfileSet=true;
     });
-print("THE USER NAME IS $userName");
+print("THE PROFILE LINE IS      $profilePic");
 
 }
   @override
@@ -122,22 +124,32 @@ print("THE USER NAME IS $userName");
             Center(
               child: Stack(
                 children: [
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ClipOval(
-                        child: Image.asset(
-                      AppImages.PERSON,
-                      width: 120,
-                    )),
+                    child: CircleAvatar(
+                      radius:  40.w,
+                      child:isProfileSet? cachedNetworkImage(url: profilePic):!changProfile?  Image.asset(
+                      AppImages.PERSON,   
+                    ):ClipOval(
+                     
+
+                    
+                      child: Image.file(newProfileImage,fit: BoxFit.cover,)) ),
                   ),
+
                   Positioned(
                     top: 20.h,
-                    left: 96.w,
+                    left: 66.w,
                     child: InkWell(
                       onTap: () => openCamera(method: "gallery").then((value) {
-                        // setState(() {
-                        //   newProfileImage = value;
-                        // });
+                        
+                        setState(() {
+                          newProfileImage = value;
+                          changProfile=true;
+                          isProfileSet=false;
+                        });
+
                       }),
                       child: Container(
                         padding: EdgeInsets.all(2),

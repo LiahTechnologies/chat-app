@@ -10,9 +10,9 @@ class UserUsecase {
   UserRepository userRepository;
   UserUsecase({required this.userRepository});
 
-  Future<Either<Failure, LoginResponse>> create({required UserEntity user,  required File selfie, required File docs}) {
+  Future<Either<Failure, LoginResponse>> create({required UserEntity user,  required File selfie, required File docs,required File profilePic}) {
     print("SIGNUP IN USECASE WAS CALLED SUCCESSFULLY");
-    return userRepository.registerUser(user: user,selfie: selfie,docs: docs);
+    return userRepository.registerUser(user: user,selfie: selfie,docs: docs,profilePic: profilePic);
   }
 
   Future<Either<Failure, LoginResponse>> login(

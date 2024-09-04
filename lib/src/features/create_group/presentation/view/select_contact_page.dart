@@ -179,8 +179,11 @@ getDeviceContact() async{
         onPressed: () {
 
           if(widget.isCreatGroup){
-                    if(groups.length>=0)
-                    nextScreen(context, CreateGroup(members: groups,));
+                    if(groups.length>=0){
+                      // groups.add(uid);
+                          nextScreen(context, CreateGroup(members: groups,));
+                    }
+                  
                     else {
                       final snackBar =
               SnackBar(content: Text("Members can't less than 2"),backgroundColor: Colors.red,);

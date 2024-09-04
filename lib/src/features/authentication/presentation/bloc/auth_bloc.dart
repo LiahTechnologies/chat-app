@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<OnSignUp>((event, emit) async {
-      final response = await userUsecase.create(user:event.userEntity,selfie: event.selfie!,docs: event.docs!);
+      final response = await userUsecase.create(user:event.userEntity,selfie: event.selfie!,docs: event.docs!,profilePic: event.profilePic!);
 
       response.fold((failure) => emit(AuthFailure(message: failure.message)),
           (data) => emit(SignUpSuccessful(signupRespons: data)));

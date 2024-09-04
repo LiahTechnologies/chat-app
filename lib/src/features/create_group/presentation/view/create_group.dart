@@ -46,7 +46,7 @@ class _CreateGroupState extends State<CreateGroup> {
         uid=await HelperFunction.getUserID();
         groupMembers.add(userTel);
 
-    print("create group uid: $userTel");
+    print("CURRENT USER MOBILE NUMBER: $userTel");
   }
 
     getMebersNumber(){

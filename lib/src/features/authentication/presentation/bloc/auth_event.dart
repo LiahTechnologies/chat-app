@@ -26,7 +26,8 @@ class OnSignUp extends AuthEvent {
 
   final File? selfie;
   final File? docs;
-  const OnSignUp({required this.userEntity, required this.selfie, required this.docs});
+  final File? profilePic;
+  const OnSignUp({required this.userEntity, required this.selfie, required this.docs, required this.profilePic});
 
   @override
   List<Object?> get props => [userEntity];

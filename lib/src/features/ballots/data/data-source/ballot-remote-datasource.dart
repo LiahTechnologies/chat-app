@@ -13,7 +13,7 @@ import '../../../../core/common/urls.dart';
 abstract class BallotRemoteDataSource{
 
   Future< bool> generateBallots({required String groupId});
-  Future< List<String>> fetchBallots({required String groupId,required String uid});
+  Future< Either<Failure, List<String>>> fetchBallots({required String groupId,required String uid});
 
 }
 
@@ -28,19 +28,27 @@ class BallotRemoteDataSourceImpl extends BallotRemoteDataSource{
 
 
   @override
-  Future< List<String>> fetchBallots({required String groupId, required String uid}) async {
+  Future< Either<Failure, List<String>>> fetchBallots({required String groupId, required String uid}) async {
     try {
        final data = {
         "groupId":groupId,
         "uid":uid
       };
 
-      print("THIS BALLOT FUNCTION IS BEING CALLED");
+      print("THIS BALLOT FUNCTION IS BEING CALLEDDD");
 
       final result = await client.post(Uri.parse(AppUrls.fetchBallots),body: json.encode(data),headers: {"content-type":"application/json"});
-        Iterable json_data =json.decode(result.body);
+        
+        if(result.statusCode==200){
+            final json_data =json.decode(result.body);
+        print("THE VALUE IS  $json_data");
         List<String> ballots = List<String>.from(json_data);
-        return  ballots;
+        return  Right(ballots);
+        }
+        else{
+          return Left(ServerFailure("Error"));
+        }
+        
 
     } on ServerExceptions {
       throw ServerFailure("");

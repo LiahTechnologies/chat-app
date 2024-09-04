@@ -20,8 +20,12 @@ class HelperFunction {
   static String _profilePic = "ProfilePic";
   static String _userNumberOfGroups = 'UserGroups';
   static String _userChats = 'UserChats';
+  final String groupBallot;
 
   static String _userProfile = 'PROFILE';
+
+
+  HelperFunction({required this.groupBallot});
 
   /**
    * saving to share preferences
@@ -60,6 +64,10 @@ class HelperFunction {
     return await sharedPreference.setString(_userProfile, profile);
   }
 
+  static Future<bool> saveUserProfilePic(String profilePics) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(_profilePic, profilePics);
+  }
   static Future<bool> saveUserTel(String tel) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return await sharedPreference.setString(_userTelKey, tel);
@@ -87,6 +95,13 @@ class HelperFunction {
     return await sharedPreference.setString(_userChats, number);
   }
 
+
+    Future<bool> saveUserBallotNumber(String number) async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return await sharedPreference.setString(groupBallot, number);
+  }
+
+  
   // getting data
 
   static Future<String> getUserToken() async {
@@ -113,9 +128,13 @@ class HelperFunction {
 
     static Future<String> getUserProfile() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return  sharedPreference.getString(_profilePic)!;
+    return  sharedPreference.getString(_userProfile)!;
   }
 
+    static Future<String> getUserProfilePic() async {
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return  sharedPreference.getString(_profilePic)!;
+  }
    static Future<String> getUserNumberOfGroups() async{
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return  sharedPreference.getString(_userNumberOfGroups)!;
@@ -129,6 +148,12 @@ class HelperFunction {
   static Future<String> getUserID() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return  sharedPreference.getString(_userIDKey)!;
+  }
+
+
+       Future<String> getUserBallotNumber() async{
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    return  sharedPreference.getString(groupBallot)!;
   }
   /**
    * Getting data from shared preferences
