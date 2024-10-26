@@ -27,23 +27,23 @@ The frontend of the application is made up of different parts, which includes:
   |     |-- warnings
   |     |-- common
   |     |-- features
-  |            |-- feature  
-  |                  |-- data  
-  |                        |--remote-datasource 
-  |                        |--model
-  |                        |--repository
-  |                  |-- domain
-  |                        |--usecases
-  |                        |--entity
-  |                        |--repository
-  |                  |-- presentation
-  |                        |--pages
-  |                        |--widgets
-  |                        |--state-management[BLoc package]
-  |
-  |
-  |
-  |
+  |     |       |-- feature  
+  |     |       |      |-- data  
+  |     |       |            |--remote-datasource 
+  |     |       |            |--model
+  |     |       |            |--repository
+  |     |       |      |-- domain
+  |     |       |            |--usecases
+  |     |       |            |--entity
+  |     |       |            |--repository
+  |     |       |      |-- presentation
+  |     |       |            |--pages
+  |     |       |            |--widgets
+  |     |       |            |--state-management[BLoc package]
+  |     |       |
+  |     |       |
+  |     |       |
+  |     
   |--firebase-option.dart
   |--main.dart
 
